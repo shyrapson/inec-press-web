@@ -5,7 +5,7 @@ import "../globals.css";
 const Footer = () => {
   return (
     <div
-      className="backgroundImage bg-green-700  h-[280px] md:h-[230px] mt-[250px] md:mt-[250px]"
+      className="backgroundImage bg-green-700  h-[130px] md:h-[230px] mt-[60px] md:mt-[250px]"
       style={{
         position: "relative",
         width: "100%",
@@ -24,7 +24,9 @@ const Footer = () => {
           width={500}
           height={100}
           alt=""
-          className="h-[470px] md:h-[504px]"
+          quality={100}
+          style={{ objectFit: "contain" }}
+          // className="h-[470px] md:h-[504px]"
         />
       </div>
       <div

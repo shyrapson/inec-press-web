@@ -14,10 +14,10 @@ const LandingPage = () => {
 
   const router = useRouter();
   return (
-    <div className="mx:[20px] md:mx-[10%]">
+    <div className=" md:mx-[10%]">
       <Header />
-      <div className="flex items-center justify-center flex-col w-full">
-        <div className="text-center mt-16 md:my-4 flex items-center justify-center flex-col w-full">
+      <div className="flex items-center justify-center flex-col w-full px-3">
+        <div className="text-center my-8 flex items-center justify-center flex-col w-full">
           <h1 className="font-bold text:[25px] md:text-[40px] md:w-[70%]">
             Centralized App For INEC Election Staff Engagement{" "}
           </h1>
