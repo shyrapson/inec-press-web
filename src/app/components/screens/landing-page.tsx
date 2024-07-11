@@ -1,10 +1,9 @@
 "use client";
-
 import React from "react";
-import Header from "../Header";
-import Image from "next/image";
+// import Header from "../Header";
+// import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Footer from "../footer";
+// import Footer from "../footer";
 
 const LandingPage = () => {
   const downloadApp = () => {
@@ -14,18 +13,17 @@ const LandingPage = () => {
 
   const router = useRouter();
   return (
-    <div className=" md:mx-[10%]">
-      <Header />
-      <div className="flex items-center justify-center flex-col w-full px-3">
+    <section className=" md:mx-[10%] ">
+      <div className="flex items-center justify-center flex-col w-full px-3 md:pb-20">
         <div className="text-center my-8 flex items-center justify-center flex-col w-full">
-          <h1 className="font-bold text:[25px] md:text-[40px] md:w-[70%]">
+          <h1 className="font-bold text-[28px] md:text-[40px] md:w-[70%]">
             Centralized App For INEC Election Staff Engagement{" "}
           </h1>
           <p className="md:text-[18px] my-2  md:mx-[200px] md:w-[60%]">
             Connect, coordinate and manage staff information and resources
             effortlessly from INEC unified press application.
           </p>
-          <div className="flex items-center justify-center gap-10 md:mb-10 md:mt-4">
+          <div className="flex items-center justify-center gap-10 md:mb-10 mb-5 md:mt-4">
             <button
               onClick={downloadApp}
               className="bg-green-600 hover:bg-green-500 text-white md:py-3 py-2 md:px-6 px-2 rounded"
@@ -55,7 +53,7 @@ const LandingPage = () => {
         </div>
       </div>
       {/* <Footer /> */}
-    </div>
+    </section>
   );
 };
 
