@@ -7,7 +7,7 @@ const Header = () => {
     return (window.location.href = apkUrl);
   };
   return (
-    <header className="bg-white py-4 mx-2 md:mx-0 px-2 md:px-6 flex justify-between items-center mt-2 shadow-md rounded-xl">
+    <header className="bg-white py-4 mx-2 md:mx-0 px-2 md:px-6 flex justify-between items-center my-2  shadow-xl rounded-xl">
       <div className="flex items-center gap-1">
         {/* <Image  alt="Logo" className="h-8 mr-2" /> */}
         <Image
@@ -29,7 +29,7 @@ const Header = () => {
           onClick={downloadApp}
           className="bg-green-600 hover:bg-green-500 text-white md:py-3 py-2 md:px-6 px-2 rounded"
         >
-          Download
+          Download App
         </button>
       </div>
     </header>
