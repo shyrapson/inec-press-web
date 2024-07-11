@@ -7,7 +7,7 @@ const Header = () => {
     return (window.location.href = apkUrl);
   };
   return (
-    <header className="bg-white py-4 mx-2 md:mx-0 px-2 md:px-6 flex justify-between items-center my-2  shadow-xl rounded-xl">
+    <header className="bg-white py-2 mx-2 md:mx-0 px-2 md:px-6 flex justify-between items-center my-2  shadow-xl rounded-xl">
       <div className="flex items-center gap-1">
         {/* <Image  alt="Logo" className="h-8 mr-2" /> */}
         <Image

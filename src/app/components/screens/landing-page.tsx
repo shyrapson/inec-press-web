@@ -21,7 +21,7 @@ const LandingPage = () => {
           <h1 className="font-bold text:[25px] md:text-[40px] md:w-[70%]">
             Centralized App For INEC Election Staff Engagement{" "}
           </h1>
-          <p className="md:text-[18px] my-2  md:mx-[200px] md:w-[50%]">
+          <p className="md:text-[18px] my-2  md:mx-[200px] md:w-[60%]">
             Connect, coordinate and manage staff information and resources
             effortlessly from INEC unified press application.
           </p>
