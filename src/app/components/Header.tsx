@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header
       style={{ boxShadow: " 10px 4px 40px 10px #1B2D4A14" }}
-      className="bg-white mt-5 py-2 mx-2 md:mx-0 px-2 md:px-6 flex justify-between items-center my-2  rounded-xl w-11/12 md:w-full"
+      className="bg-white mt-5 py-2 mx-2 md:mx-10 px-2 md:px-6 flex justify-between items-center my-2  rounded-xl w-11/12 md:w-full"
     >
       <div className="flex items-center gap-1">
         {/* <Image  alt="Logo" className="h-8 mr-2" /> */}
