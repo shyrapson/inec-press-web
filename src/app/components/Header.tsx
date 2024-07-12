@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const Header = () => {
   const downloadApp = () => {
-    let apkUrl = "/inec-press.apk";
+    let apkUrl = "/inec-pres.apk";
     return (window.location.href = apkUrl);
   };
   return (

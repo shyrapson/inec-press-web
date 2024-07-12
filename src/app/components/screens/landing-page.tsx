@@ -7,11 +7,10 @@ import { useRouter } from "next/navigation";
 
 const LandingPage = () => {
   const downloadApp = () => {
-    let apkUrl = "/inec-press.apk";
+    let apkUrl = "/inec-pres.apk";
     return (window.location.href = apkUrl);
   };
 
-  const router = useRouter();
   return (
     <section className=" md:mx-[10%] ">
       <div className="flex items-center justify-center flex-col w-full px-3 md:pb-20">
