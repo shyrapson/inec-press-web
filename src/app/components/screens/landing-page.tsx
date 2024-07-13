@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 const LandingPage = () => {
   const downloadApp = () => {
-    let apkUrl = "/inec-pres.apk";
+    let apkUrl = "/INECPRES.apk";
     return (window.location.href = apkUrl);
   };
 
