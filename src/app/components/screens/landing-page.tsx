@@ -10,7 +10,6 @@ const LandingPage = () => {
     let apkUrl = "/INECPRES.apk";
     return (window.location.href = apkUrl);
   };
-
   return (
     <section className=" md:mx-[10%] ">
       <div className="flex items-center justify-center flex-col w-full px-3 md:pb-20">
@@ -29,25 +28,6 @@ const LandingPage = () => {
             >
               Download App
             </button>
-            {/* <button onClick={() => router.push("#")}>
-              <Image
-                src="/images/app-store.png"
-                width={164}
-                height={38}
-                alt="app store logo"
-                className="h-[48px]"
-              />
-            </button> */}
-
-            {/* <button className="  " onClick={downloadApp}>
-              <Image
-                src="/images/play-store.png"
-                width={164}
-                height={0}
-                alt="play store logo"
-                className="h-[48px]"
-              />
-            </button> */}
           </div>
         </div>
       </div>
