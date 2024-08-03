@@ -3,13 +3,14 @@ import React from "react";
 // import Header from "../Header";
 // import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { downloadApp } from "../Download";
 // import Footer from "../footer";
 
 const LandingPage = () => {
-  const downloadApp = () => {
-    let apkUrl = "/INECPRES.apk";
-    return (window.location.href = apkUrl);
-  };
+  // const downloadApp = () => {
+  //   let apkUrl = "/INECPRES.apk";
+  //   return (window.location.href = apkUrl);
+  // };
   return (
     <section className=" md:mx-[10%] ">
       <div className="flex items-center justify-center flex-col w-full px-3 md:pb-20">
