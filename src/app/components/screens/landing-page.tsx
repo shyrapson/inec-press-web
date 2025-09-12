@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 const LandingPage = () => {
   const downloadApp = () => {
-    let apkUrl = "/INECPRES.apk";
+    let apkUrl = "https://inec-croms-bucket.nyc3.digitaloceanspaces.com/apk-file/INECPRES.apk";
     return (window.location.href = apkUrl);
   };
   return (
