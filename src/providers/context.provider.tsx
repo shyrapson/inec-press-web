@@ -9,11 +9,17 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { IAuth, IRegisteredUser, IStore, IStoreContext, IUser } from '../common/types'
+import {
+  IAuth,
+  IRegisteredUser,
+  IStore,
+  IStoreContext,
+} from '../common/types'
 
 export const initialState: IStore = {
   auth: null,
-  registeredUser: null
+  registeredUser: null,
+  isLocalStorageLoaded: false
 }
 
 export const StoreContext = createContext<IStoreContext | null>(null)
@@ -35,15 +41,18 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
     const authData = localStorage.getItem('auth')
     const auth = authData ? (JSON.parse(authData) as IAuth) : null
     const registeredUserData = localStorage.getItem('registeredUser')
-    const registeredUser = registeredUserData ? (JSON.parse(registeredUserData) as IRegisteredUser) : null
+    const registeredUser = registeredUserData
+      ? (JSON.parse(registeredUserData) as IRegisteredUser)
+      : null
 
     if (auth) {
-        updateStore({ auth })
+      updateStore({ auth })
     }
     if (registeredUser) {
-        updateStore({ registeredUser })
+      updateStore({ registeredUser })
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    updateStore({ isLocalStorageLoaded: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const contextValue = useMemo(

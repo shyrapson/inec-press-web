@@ -112,6 +112,7 @@ export interface IAuthResponse {
 export interface IStore {
   auth: IAuth | null
   registeredUser: IRegisteredUser | null
+  isLocalStorageLoaded: boolean
 }
 
 export interface IStoreContext {
