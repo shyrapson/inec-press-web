@@ -1,10 +1,10 @@
-"use client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+'use client'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 import {
   Form,
@@ -13,56 +13,79 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import Navbar from "../navbar";
-import HelpSection, { FAQItem } from "../faq-help";
-import { loginSchema } from "@/common/types";
+} from '@/components/ui/form'
+import Navbar from '../navbar'
+import HelpSection, { FAQItem } from '../faq-help'
+import {
+  IAuth,
+  ILoginRequest,
+  IStore,
+  IUser,
+  loginSchema,
+  PAGE_ROUTES,
+} from '@/common/types'
+import useLocalMutation from '@/hooks/useLocalMutation'
+import { loginRequest } from '@/api/user'
+import { useRouter } from 'next/navigation'
+import useStore from '@/hooks/useStore'
+import { Spinner } from '@/components/ui/spinner'
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+type LoginFormValues = z.infer<typeof loginSchema>
+
+const loginPageFAQData: FAQItem[] = [
+  {
+    value: 'how-to-apply',
+    title: 'How to Apply',
+    content: 'Check out eligibility process and find out how you can apply.',
+    link: {
+      href: '#',
+      text: 'Click here',
+      className: 'text-orange-500 hover:text-orange-600',
+    },
+  },
+  {
+    value: 'new-applicant',
+    title: 'New Applicant?',
+    content:
+      'To register for the 2024 Edo and Ondo State Governorship Election engagement, ',
+    link: {
+      href: '#',
+      text: 'CLICK HERE',
+      className: 'text-green-600 hover:text-[#448220]',
+    },
+    afterLink: ' to get started.',
+  },
+  {
+    value: 'have-question',
+    title: 'Have a Question',
+    content:
+      'If you are facing any challenge or have a question then click here to contact us.',
+  },
+]
 
 export default function LoginPage(): JSX.Element {
-  const loginPageFAQData: FAQItem[] = [
-    {
-      value: "how-to-apply",
-      title: "How to Apply",
-      content: "Check out eligibility process and find out how you can apply.",
-      link: {
-        href: "#",
-        text: "Click here",
-        className: "text-orange-500 hover:text-orange-600",
-      },
-    },
-    {
-      value: "new-applicant",
-      title: "New Applicant?",
-      content:
-        "To register for the 2024 Edo and Ondo State Governorship Election engagement, ",
-      link: {
-        href: "#",
-        text: "CLICK HERE",
-        className: "text-green-600 hover:text-[#448220]",
-      },
-      afterLink: " to get started.",
-    },
-    {
-      value: "have-question",
-      title: "Have a Question",
-      content:
-        "If you are facing any challenge or have a question then click here to contact us.",
-    },
-  ];
+  const navigate = useRouter()
+  const { updateStore } = useStore()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
-  });
+  })
 
-  const onSubmit = (data: LoginFormValues) => {
-    console.log("Form submitted:", data);
-  };
+  const { isPending, mutate } = useLocalMutation<IAuth, ILoginRequest>({
+    mutationFn: ({ email, password }) => loginRequest({ email, password }),
+    onSuccess: res => {
+      if (res.data) {
+        updateStore({ auth: res.data })
+      }
+      navigate.push(PAGE_ROUTES.DASHBOARD_PAGE)
+    },
+  })
+
+  const onSubmit = (data: LoginFormValues) => mutate(data)
 
   return (
     <div className=" ">
@@ -135,15 +158,16 @@ export default function LoginPage(): JSX.Element {
                   <Button
                     type="submit"
                     className="w-full bg-[#448220] hover:bg-[#448220] text-white mt-6 h-[40px]"
+                    disabled={isPending}
                   >
-                    Login
+                    {isPending ? <Spinner /> : 'Login'}
                   </Button>
                 </form>
               </Form>
 
               <div className="text-center mt-4">
                 <p className="text-sm text-gray-600">
-                  Already have an account?{" "}
+                  Already have an account?{' '}
                   <a
                     href="/login"
                     className="text-green-600 hover:text-[#448220] font-medium"
@@ -159,5 +183,5 @@ export default function LoginPage(): JSX.Element {
         <HelpSection items={loginPageFAQData} />
       </div>
     </div>
-  );
+  )
 }
