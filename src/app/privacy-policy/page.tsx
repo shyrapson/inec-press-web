@@ -1,6 +1,18 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
-const SupportPage = () => {
+interface SectionProps {
+  title: string;
+  children: ReactNode;
+}
+
+const Section: React.FC<SectionProps> = ({ title, children }) => (
+  <div className="mb-4">
+    <h2 className="text-xl font-semibold mb-2">{title}</h2>
+    {children}
+  </div>
+);
+
+const SupportPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-center">
@@ -102,12 +114,5 @@ const SupportPage = () => {
     </div>
   );
 };
-
-const Section = ({ title, children }) => (
-  <div className="mb-4">
-    <h2 className="text-xl font-semibold mb-2">{title}</h2>
-    {children}
-  </div>
-);
 
 export default SupportPage;
