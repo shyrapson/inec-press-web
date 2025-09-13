@@ -91,7 +91,7 @@ const SupportPage: React.FC = () => {
               support@inecnigeria.org
             </a>
           </li>
-          <li>Phone: +234 (0) 809 509 1359</li>
+          <li>Phone: 0700-CALL-INEC</li>
           <li>
             Website:{" "}
             <a
