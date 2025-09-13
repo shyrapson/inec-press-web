@@ -4,6 +4,7 @@ import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "@/components/organisms/provider";
+import AuthGuard from "@/components/organisms/auth-guard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <Provider>
           <ToastContainer position="top-center" />
-          {children}
+            <AuthGuard>
+              {children}
+            </AuthGuard>
         </Provider>
       </body>
     </html>

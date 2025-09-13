@@ -9,23 +9,16 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { IStore, IStoreContext, IUser } from '../common/types'
+import { IAuth, IStore, IStoreContext, IUser } from '../common/types'
 
 export const initialState: IStore = {
-  auth: {
-    currentUser: null,
-    token: null,
-  },
+  auth: null,
 }
 
 export const StoreContext = createContext<IStoreContext | null>(null)
 
 const Context: FC<{ children: ReactNode }> = ({ children }) => {
   const [store, setStore] = useState<IStore>(initialState)
-
-  useEffect(() => {
-    // TODO: pick auth data from localstorage
-  }, [])
 
   const updateStore = useCallback((payload: Partial<IStore>) => {
     setStore(prev => ({ ...prev, ...payload }))
@@ -34,6 +27,17 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
     payloadArray.forEach(([key, value]) => {
       localStorage.setItem(key, JSON.stringify(value))
     })
+  }, [])
+
+  useEffect(() => {
+    // TODO: pick auth data from localstorage
+    const authData = localStorage.getItem('auth')
+    const auth = authData ? (JSON.parse(authData) as IAuth) : null
+
+    if (auth) {
+        updateStore({ auth })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const contextValue = useMemo(

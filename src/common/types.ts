@@ -82,7 +82,7 @@ export interface IAuth {
 }
 
 export interface IStore {
-  auth: IAuth
+  auth: IAuth | null
 }
 
 export interface IStoreContext {

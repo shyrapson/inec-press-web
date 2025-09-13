@@ -1,0 +1,40 @@
+'use client'
+
+import { PAGE_ROUTES } from '@/common/types';
+import useStore from '@/hooks/useStore';
+import { usePathname, useRouter } from 'next/navigation';
+import { FC, ReactNode, useEffect, useState } from 'react';
+import { Spinner } from '../ui/spinner';
+
+interface IAuthGuard {
+    children: ReactNode;
+}
+
+const AuthGuard: FC<IAuthGuard> = ({ children }) => {
+    const [authenticating, setAuthenticating] = useState(true);
+
+    const { store } = useStore();
+    const pathname = usePathname();
+
+    const router = useRouter();
+
+    useEffect(() => {
+        if (pathname.includes('dashboard')) {
+            if (!store.auth) {
+                setTimeout(() => router.push(PAGE_ROUTES.LOGIN_PAGE), 1000);
+            }
+        } else if (store.auth) {
+            router.push(PAGE_ROUTES.DASHBOARD_PAGE)
+        }
+
+        setTimeout(() => setTimeout(() => setAuthenticating(false), 1000), 1000);
+    }, [pathname, router, store.auth]);
+
+    if (authenticating) {
+        return <div className='h-screen flex items-center justify-center'><Spinner /></div>;
+    }
+
+    return <>{children}</>;
+};
+
+export default AuthGuard;
