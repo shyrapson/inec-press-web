@@ -62,7 +62,10 @@ const SupportPage: React.FC = () => {
             eligibility requirements set by INEC.
           </li>
           <li>
-            <strong>I forgot my password.</strong> Use the "Forgot Password"
+            <>
+              <strong>I forgot my password.</strong>{" "}
+              {` Use the "Forgot Password"`}
+            </>
             link on the login page to reset it.
           </li>
           <li>
