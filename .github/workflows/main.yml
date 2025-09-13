@@ -16,12 +16,6 @@ jobs:
       # Checkout the code
       - uses: actions/checkout@v4
 
-      # Setup Node.js environment
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
 
       # Deploy to AWS Server
       - name: Deploy to AWS Server
