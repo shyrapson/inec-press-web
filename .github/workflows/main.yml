@@ -1,0 +1,40 @@
+name: INEC PRODUCTION Server CI
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.15.0]
+
+    steps:
+      # Checkout the code
+      - uses: actions/checkout@v4
+
+      # Setup Node.js environment
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      # Deploy to AWS Server
+      - name: Deploy to AWS Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PUBLIC_IP }}
+          username: ec2-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/inec-press-frontend
+            git pull origin main
+            docker build -t inec-front   .
+            docker stop inec-front  
+            docker rm inec-front  
+            docker run -d --name inec-front   -p 3000:3000 inec-front  
+
