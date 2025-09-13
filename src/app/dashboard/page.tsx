@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 import { LogOut } from "lucide-react";
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const page = () => {
@@ -140,7 +139,6 @@ const page = () => {
           </CardContent>
         </Card>
 
-        {/* Bank Details */}
         <Card>
           <CardHeader>
             <CardTitle>Bank Details</CardTitle>
@@ -216,7 +214,6 @@ const page = () => {
               </div>
             </div>
 
-            {/* Referee Two */}
             <div>
               <h4 className="font-medium text-[#111216] text-[14px] mb-3">
                 Referee Two (#2)
