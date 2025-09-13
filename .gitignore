@@ -1,7 +1,6 @@
 # Node / Next
 node_modules
-.next/cache
-.next/trace
+.next/
 npm-debug.log*
 yarn-error.log*
 pnpm-lock.yaml
