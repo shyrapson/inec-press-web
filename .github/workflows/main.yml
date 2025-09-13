@@ -25,9 +25,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            ls -la
-            pwd
-            cd /home/ubuntu/inec-press-frontend
+            cd /home/ubuntu/inec-press-front
             git pull origin main
             docker build -t inec-front   .
             docker stop inec-front  
