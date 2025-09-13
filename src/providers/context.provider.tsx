@@ -9,10 +9,11 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { IAuth, IStore, IStoreContext, IUser } from '../common/types'
+import { IAuth, IRegisteredUser, IStore, IStoreContext, IUser } from '../common/types'
 
 export const initialState: IStore = {
   auth: null,
+  registeredUser: null
 }
 
 export const StoreContext = createContext<IStoreContext | null>(null)
@@ -30,12 +31,17 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    // TODO: pick auth data from localstorage
+    // TODO: abstract as a generic function
     const authData = localStorage.getItem('auth')
     const auth = authData ? (JSON.parse(authData) as IAuth) : null
+    const registeredUserData = localStorage.getItem('registeredUser')
+    const registeredUser = registeredUserData ? (JSON.parse(registeredUserData) as IRegisteredUser) : null
 
     if (auth) {
         updateStore({ auth })
+    }
+    if (registeredUser) {
+        updateStore({ registeredUser })
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

@@ -1,9 +1,9 @@
 import * as z from 'zod'
 export const profileSchema = z
   .object({
-    election: z.string().min(1, 'Please select an election'),
-    position: z.string().min(1, 'Please select a position'),
-    eligibility: z.string().min(1, 'Please select an eligibility criteria'),
+    electionId: z.string().min(1, 'Please select an election'),
+    position_id: z.string().min(1, 'Please select a position'),
+    source_id: z.string().min(1, 'Please select an eligibility criteria'),
     email: z.string().email('Please enter a valid email address'),
     confirmEmail: z.string().email('Please enter a valid email address'),
     password: z.string().min(8, 'Password must be at least 8 characters'),
@@ -21,8 +21,10 @@ export const loginSchema = z.object({
 
 export enum PAGE_ROUTES {
   DASHBOARD_PAGE = '/dashboard',
-  REGISTER_PAGE = '/register',
   LOGIN_PAGE = '/login',
+  PROFILE_INFO_PAGE = 'profile-information',
+  REGISTER_PAGE = '/register',
+  VERIFY_OTP_PAGE = '/verify-otp',
 }
 
 export interface IDelete {
@@ -44,6 +46,27 @@ export interface IResponse<D = any> {
   data?: D
   status?: number
   message?: string
+}
+
+export interface IRegisteredUser {
+  _id: string
+  id: string
+  source_name: string
+  adhoc_position: string
+  source_id: string
+  email: string
+  election: string
+  isOtpVerified: boolean
+  isPasswordVerified: boolean
+  isReturningApplicant: boolean
+  password: string
+  position_id: string
+  position_name: string
+  profileStatus: string
+  rawPassword: string
+  refereeInformation: Array<any>
+  role: string
+  userSource: string
 }
 
 export interface IUser {
@@ -81,8 +104,14 @@ export interface IAuth {
   token: IToken | null
 }
 
+export interface IAuthResponse {
+  user: IUser | null
+  token: IToken | null
+}
+
 export interface IStore {
   auth: IAuth | null
+  registeredUser: IRegisteredUser | null
 }
 
 export interface IStoreContext {
@@ -101,4 +130,40 @@ export interface IRegistrationRequest {
   position_id: string
   source_id: string
   electionId: string
+}
+
+export interface IVerifyOtpRequest {
+  email: string
+  otp: string
+}
+
+export interface IPosition {
+  _id: string
+  id: string
+  position: string
+}
+
+export interface IPositionSource {
+  id: string
+  source_name: string
+  adhoc_position: string
+}
+
+export interface IElection {
+  _id: string
+  name: string
+  positions: Array<IPosition>
+  year: 2025
+  state: string
+  status: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface IGetElectionsRequest {
+  year?: string
+}
+
+export interface IGetPositionSourceRequest {
+  id: string
 }

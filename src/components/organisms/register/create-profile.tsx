@@ -1,9 +1,9 @@
-"use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 import {
   Select,
@@ -11,7 +11,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select'
 import {
   Form,
   FormControl,
@@ -19,53 +19,95 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import HelpSection, { FAQItem } from "../faq-help";
-import Navbar from "../navbar";
-import { profileSchema } from "@/common/types";
-import { useForm } from "react-hook-form";
+} from '@/components/ui/form'
+import HelpSection, { FAQItem } from '../faq-help'
+import Navbar from '../navbar'
+import { IAuth, IRegisteredUser, IRegistrationRequest, PAGE_ROUTES, profileSchema } from '@/common/types'
+import { useForm } from 'react-hook-form'
+import useLocalMutation from '@/hooks/useLocalMutation'
+import { registerRequest } from '@/api/user'
+import { Spinner } from '@/components/ui/spinner'
+import { useQueries, useQuery } from '@tanstack/react-query'
+import { getElectionsRequest } from '@/api/elections'
+import { getPositionSourceRequest } from '@/api/adhoc-positions'
+import { useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import useStore from '@/hooks/useStore'
 
-type ProfileFormValues = z.infer<typeof profileSchema>;
+type ProfileFormValues = z.infer<typeof profileSchema>
+
+const profilePageFAQData: FAQItem[] = [
+  {
+    value: 'how-to-apply',
+    title: 'How to Apply',
+    content: 'Check out eligibility process and find out how you can apply.',
+    link: {
+      href: '#',
+      text: 'Click here',
+      className: 'text-orange-500 hover:text-orange-600',
+    },
+  },
+  {
+    value: 'new-applicant',
+    title: 'New Applicant?',
+    content: '',
+  },
+  {
+    value: 'have-question',
+    title: 'Have a Question',
+    content: '',
+  },
+]
 
 export default function CreateProfilePage() {
-  const profilePageFAQData: FAQItem[] = [
-    {
-      value: "how-to-apply",
-      title: "How to Apply",
-      content: "Check out eligibility process and find out how you can apply.",
-      link: {
-        href: "#",
-        text: "Click here",
-        className: "text-orange-500 hover:text-orange-600",
-      },
-    },
-    {
-      value: "new-applicant",
-      title: "New Applicant?",
-      content: "",
-    },
-    {
-      value: "have-question",
-      title: "Have a Question",
-      content: "",
-    },
-  ];
+  const navigate = useRouter()
+  const { updateStore } = useStore()
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      election: "",
-      position: "",
-      eligibility: "",
-      email: "",
-      confirmEmail: "",
-      password: "",
+      electionId: '',
+      position_id: '',
+      source_id: '',
+      email: '',
+      confirmEmail: '',
+      password: '',
     },
-  });
+  })
+
+  const { data: elections } = useQuery({
+    queryKey: ['elections'],
+    queryFn: () => getElectionsRequest(),
+  })
+
+  const positionId = form.watch('position_id')
+  const electionId = form.watch('electionId')
+
+  const positions = useMemo(() => {
+    const pos = elections?.data?.find((el) => el._id === electionId)
+    return pos ? pos.positions : []
+  }, [electionId, elections?.data])
+
+  const { data: positionSources } = useQuery({
+    queryKey: ['position-source', positionId],
+    queryFn: () => getPositionSourceRequest({ id: String(positionId) }),
+    enabled: !!positionId,
+    retry: false,
+  })
+
+  const { isPending, mutate } = useLocalMutation<IRegisteredUser, IRegistrationRequest>({
+    mutationFn: ({ electionId, email, password, position_id, source_id }) =>
+      registerRequest({ electionId, email, password, position_id, source_id }),
+    onSuccess: res => {
+      console.log({ res, registeredUser: res.data })
+      updateStore({ registeredUser: res.data })
+      navigate.push(PAGE_ROUTES.VERIFY_OTP_PAGE)
+    },
+  })
 
   const onSubmit = (data: ProfileFormValues) => {
-    console.log("Form submitted:", data);
-  };
+    mutate(data)
+  }
 
   return (
     <div className="min-h-screen">
@@ -91,7 +133,7 @@ export default function CreateProfilePage() {
                 >
                   <FormField
                     control={form.control}
-                    name="election"
+                    name="electionId"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-medium text-[#607087]">
@@ -107,12 +149,11 @@ export default function CreateProfilePage() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="edo-2024">
-                              2024 Edo State Governorship Election
-                            </SelectItem>
-                            <SelectItem value="ondo-2024">
-                              2024 Ondo State Governorship Election
-                            </SelectItem>
+                            {elections?.data?.map(({ _id, name }) => (
+                              <SelectItem key={_id} value={_id}>
+                                {name}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -122,7 +163,7 @@ export default function CreateProfilePage() {
 
                   <FormField
                     control={form.control}
-                    name="position"
+                    name="position_id"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-medium text-[#607087]">
@@ -138,15 +179,11 @@ export default function CreateProfilePage() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="presiding-officer">
-                              Presiding Officer
-                            </SelectItem>
-                            <SelectItem value="assistant-presiding-officer">
-                              Assistant Presiding Officer
-                            </SelectItem>
-                            <SelectItem value="polling-clerk">
-                              Polling Clerk
-                            </SelectItem>
+                            {positions?.map(({ _id, id, position }) => (
+                              <SelectItem key={_id} value={id}>
+                                {position}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -156,7 +193,7 @@ export default function CreateProfilePage() {
 
                   <FormField
                     control={form.control}
-                    name="eligibility"
+                    name="source_id"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-medium text-[#607087]">
@@ -172,15 +209,11 @@ export default function CreateProfilePage() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="citizen">
-                              Nigerian Citizen
-                            </SelectItem>
-                            <SelectItem value="resident">
-                              State Resident
-                            </SelectItem>
-                            <SelectItem value="graduate">
-                              University Graduate
-                            </SelectItem>
+                            {positionSources?.data?.map(({ id, source_name }) => (
+                              <SelectItem key={id + source_name} value={id}>
+                                {source_name}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -264,8 +297,9 @@ export default function CreateProfilePage() {
                   <Button
                     type="submit"
                     className="w-full bg-[#448220] hover:bg-green-800 text-white mt-6 h-[40px]"
+                    disabled={isPending}
                   >
-                    Create Account
+                    {isPending ? <Spinner /> : 'Create Account'}
                   </Button>
                 </form>
               </Form>
@@ -276,5 +310,5 @@ export default function CreateProfilePage() {
         <HelpSection items={profilePageFAQData} />
       </div>
     </div>
-  );
+  )
 }

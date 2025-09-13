@@ -17,10 +17,8 @@ import {
 import Navbar from '../navbar'
 import HelpSection, { FAQItem } from '../faq-help'
 import {
-  IAuth,
+  IAuthResponse,
   ILoginRequest,
-  IStore,
-  IUser,
   loginSchema,
   PAGE_ROUTES,
 } from '@/common/types'
@@ -65,7 +63,10 @@ const loginPageFAQData: FAQItem[] = [
 
 export default function LoginPage(): JSX.Element {
   const navigate = useRouter()
-  const { updateStore } = useStore()
+  const {
+    store: { auth },
+    updateStore,
+  } = useStore()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -75,13 +76,19 @@ export default function LoginPage(): JSX.Element {
     },
   })
 
-  const { isPending, mutate } = useLocalMutation<IAuth, ILoginRequest>({
+  const { isPending, mutate } = useLocalMutation<IAuthResponse, ILoginRequest>({
     mutationFn: ({ email, password }) => loginRequest({ email, password }),
     onSuccess: res => {
       if (res.data) {
-        updateStore({ auth: res.data })
+        updateStore({
+          auth: { token: res.data?.token, currentUser: res.data?.user },
+        })
       }
-      navigate.push(PAGE_ROUTES.DASHBOARD_PAGE)
+      navigate.push(
+        res.data?.user?.isReturningApplicant
+          ? PAGE_ROUTES.DASHBOARD_PAGE
+          : PAGE_ROUTES.PROFILE_INFO_PAGE
+      )
     },
   })
 
