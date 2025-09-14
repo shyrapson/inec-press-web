@@ -5,14 +5,20 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import type { FC } from "react";
 import { useRouter } from "next/navigation";
-{
-  /* <div className="mx-auto px-4 sm:px-6 lg:px-20 bg-transparent "> */
+
+interface NavbarProps {
+  isSticky?: boolean;
 }
 
-const Navbar: FC = () => {
+const Navbar: FC<NavbarProps> = ({ isSticky = true }) => {
   const router = useRouter();
   return (
-    <nav className="flex sticky shadow-[0px_1px_7px_3px_rgba(100,_100,_111,_0.2)] top-10 mx-auto z-50 items-center justify-between py-6 px-2 sm:px-2 lg:px-4 rounded-2xl  bg-white w-10/12 max-w-[1200px]">
+    <nav
+      className={`flex ${
+        isSticky ? "sticky top-10 my-0" : ""
+      } shadow-md mx-auto items-center relative top-6 z-10 justify-between py-5  px-3 sm:px-2 lg:px-6 rounded-3xl bg-white w-10/12 max-w-[1200px]`}
+    >
+      {" "}
       <div className="flex items-center">
         <Image
           src="/svgs/inec-logo.svg"
@@ -22,35 +28,48 @@ const Navbar: FC = () => {
           className="text-white"
         />
       </div>
-
       <div className="hidden md:flex items-center space-x-8">
-        <Link href="/" className="text-[#607087] hover:text-green-600 font-medium">
+        <Link
+          href="/"
+          className="text-[#181817] hover:text-green-600 font-medium text-sm"
+        >
           Home
         </Link>
-        <Link href="/how-to-apply" className="text-[#607087] hover:text-green-600 font-medium">
+        <Link
+          href="/how-to-apply"
+          className="text-[#181817] hover:text-green-600 font-medium text-sm"
+        >
           How to apply
         </Link>
-        <Link href="/eligibility" className="text-[#607087] hover:text-green-600 font-medium">
+        <Link
+          href="/eligibility"
+          className="text-[#181817] hover:text-green-600 font-medium text-sm"
+        >
           Eligibility
         </Link>
-        <Link href="/faqs" className="text-[#607087] hover:text-green-600 font-medium">
+        <Link
+          href="/faqs"
+          className="text-[#181817] hover:text-green-600 font-medium text-sm"
+        >
           FAQs
         </Link>
-        <Link href="/contact" className="text-[#607087] hover:text-green-600 font-medium">
+        <Link
+          href="/contact"
+          className="text-[#181817] hover:text-green-600 font-medium text-sm"
+        >
           Contact Us
         </Link>
       </div>
-
       <div className="flex items-center space-x-3">
         <Button
           variant="outline"
-          className="border-green-600 text-[#448220] hover:bg-green-50 bg-transparent"
+          className="border-green-600 text-[#448220] hover:bg-green-50 bg-transparent h-[41px]"
           onClick={() => router.push("/register")}
         >
           Register
         </Button>
         <Button
-          className="bg-[#448220] hover:bg-[#448220] text-white"
+          className="bg-[#448220] hover:bg-[#448220] text-white h-[41px]"
           onClick={() => router.push("/login")}
         >
           Login

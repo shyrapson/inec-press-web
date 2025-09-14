@@ -18,7 +18,7 @@ const SidebarCard = ({
 }: SidebarCardProps) => {
   const renderDescription = () => {
     if (!highlightText) {
-      return <span>{description}</span>;
+      return <span className="text-sm">{description}</span>;
     }
 
     const parts = description.split(highlightText);
@@ -26,7 +26,9 @@ const SidebarCard = ({
       <span key={index}>
         {part}
         {index < parts.length - 1 && (
-          <span className="font-bold text-green-600">{highlightText}</span>
+          <span className="text-sm font-bold text-[#448220]">
+            {highlightText}
+          </span>
         )}
       </span>
     ));
@@ -37,7 +39,7 @@ const SidebarCard = ({
       <div className="flex flex-col gap-6">
         <Icon icon={icon} className={`${iconBgColor}`} />
         <div className="flex flex-col gap-5">
-          <h3 className="text-2xl font-bold text-election-text-primary leading-10">
+          <h3 className="text-2xl font-bold text-[#181817] leading-10">
             {title}
           </h3>
           <div className="text-sm leading-6">{renderDescription()}</div>
