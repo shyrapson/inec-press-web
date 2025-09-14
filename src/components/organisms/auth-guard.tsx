@@ -17,10 +17,14 @@ const AuthGuard: FC<IAuthGuard> = ({ children }) => {
   const pathname = usePathname();
   const router = useRouter();
 
+  // !store.auth?.currentUser?.isReturningApplicant
   useEffect(() => {
     if (store.isLocalStorageLoaded) {
       if (store.auth) {
-        if (!store.auth?.currentUser?.isReturningApplicant) {
+        if (
+          store.auth?.currentUser?.lastApplication?.applicationStatus !==
+          "incomplete"
+        ) {
           router.push(PAGE_ROUTES.DASHBOARD_PAGE);
         } else {
           router.push(PAGE_ROUTES.PROFILE_INFO_PAGE);

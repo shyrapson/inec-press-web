@@ -92,7 +92,8 @@ export interface IUser {
   source_name: string;
   userSource: string;
   user_id: string;
-  lastApplication: string | null;
+  applicationStatus: string;
+  lastApplication: any;
   contactInformation?: any;
   bankDetails?: any;
   profile?: any;
