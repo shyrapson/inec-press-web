@@ -13,7 +13,7 @@ interface NavbarProps {
 const Navbar: FC<NavbarProps> = ({ isSticky = true }) => {
   const router = useRouter();
   return (
-    <div
+    <nav
       className={`flex ${
         isSticky ? "sticky top-10 my-0" : ""
       } shadow-md mx-auto items-center relative top-6 z-10 justify-between py-5  px-3 sm:px-2 lg:px-6 rounded-3xl bg-white w-10/12 max-w-[1200px]`}
