@@ -9,7 +9,7 @@ import PassportPhotograph from "@/components/organisms/profile-information/passp
 import { FormProvider, useForm } from "react-hook-form";
 
 const Page = () => {
-    const [currentStep, setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useState(5);
     const methods = useForm();
     const gotoNext = () => {
         setCurrentStep((prev) => {

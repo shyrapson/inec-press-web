@@ -62,6 +62,7 @@ const config: Config = {
           1: "#F1F5FE",
           2: "#E5E5E5",
           3: "#F7F8FA",
+          4: "#181818",
         },
         text: {
           1: "#607087",

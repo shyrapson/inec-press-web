@@ -13,7 +13,7 @@ const ProfileInfoHeader = ({ currentStep }: { currentStep:  number}) => {
             return <div key={index} className={cn("h-3 w-full", isActive)}></div>;
           })}
         </div>
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between mt-3">
           <div className="flex flex-col gap-2">
             <h6 className="text-black font-bold text-2xl">{HEADER_TITLE[currentStep-1]}</h6>
             <p className="text-text-1 text-lg font-light">

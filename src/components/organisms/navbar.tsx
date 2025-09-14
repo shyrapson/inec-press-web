@@ -12,9 +12,7 @@ import { useRouter } from "next/navigation";
 const Navbar: FC = () => {
   const router = useRouter();
   return (
-    // <nav className=" w-full    top-0 z-50">
-    // <div className="mx-auto sticky px-4 shadow-md sm:px-6 lg:px-20 pt-8 bg-red-500">
-    <div className="flex sticky shadow-md  top-10 mx-auto  items-center justify-between py-6 px-2 sm:px-2 lg:px-4 rounded-2xl  bg-white w-10/12 max-w-[1200px]">
+    <nav className="flex sticky shadow-[0px_1px_7px_3px_rgba(100,_100,_111,_0.2)] top-10 mx-auto z-50 items-center justify-between py-6 px-2 sm:px-2 lg:px-4 rounded-2xl  bg-white w-10/12 max-w-[1200px]">
       <div className="flex items-center">
         <Image
           src="/svgs/inec-logo.svg"
@@ -58,9 +56,7 @@ const Navbar: FC = () => {
           Login
         </Button>
       </div>
-    </div>
-    // </div>
-    // </nav>
+    </nav>
   );
 };
 

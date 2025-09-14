@@ -23,7 +23,7 @@ const ProfileFooter = ({
       >
         Cancel
       </Button>
-      <Button disabled={!isValid} type="submit" className="w-[150px] text-sm">
+      <Button disabled={!isValid} onClick={gotoNext} type="submit" className="w-[150px] text-sm">
         Next
       </Button>
     </footer>
