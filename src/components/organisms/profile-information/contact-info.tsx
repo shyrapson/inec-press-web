@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProfileFooter from "./profile-footer";
 import InputF from "./InputF";
 import { useForm, useFormContext } from "react-hook-form";
+import useCommonData from "@/hooks/useCommonData";
+import { useQuery } from "@tanstack/react-query";
+import { getLgaOfStates, getStates } from "@/api/user";
+import { QUERY_KEYS } from "@/lib/constants";
 
 const stateOptions = [
   { value: "lagos", label: "Lagos" },
@@ -24,8 +28,28 @@ const ContactInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
     register,
     formState: { errors, isValid },
     control,
+    watch,
     handleSubmit,
-  } =  useFormContext() 
+  } = useFormContext();
+  const stateValue = watch("stateOfResidence");
+
+  const { data: lgaOfStateList, isLoading: loadingState } = useQuery({
+    queryFn: () => getLgaOfStates({ code: stateValue }),
+    queryKey: [QUERY_KEYS.LGA_OF_STATE_LIST, stateValue],
+    enabled: !!stateValue,
+  });
+  const {
+    stateList,
+    stateUniversityList,
+    federalUniversityList,
+    designationList,
+    qualificationList,
+    preferredStateOfElectionList,
+    isOrganizationDisabledValue,
+    userDetails,
+  } = useCommonData();
+
+  console.log({ stateList, lgaOfStateList, stateValue });
 
   const onSubmit = (data: any) => {
     console.log("Form data:", data);
@@ -41,7 +65,11 @@ const ContactInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
             register={register}
             label="State of Residence*"
             isSelect={true}
-            dropdownList={stateOptions}
+            dropdownList={
+              Array.isArray(stateList)
+                ? stateList.map((state: any) => ({ value: state?.code, label: state?.name }))
+                : []
+            }
             control={control}
             options={{ required: true }}
           />
@@ -52,7 +80,14 @@ const ContactInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
             register={register}
             label="LGA of Residence*"
             isSelect={true}
-            dropdownList={lgaOptions}
+            dropdownList={
+              Array.isArray(lgaOfStateList)
+                ? lgaOfStateList.map((state: any) => ({
+                    value: state?.abbreviation,
+                    label: state?.name,
+                  }))
+                : []
+            }
             control={control}
             options={{ required: true }}
           />

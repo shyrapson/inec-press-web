@@ -27,6 +27,12 @@ export enum PAGE_ROUTES {
   VERIFY_OTP_PAGE = '/verify-otp',
 }
 
+export enum USER_TYPE {
+  MDA = "Staff of MDAs",
+  PENULTIMATE_FEDERAL = "Penultimate students of Federal Tertiary Institutions",
+  PENULTIMATE_STATE = "Penultimate students of State Tertiary Institutions",
+}
+
 export interface IDelete {
   url: string
 }

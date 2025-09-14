@@ -7,11 +7,13 @@ const ProfileFooter = ({
   gotoPrev,
   isValid,
   end,
+  isLoading,
 }: {
-  gotoNext: () => void;
+  gotoNext?: () => void;
   gotoPrev: () => void;
   isValid?: boolean;
   end?: boolean;
+  isLoading?: boolean;
 }) => {
   return (
     <footer className={cn("flex gap-5", !end ? "justify-end" : "justify-center")}>
@@ -23,8 +25,8 @@ const ProfileFooter = ({
       >
         Cancel
       </Button>
-      <Button disabled={!isValid} onClick={gotoNext} type="submit" className="w-[150px] text-sm">
-        Next
+      <Button disabled={!isValid || isLoading} type="submit" className="w-[150px] text-sm">
+        {isLoading ? "Loading..." : "Next"}
       </Button>
     </footer>
   );

@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, useId } from "react";
 import { Control, Controller, FieldValues, UseFormRegister } from "react-hook-form";
 
 interface InputFProps {
@@ -17,9 +17,10 @@ interface InputFProps {
   register: UseFormRegister<FieldValues>;
   options?: Partial<UseFormRegister<FieldValues>>;
   isSelect?: boolean;
-  dropdownList?: Array<{ value: string; label: string }>;
+  dropdownList?: Array<{ value: string; label: string; selected?: boolean }>;
   control?: Control<FieldValues>;
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
+  defaultValue?: string;
 }
 
 const InputF = ({
@@ -32,7 +33,10 @@ const InputF = ({
   control,
   inputProps,
   bottomLabel,
+  defaultValue,
 }: InputFProps) => {
+  const idPrefix = useId();
+
   return (
     <>
       <Label className="text-text-1 font-light text-xs">{label}</Label>
@@ -40,6 +44,7 @@ const InputF = ({
         <Input
           {...register(name, options)}
           type="text"
+          defaultValue={defaultValue}
           className="rounded-none border-[0.5px] border-text-1"
           {...inputProps}
         />
@@ -47,20 +52,33 @@ const InputF = ({
         <Controller
           name={name}
           control={control}
-          render={({ field }) => (
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <SelectTrigger className="rounded-none border-[0.5px] border-text-1" ref={field.ref}>
-                <SelectValue placeholder="-:Select:-" />
-              </SelectTrigger>
-              <SelectContent>
-                {dropdownList?.map((item, index) => (
-                  <SelectItem value={item.value} key={index}>
-                    {item.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
+          defaultValue={defaultValue}
+          render={({ field }) => {
+            return (
+              <Select
+                value={field.value ?? defaultValue}
+                disabled={!dropdownList?.length}
+                onValueChange={field.onChange}
+                defaultValue={defaultValue}
+              >
+                <SelectTrigger
+                  className="rounded-none border-[0.5px] border-text-1"
+                  ref={field.ref}
+                >
+                  <SelectValue placeholder="-:Select:-" />
+                </SelectTrigger>
+                <SelectContent>
+                  {dropdownList?.map((item, index) => {
+                    return (
+                      <SelectItem value={item.value} key={`${idPrefix}-${item.value}+${index}`}>
+                        {item.label}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            );
+          }}
         />
       )}
       {bottomLabel && (

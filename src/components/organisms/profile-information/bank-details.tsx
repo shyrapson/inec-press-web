@@ -23,11 +23,11 @@ const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
     formState: { errors, isValid },
     control,
     handleSubmit,
-  } = useFormContext(); ;
+  } = useFormContext();
 
   const onSubmit = (data: any) => {
-      console.log("Banking form data:", data);
-      gotoNext();
+    console.log("Banking form data:", data);
+    gotoNext();
   };
   console.log({ errors, isValid });
 
@@ -51,6 +51,7 @@ const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
             register={register}
             label="Account Number*"
             options={{ required: true }}
+            inputProps={{ type: "number" }}
           />
         </div>
       </div>

@@ -8,7 +8,6 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <main className="w-full ">
-      <Navbar />
       <div className="pt-32 mx-auto w-8/12">{children}</div>
     </main>
   );

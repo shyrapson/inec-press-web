@@ -11,7 +11,7 @@ const RefereeInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
   } = useFormContext();
 
   const onSubmit = (data: any) => {
-    console.log("Referee form data:", data);
+    console.log("Referee form data:", {referee: data});
     gotoNext();
   };
 

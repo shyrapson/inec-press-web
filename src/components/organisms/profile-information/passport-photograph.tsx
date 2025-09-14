@@ -4,6 +4,7 @@ import { User2, UserIcon } from "lucide-react";
 import Image from "next/image";
 import { Dialog } from "@/components/ui/dialog";
 import CongratulationModal from "./congratulation-modal";
+import { useFormContext } from "react-hook-form";
 
 const PassportPhotograph = ({
   gotoNext,
@@ -14,6 +15,11 @@ const PassportPhotograph = ({
 }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const { handleSubmit } = useFormContext();
+  const onSubmit = () => {
+      console.log({ selectedImage }, "===== selected image =====");
+      setOpen(true)
+  };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -33,31 +39,33 @@ const PassportPhotograph = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <div className="flex items-center justify-center py-20">
-        <div className="size-[185px] flex items-center justify-center relative rounded-full bg-gray-3">
-          <input
-            accept="image/*"
-            onChange={handleFileChange}
-            type="file"
-            className="h-full w-full rounded-full absolute opacity-0"
-          />
-          {selectedImage ? (
-            <Image
-              src={selectedImage || ""}
-              alt="Selected preview"
-              className="w-full h-full object-contain rounded-full"
-              width={185}
-              height={185}
-              style={{ borderRadius: "50%" }}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex items-center justify-center py-20">
+          <div className="size-[185px] flex items-center justify-center relative rounded-full bg-gray-3">
+            <input
+              accept="image/*"
+              onChange={handleFileChange}
+              type="file"
+              className="h-full w-full rounded-full absolute opacity-0"
             />
-          ) : (
-            <UserIcon />
-          )}
+            {selectedImage ? (
+              <Image
+                src={selectedImage || ""}
+                alt="Selected preview"
+                className="w-full h-full object-contain rounded-full"
+                width={185}
+                height={185}
+                style={{ borderRadius: "50%" }}
+              />
+            ) : (
+              <UserIcon />
+            )}
+          </div>
         </div>
-      </div>
-      <div className="my-10">
-        <ProfileFooter gotoNext={() => setOpen(true)} isValid={true} end gotoPrev={gotoPrev} />
-      </div>
+        <div className="my-10">
+          <ProfileFooter isValid={!!selectedImage} end gotoPrev={gotoPrev} />
+        </div>
+      </form>
       <CongratulationModal setOpen={() => setOpen(false)} />
     </Dialog>
   );
