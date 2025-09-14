@@ -49,9 +49,8 @@ export default function EligibilityPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto mt-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg p-8 shadow-sm">
               <h1 className="text-3xl font-bold text-gray-900 mb-6">

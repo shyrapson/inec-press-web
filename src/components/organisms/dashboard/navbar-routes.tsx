@@ -3,32 +3,15 @@
 import React, { useEffect, useState } from "react";
 import { User } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import useStore from "@/hooks/useStore";
 
 const NavbarRoutes = () => {
-  const [user, setUser] = useState<any>(null);
   const [greeting, setGreeting] = useState<string>("");
   const pathName = usePathname();
   const router = useRouter();
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-      setUser(storedUser);
-    }
-
-    const determineGreeting = () => {
-      const currentHour = new Date().getHours();
-      if (currentHour < 12) {
-        setGreeting("Good Morning");
-      } else if (currentHour < 18) {
-        setGreeting("Good Afternoon");
-      } else {
-        setGreeting("Good Evening");
-      }
-    };
-
-    determineGreeting();
-  }, []);
+  const { store } = useStore();
+  const user = store?.auth?.currentUser;
+  const profile = user?.profile;
 
   const currentDate = new Date();
   const formattedDate = currentDate.toLocaleDateString("en-US", {
@@ -59,7 +42,9 @@ const NavbarRoutes = () => {
           <User className="h-6 w-6" />
         </div>
         <div className="flex flex-col">
-          <span className="mr-2">{user?.name || "Unknown user"}</span>
+          <span className="mr-2">
+            {profile?.firstName} {profile?.surname}
+          </span>
           <span className="text-sm text-gray-500">{user?.email || ""}</span>
         </div>
       </div>

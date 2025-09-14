@@ -7,7 +7,10 @@ const page = () => {
   return (
     <div>
       <LoginPage />
-      <Footer />
+      <div className=" w-full absolute -bottom-4 flex  justify-between z-0">
+        {" "}
+        <Footer />
+      </div>
     </div>
   );
 };

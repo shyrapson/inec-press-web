@@ -26,6 +26,7 @@ interface HelpSectionProps {
   items: FAQItem[];
   containerClassName?: string;
   cardClassName?: string;
+  isSticky?: boolean;
 }
 
 export default function HelpSection({
@@ -39,10 +40,10 @@ export default function HelpSection({
       className={`flex-1 bg-white p-8 flex items-start justify-center pt-16 ${containerClassName}`}
     >
       <Card
-        className={`w-8/12 py-10 mt-3 bg-white shadow-sm border ${cardClassName}`}
+        className={`w-[456px] py-10 mt-3 bg-white shadow-sm border-0 ${cardClassName}`}
       >
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900">
+          <CardTitle className="text-2xl font-[700] text-[#181817]">
             {title}
           </CardTitle>
         </CardHeader>
@@ -54,10 +55,10 @@ export default function HelpSection({
                 value={item.value || `item-${index}`}
                 className="border-b"
               >
-                <AccordionTrigger className="text-sm font-medium text-gray-900 hover:no-underline">
+                <AccordionTrigger className="text-sm font-[500] text-[#181817] hover:no-underline">
                   {item.title}
                 </AccordionTrigger>
-                <AccordionContent className="text-sm text-gray-600 pb-4">
+                <AccordionContent className="text-[12px] text-gray-600 pb-4">
                   {typeof item.content === "string" ? (
                     <p>{item.content}</p>
                   ) : (
