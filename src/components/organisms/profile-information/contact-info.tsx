@@ -23,7 +23,13 @@ const lgaOptions = [
   { value: "lekki", label: "Lekki" },
 ];
 
-const ContactInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: () => void }) => {
+const ContactInfo = ({
+  gotoNext,
+  gotoPrev,
+}: {
+  gotoNext: () => void;
+  gotoPrev: () => void;
+}) => {
   const {
     register,
     formState: { errors, isValid },
@@ -57,7 +63,10 @@ const ContactInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="pt-4 pb-8 flex flex-col gap-4">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="pt-4 pb-8 flex flex-col gap-4"
+    >
       <div className="flex gap-5">
         <div className="w-1/2 flex flex-col gap-2">
           <InputF
@@ -67,7 +76,10 @@ const ContactInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
             isSelect={true}
             dropdownList={
               Array.isArray(stateList)
-                ? stateList.map((state: any) => ({ value: state?.code, label: state?.name }))
+                ? stateList.map((state: any) => ({
+                    value: state?.code,
+                    label: state?.name,
+                  }))
                 : []
             }
             control={control}
@@ -142,7 +154,11 @@ const ContactInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
         />
       </div>
 
-      <ProfileFooter gotoNext={gotoNext} gotoPrev={gotoPrev} isValid={isValid} />
+      <ProfileFooter
+        gotoNext={gotoNext}
+        gotoPrev={gotoPrev}
+        isValid={isValid}
+      />
     </form>
   );
 };

@@ -21,10 +21,7 @@ const AuthGuard: FC<IAuthGuard> = ({ children }) => {
   useEffect(() => {
     if (store.isLocalStorageLoaded) {
       if (store.auth) {
-        if (
-          store.auth?.currentUser?.lastApplication?.applicationStatus !==
-          "incomplete"
-        ) {
+        if (store.auth?.currentUser?.profileStatus !== "complete") {
           router.push(PAGE_ROUTES.DASHBOARD_PAGE);
         } else {
           router.push(PAGE_ROUTES.PROFILE_INFO_PAGE);

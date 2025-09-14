@@ -17,9 +17,19 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { IUser, USER_TYPE } from "@/common/types";
 import { cn, containsNysc, dropdownListToShowForWorkplace } from "@/lib/utils";
 
-const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: () => void }) => {
-  const [identificationFile, setIdentificationFile] = useState<string | null>(null);
-  const [highestQualificationFile, setHighestQualificationFile] = useState<string | null>(null);
+const PersonalInfo = ({
+  gotoNext,
+  gotoPrev,
+}: {
+  gotoNext: () => void;
+  gotoPrev: () => void;
+}) => {
+  const [identificationFile, setIdentificationFile] = useState<string | null>(
+    null
+  );
+  const [highestQualificationFile, setHighestQualificationFile] = useState<
+    string | null
+  >(null);
   const {
     stateList,
     stateUniversityList,
@@ -37,11 +47,14 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
   const { mutateAsync: handleCreateProfile, isPending } = useMutation({
     mutationFn: (data) => createProfile({ data }),
   });
-  const workPlaceDropDownList = dropdownListToShowForWorkplace(userDetails as IUser, {
-    mdaList,
-    federalUniversityList,
-    stateUniversityList,
-  });
+  const workPlaceDropDownList = dropdownListToShowForWorkplace(
+    userDetails as IUser,
+    {
+      mdaList,
+      federalUniversityList,
+      stateUniversityList,
+    }
+  );
 
   const {
     register,
@@ -59,6 +72,7 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
     getValues("designation") === STAFF_OF_RAC ||
     getValues("designation") === STAFF_OFF_MDAs;
   const userIsNysc = containsNysc(userDetails?.source_name as string);
+  console.log(userIsNysc);
 
   const onSubmit = async (data: any) => {
     const [workplace, workplaceId] = getValues("workplace")?.split("-");
@@ -130,7 +144,12 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
         </div>
         <div className="w-full flex gap-5">
           <div className="w-1/2 flex flex-col gap-2">
-            <InputF name="email" register={register} options={{ required: true }} label="Email*" />
+            <InputF
+              name="email"
+              register={register}
+              options={{ required: true }}
+              label="Email*"
+            />
           </div>
           <div className="w-1/2 flex flex-col gap-2">
             <InputF name="phone" register={register} label="Phone*" />
@@ -149,9 +168,15 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
               inputProps={{
                 disabled: isOrganizationDisabledValue,
               }}
-              defaultValue={!isOrganizationDisabledValue ? undefined : userDetails?.source_name}
+              defaultValue={
+                !isOrganizationDisabledValue
+                  ? undefined
+                  : userDetails?.source_name
+              }
               control={control}
-              dropdownList={isOrganizationDisabledValue ? undefined : workPlaceDropDownList}
+              dropdownList={
+                isOrganizationDisabledValue ? undefined : workPlaceDropDownList
+              }
               isSelect={!isOrganizationDisabledValue}
             />
           </div>
@@ -174,9 +199,19 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
             />
           </div>
         </div>
-        <div className={cn("w-full flex gap-2", !isWorkPlaceOthers ? "flex-col" : "flex-row")}>
+        <div
+          className={cn(
+            "w-full flex gap-2",
+            !isWorkPlaceOthers ? "flex-col" : "flex-row"
+          )}
+        >
           {userIsNysc && (
-            <div className={cn("flex flex-col gap-2", isWorkPlaceOthers ? "w-1/2" : "w-full")}>
+            <div
+              className={cn(
+                "flex flex-col gap-2",
+                isWorkPlaceOthers ? "w-1/2" : "w-full"
+              )}
+            >
               <InputF
                 label="Call-Up Number*"
                 options={{ required: true }}
@@ -186,7 +221,12 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
             </div>
           )}
           {isWorkPlaceOthers && (
-            <div className={cn("flex flex-col gap-2", isWorkPlaceOthers ? "w-1/2" : "w-full")}>
+            <div
+              className={cn(
+                "flex flex-col gap-2",
+                isWorkPlaceOthers ? "w-1/2" : "w-full"
+              )}
+            >
               <InputF
                 label="Other*"
                 options={{ required: true }}
@@ -204,7 +244,10 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
                 register={register}
                 dropdownList={
                   Array.isArray(stateList)
-                    ? stateList.map((state: any) => ({ value: state?.name, label: state?.name }))
+                    ? stateList.map((state: any) => ({
+                        value: state?.name,
+                        label: state?.name,
+                      }))
                     : []
                 }
                 isSelect={true}
@@ -256,7 +299,12 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
               />
             </div>
           )}
-          <div className={cn("flex flex-col gap-2", userIsNysc ? "w-1/2" : "w-full")}>
+          <div
+            className={cn(
+              "flex flex-col gap-2",
+              userIsNysc ? "w-1/2" : "w-full"
+            )}
+          >
             <InputF
               name="dateOfBirth"
               options={{ required: true }}
@@ -296,7 +344,10 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
               label="Identification Category*"
               dropdownList={[
                 { value: "Voters Card", label: "Voters Card" },
-                { value: "International Passport", label: "International Passport" },
+                {
+                  value: "International Passport",
+                  label: "International Passport",
+                },
                 { value: "Drivers License", label: "Drivers License" },
               ]}
               isSelect={true}
@@ -306,7 +357,10 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
         </div>
         <div className="w-full flex gap-5">
           <div className="w-1/2 flex flex-col gap-2">
-            <FileUploadPage file={identificationFile} setFile={setIdentificationFile} />
+            <FileUploadPage
+              file={identificationFile}
+              setFile={setIdentificationFile}
+            />
           </div>
           <div className="w-1/2 flex flex-col gap-2">
             <FileUploadPage
