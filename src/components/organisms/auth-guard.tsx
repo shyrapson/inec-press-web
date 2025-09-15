@@ -16,7 +16,6 @@ const AuthGuard: FC<IAuthGuard> = ({ children }) => {
   const { store } = useStore();
   const pathname = usePathname();
   const router = useRouter();
-  console.log(store.registeredUser?.isOtpVerified, "refjjfjfjj");
 
   // !store.auth?.currentUser?.isReturningApplicant
   useEffect(() => {
@@ -27,7 +26,10 @@ const AuthGuard: FC<IAuthGuard> = ({ children }) => {
         } else {
           router.push(PAGE_ROUTES.PROFILE_INFO_PAGE);
         }
-      } else if (pathname.includes("dashboard") || pathname.includes("application")) {
+      } else if (
+        pathname.includes("dashboard") ||
+        pathname.includes("application")
+      ) {
         router.push(PAGE_ROUTES.LOGIN_PAGE);
       } else if (pathname.includes("verify-otp")) {
         if (!store.registeredUser?.email) {

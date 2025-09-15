@@ -6,6 +6,8 @@ import { LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useStore from "@/hooks/useStore";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getUsersData, getUsersProfile } from "@/api/user";
 
 const DashboardPage = () => {
   const router = useRouter();
@@ -21,11 +23,17 @@ const DashboardPage = () => {
     localStorage.removeItem("registeredUser");
     router.push("/login");
   };
-  const user = store?.auth?.currentUser;
+
+  const { data: usersDetails } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => getUsersProfile(),
+  });
+  const user = usersDetails;
   const profile = user?.profile;
   const contactInfo = user?.contactInformation;
   const bankDetails = user?.bankDetails;
   const referees = user?.refereeInformation;
+  const election = user?.lastApplication?.election;
 
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-10">
@@ -58,11 +66,11 @@ const DashboardPage = () => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <p className="text-sm text-gray-600">Position Applied</p>
-            <p className="font-medium text-[#111216]">Collation Officer</p>
+            <p className="font-medium text-[#111216]">{user?.position_name}</p>
           </div>
           <div>
             <p className="text-sm text-gray-600">Election</p>
-            <p className="font-medium text-[#111216]">2024 Edo Governorship Election</p>
+            <p className="font-medium text-[#111216]">{election?.name}</p>
           </div>
         </div>
       </section>
@@ -81,10 +89,16 @@ const DashboardPage = () => {
               <InfoItem label="Last Name" value={profile?.surname} />
               <InfoItem label="Marital Status" value={profile?.maritalStatus} />
               <InfoItem label="Other Names" value={profile?.other} />
-              <InfoItem label="Work Place/Organization" value={profile?.workplace} />
+              <InfoItem
+                label="Work Place/Organization"
+                value={profile?.workplace}
+              />
               <InfoItem label="Gender" value={profile?.gender} />
-              <InfoItem label="Staff ID No/Student ID No" value="12345678" />
-              <InfoItem label="Phone Number" value="+234 803 566 7980" />
+              <InfoItem
+                label="Staff ID No/Student ID No"
+                value={profile?.callUpNumber}
+              />
+              <InfoItem label="Phone Number" value={profile?.phone} />
               <InfoItem label="Designation" value={profile?.designation} />
             </div>
           </CardContent>
@@ -98,17 +112,35 @@ const DashboardPage = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <InfoItem label="State Of Residence" value={contactInfo?.stateOfResidence} />
-              <InfoItem label="State Of Origin" value={contactInfo?.stateOfOrigin} />
+              <InfoItem
+                label="State Of Residence"
+                value={contactInfo?.stateOfResidence}
+              />
+              <InfoItem
+                label="State Of Origin"
+                value={contactInfo?.stateOfOrigin}
+              />
               <InfoItem
                 label="Registration Of Residence"
                 value={contactInfo?.registrationOfResidence}
               />
-              <InfoItem label="Address Of Residence" value={contactInfo?.addressOfResidence} />
-              <InfoItem label="Permanent Home Address" value={contactInfo?.permanentHomeAddress} />
-              <InfoItem label="LGA Of Residence" value={contactInfo?.lgaOfResidence} />
+              <InfoItem
+                label="Address Of Residence"
+                value={contactInfo?.addressOfResidence}
+              />
+              <InfoItem
+                label="Permanent Home Address"
+                value={contactInfo?.permanentHomeAddress}
+              />
+              <InfoItem
+                label="LGA Of Residence"
+                value={contactInfo?.lgaOfResidence}
+              />
               <InfoItem label="Zone" value={contactInfo?.zone} />
-              <InfoItem label="Nearest Landmark" value={contactInfo?.nearestLandmark} />
+              <InfoItem
+                label="Nearest Landmark"
+                value={contactInfo?.nearestLandmark}
+              />
             </div>
           </CardContent>
         </Card>
@@ -121,19 +153,30 @@ const DashboardPage = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <InfoItem label="Bank Name" value="Moniepoint Microfinance Bank" />
-            <InfoItem label="Account Number" value={bankDetails?.accountNumber} />
+            <InfoItem
+              label="Account Number"
+              value={bankDetails?.accountNumber}
+            />
             <InfoItem label="Account Name" value={bankDetails?.accountName} />
-            <InfoItem label="Bank Verification Number (BVN)" value={bankDetails?.bvn} />
-            <InfoItem label="BVN Phone Number" value={bankDetails?.bvnPhoneNumber} />
+            <InfoItem
+              label="Bank Verification Number (BVN)"
+              value={bankDetails?.bvn}
+            />
+            <InfoItem
+              label="BVN Phone Number"
+              value={bankDetails?.bvnPhoneNumber}
+            />
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-[18px] font-extrabold text-[#111216]">My Referees</CardTitle>
+            <CardTitle className="text-[18px] font-extrabold text-[#111216]">
+              My Referees
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {referees?.map((referee, i) => (
+            {referees?.map((referee: any, i: number) => (
               <div key={i}>
                 <h4 className="mb-3 font-medium text-[#111216]">
                   Referee {["One", "Two", "Three"][i] || i + 1} (#{i + 1})
