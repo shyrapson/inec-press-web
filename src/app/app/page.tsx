@@ -1,19 +1,17 @@
 "use client";
 import React from "react";
-// import Header from "../Header";
-// import Image from "next/image";
+
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
-import { downloadApp } from "./download-service";
-
-// import Footer from "../footer";
 
 const DownloadPage = () => {
-  // const downloadApp = () => {
-  //   let apkUrl = "/INECPRES.apk";
-  //   return (window.location.href = apkUrl);
-  // };
+  const downloadApp = () => {
+    const url =
+      "https://inec-croms-bucket.nyc3.digitaloceanspaces.com/apk-file/INECPRES.apk";
+
+    window.location.href = url;
+  };
   const router = useRouter();
   return (
     <section className=" md:mx-[10%] ">
@@ -45,7 +43,7 @@ const DownloadPage = () => {
             onClick={downloadApp}
             className="bg-green-600 hover:bg-green-500 text-white text-xs md:text-sm md:py-3 py-2 md:px-6 px-2 rounded"
           >
-            Download App
+            Download App now
           </button>
         </div>
       </header>
