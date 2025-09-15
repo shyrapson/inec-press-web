@@ -9,8 +9,9 @@ import { useFormContext } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { addProfilePicture, uploadMediaFile } from "@/api/user";
 import { Spinner } from "@/components/ui/spinner";
-import { PAGE_ROUTES } from "@/common/types";
+import { IToken, IUser, PAGE_ROUTES } from "@/common/types";
 import { useRouter } from "next/navigation";
+import useStore from "@/hooks/useStore";
 
 const PassportPhotograph = ({
   gotoNext,
@@ -21,7 +22,9 @@ const PassportPhotograph = ({
 }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const router = useRouter();
+  const { updateStore, store } = useStore();
   const [tempData, setTempData] = useState<any | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [open, setOpen] = useState(false);
 
   const { mutateAsync: handleUploadFile, isPending: isUploadingProfile } = useMutation({
@@ -36,8 +39,8 @@ const PassportPhotograph = ({
       if (tempData) {
         const res = await handleAddProfilePicture(tempData?.path?.preview);
         if (res?.status) {
+          setUser(res?.data?.user);
           setOpen(true);
-          console.log({ tempData, selectedImage, res });
         }
       }
     } catch (error) {
@@ -99,7 +102,19 @@ const PassportPhotograph = ({
           />
         </div>
       </form>
-      {open && <CongratulationModal onSubmit={() => router.push(PAGE_ROUTES.DASHBOARD_PAGE)} />}
+      {open && (
+        <CongratulationModal
+          onSubmit={() => {
+            updateStore({
+              auth: {
+                currentUser: user,
+                token: store?.auth?.token as IToken,
+              },
+            });
+            router.push(PAGE_ROUTES.DASHBOARD_PAGE);
+          }}
+        />
+      )}
     </Dialog>
   );
 };

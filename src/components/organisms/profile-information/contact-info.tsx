@@ -1,41 +1,13 @@
 import React, { useEffect } from "react";
 import ProfileFooter from "./profile-footer";
 import InputF from "./InputF";
-import { useForm, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import useCommonData from "@/hooks/useCommonData";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  createContact,
-  getLgaOfStates,
-  getNearestLandmark,
-  getRegistrationWard,
-  getStates,
-} from "@/api/user";
+import { createContact, getLgaOfStates, getNearestLandmark, getRegistrationWard } from "@/api/user";
 import { QUERY_KEYS } from "@/lib/constants";
 
-const stateOptions = [
-  { value: "lagos", label: "Lagos" },
-  { value: "abuja", label: "Abuja" },
-  { value: "kano", label: "Kano" },
-  { value: "rivers", label: "Rivers" },
-  { value: "ogun", label: "Ogun" },
-];
-
-const lgaOptions = [
-  { value: "ikeja", label: "Ikeja" },
-  { value: "surulere", label: "Surulere" },
-  { value: "yaba", label: "Yaba" },
-  { value: "victoria-island", label: "Victoria Island" },
-  { value: "lekki", label: "Lekki" },
-];
-
-const ContactInfo = ({
-  gotoNext,
-  gotoPrev,
-}: {
-  gotoNext: () => void;
-  gotoPrev: () => void;
-}) => {
+const ContactInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: () => void }) => {
   const {
     register,
     formState: { errors, isValid },
@@ -43,9 +15,10 @@ const ContactInfo = ({
     watch,
     handleSubmit,
   } = useFormContext();
-  const stateValue = watch("stateOfResidence");
-  const lgaValue = watch("lgaOfResidence");
-  const registrationOfResidenceValue = watch("registrationOfResidence");
+  const [stateValue, stateValueName] = watch("stateOfResidence")?.split("-") ?? [];
+  const [lgaValue, lgaValueName] = watch("lgaOfResidence")?.split("-") ?? [];
+  const [registrationOfResidenceValue, registrationOfResidenceValueName] =
+    watch("registrationOfResidence")?.split("-") ?? [];
 
   const { data: lgaOfStateList, isLoading: loadingState } = useQuery({
     queryFn: () => getLgaOfStates({ code: stateValue }),
@@ -72,30 +45,24 @@ const ContactInfo = ({
   const { mutateAsync: handleCreateContact, isPending } = useMutation<any, unknown, any>({
     mutationFn: (data: any) => createContact({ data }),
   });
-  const {
-    stateList,
-  } = useCommonData();
-
+  const { stateList } = useCommonData();
 
   const onSubmit = async (data: any) => {
     const {
       addressOfResidence,
-      lgaOfResidence,
       nearestLandmark,
       permanentHomeAddress,
-      registrationOfResidence,
       stateOfOrigin,
-      stateOfResidence,
     } = data;
     try {
       const payload = {
         addressOfResidence,
-        lgaOfResidence,
+        lgaOfResidence: lgaValueName,
         nearestLandmark,
         permanentHomeAddress,
-        registrationOfResidence,
+        registrationOfResidence: registrationOfResidenceValueName,
         stateOfOrigin,
-        stateOfResidence,
+        stateOfResidence: stateValueName,
       };
       const res = await handleCreateContact(payload);
       if (res?.status) {
@@ -107,10 +74,7 @@ const ContactInfo = ({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="pt-4 pb-8 flex flex-col gap-4"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="pt-4 pb-8 flex flex-col gap-4">
       <div className="flex gap-5">
         <div className="w-1/2 flex flex-col gap-2">
           <InputF
@@ -121,7 +85,7 @@ const ContactInfo = ({
             dropdownList={
               Array.isArray(stateList)
                 ? stateList.map((state: any) => ({
-                    value: state?.code,
+                    value: `${state?.code}-${state?.name}`,
                     label: state?.name,
                   }))
                 : []
@@ -139,7 +103,7 @@ const ContactInfo = ({
             dropdownList={
               Array.isArray(lgaOfStateList)
                 ? lgaOfStateList.map((state: any) => ({
-                    value: state?.abbreviation,
+                    value: `${state?.abbreviation}-${state?.name}`,
                     label: state?.name,
                   }))
                 : []
@@ -159,7 +123,7 @@ const ContactInfo = ({
           dropdownList={
             Array.isArray(registeredWardList)
               ? registeredWardList.map((state: any) => ({
-                  value: state?.ward_id,
+                  value: `${state?.ward_id}-${state?.name}`,
                   label: state?.name,
                 }))
               : []

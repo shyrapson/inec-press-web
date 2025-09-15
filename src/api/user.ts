@@ -48,6 +48,13 @@ export const getStates = async (): Promise<IResponse | unknown> => {
   return res.payload?.result?.data;
 };
 
+export const getUsersData = async (): Promise<IResponse | unknown> => {
+  const res = await http.get({
+    url: "/v1/application/user",
+  });
+  return res.payload?.result?.data;
+};
+
 export const getLgaOfStates = async ({ code }: { code: string }): Promise<IResponse | unknown> => {
   const res = await http.get({
     url: "/v1/get-local-governments",
@@ -122,7 +129,6 @@ export const getRegistrationWard = async ({
     url: "/v1/get-wards",
     query: { state_id, abbreviation },
   });
-  console.log;
   return res.payload?.result?.data;
 };
 

@@ -6,9 +6,10 @@ import {
   getQualificationList,
   getStates,
   getStateUniversities,
+  getUsersData,
 } from "@/api/user";
 import { QUERY_KEYS } from "@/lib/constants";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import React from "react";
 import useStore from "./useStore";
 import { IUser } from "@/common/types";
@@ -17,13 +18,25 @@ import { isOrganizationDisable } from "@/lib/utils";
 const useCommonData = () => {
   const { store } = useStore();
   const user_id = store?.auth?.currentUser?._id ?? "";
-  const {
-    data: stateList,
-    isLoading: loadingState,
-    refetch: refetchState,
-  } = useQuery({
+  const { data: userData } = useQuery({
+    queryFn: getUsersData,
+    queryKey: [QUERY_KEYS.FETCH_USER_DETAILS],
+  });
+  const { data: stateList, isLoading: loadingState } = useQuery({
     queryFn: getStates,
     queryKey: [QUERY_KEYS.STATE_LIST],
+  });
+  const queries = useQueries({
+    queries: [
+      {
+        queryFn: getPreferredElectionState,
+        queryKey: [QUERY_KEYS.PREFERRED_STATE_OF_ELECTION_LIST],
+      },
+      {
+        queryFn: getStateUniversities,
+        queryKey: [QUERY_KEYS.UNIVERSITIES_STATE_LIST],
+      },
+    ],
   });
   const isOrganizationDisabledValue = isOrganizationDisable(store?.auth?.currentUser as IUser);
   const { data: preferredStateOfElectionList, isLoading: loadingPreferredStateOfElectionList } =
@@ -67,7 +80,8 @@ const useCommonData = () => {
     loadingPreferredStateOfElectionList,
     isOrganizationDisabledValue,
     userDetails: store?.auth?.currentUser,
-    refetchState,
+    userData,
+    queries,
   };
 };
 
