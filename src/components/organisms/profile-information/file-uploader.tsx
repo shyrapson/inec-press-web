@@ -2,11 +2,11 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { CloudUpload } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
 import { uploadMediaFile } from "@/api/user";
 import { cn } from "@/lib/utils";
+import useLocalMutation from "@/hooks/useLocalMutation";
 
 export default function FileUploadPage({
   file,
@@ -20,8 +20,9 @@ export default function FileUploadPage({
   const [isDragOver, setIsDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [tempFile, setTempFile] = useState<string | null>(null);
-  const { mutateAsync: handleUploadFile, isPending } = useMutation({
-    mutationFn: (file: File) => uploadMediaFile({ file: file }),
+  const { mutateAsync: handleUploadFile, isPending,  } = useLocalMutation<unknown, File>({
+    mutationFn: (file: File) => uploadMediaFile({ file }),
+    gcTime: 0,
   });
   const fileType = type === ".pdf" ? ".PDF" : ".Image";
 
@@ -32,12 +33,6 @@ export default function FileUploadPage({
       setError("File size must not exceed 5MB");
       return false;
     }
-
-    //   if (file.type !== "application/pdf") {
-    //     const errMsg = `Only ${fileType} files are allowed`;
-    //   setError(errMsg);
-    //   return false;
-    // }
 
     setError(null);
     return true;
@@ -96,7 +91,6 @@ export default function FileUploadPage({
           type="file"
           accept={type}
           onChange={handleFileSelect}
-          max="1000"
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         />
 

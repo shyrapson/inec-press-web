@@ -64,7 +64,7 @@ const PersonalInfo = ({
 
   const {
     register,
-    formState: { isValid },
+    formState: { isValid, errors },
     control,
     getValues,
     watch,
@@ -78,7 +78,6 @@ const PersonalInfo = ({
     getValues("designation") === STAFF_OF_RAC ||
     getValues("designation") === STAFF_OFF_MDAs;
   const userIsNysc = containsNysc(userDetails?.source_name as string);
-  console.log(userIsNysc);
 
   const onSubmit = async (data: any) => {
     const [workplace, workplaceId] = getValues("workplace")?.split("-");
@@ -92,7 +91,6 @@ const PersonalInfo = ({
     };
     try {
       const res: any = await handleCreateProfile(payload);
-      console.log({ res });
       if (res?.status) {
         gotoNext();
       }
@@ -100,6 +98,7 @@ const PersonalInfo = ({
       console.log({ error });
     }
   };
+  const isDisabled = isValid && !!identificationFile && !!highestQualificationFile;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="pt-4 pb-8">
@@ -202,7 +201,7 @@ const PersonalInfo = ({
                     }))
                   : []
               }
-              isSelect={true}
+              isSelect
             />
           </div>
         </div>
@@ -381,11 +380,7 @@ const PersonalInfo = ({
       <ProfileFooter
         gotoNext={gotoNext}
         isLoading={isPending}
-        isValid={
-          isValid ||
-          isPending ||
-          (!identificationFile && !highestQualificationFile)
-        }
+        isValid={isDisabled}
         gotoPrev={gotoPrev}
       />
     </form>

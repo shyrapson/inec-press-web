@@ -1,7 +1,7 @@
-'use-client'
-import React, { ChangeEvent, ChangeEventHandler, useState } from "react";
+"use-client";
+import React, { ChangeEvent, useState } from "react";
 import ProfileFooter from "./profile-footer";
-import { Loader, User2, UserIcon } from "lucide-react";
+import { UserIcon } from "lucide-react";
 import Image from "next/image";
 import { Dialog } from "@/components/ui/dialog";
 import CongratulationModal from "./congratulation-modal";
@@ -23,6 +23,7 @@ const PassportPhotograph = ({
   const router = useRouter();
   const [tempData, setTempData] = useState<any | null>(null);
   const [open, setOpen] = useState(false);
+
   const { mutateAsync: handleUploadFile, isPending: isUploadingProfile } = useMutation({
     mutationFn: (file: File) => uploadMediaFile({ file: file }),
   });
@@ -59,8 +60,6 @@ const PassportPhotograph = ({
       reader.readAsDataURL(file);
     }
   };
-
-  console.log({ open });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -76,15 +76,6 @@ const ContactInfo = ({
     stateList,
   } = useCommonData();
 
-  console.log({
-    stateList,
-    lgaOfStateList,
-    stateValue,
-    lgaValue,
-    registeredWardList,
-    nearestLandMark,
-    registrationOfResidenceValue,
-  });
 
   const onSubmit = async (data: any) => {
     const {

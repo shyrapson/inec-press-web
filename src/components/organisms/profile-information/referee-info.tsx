@@ -33,7 +33,6 @@ const RefereeInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
         },
       ],
     };
-    console.log("Referee form data:", { referee: data, payload });
     try {
       const res: any = await handleCreateReferee(payload);
       console.log({ res });

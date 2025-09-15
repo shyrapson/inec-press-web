@@ -12,36 +12,39 @@ import { PAGE_ROUTES, ProfileStatus } from "@/common/types";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
-    const {push} = useRouter()
-    const [currentStep, setCurrentStep] = useState(1);
-    const {userDetails} = useCommonData()
-    useEffect(() => {
-        if (userDetails?.profileStatus === ProfileStatus.PROFILE) {
-            setCurrentStep(1)
-        }
-        if (userDetails?.profileStatus === ProfileStatus.CONTACT) {
-            setCurrentStep(2)
-        }
-        if (userDetails?.profileStatus === ProfileStatus.CONTACT) {
-            setCurrentStep(3)
-        }
-        if (userDetails?.profileStatus === ProfileStatus.COMPLETE) {
-           push(PAGE_ROUTES.DASHBOARD_PAGE);
-        }
-    }, [push, userDetails?.profileStatus])
-    const methods = useForm();
-    const gotoNext = () => {
-        setCurrentStep((prev) => {
-            if (prev === 5) return prev;
-            return prev = prev + 1
-        })
+  const { push } = useRouter();
+  const [currentStep, setCurrentStep] = useState(1);
+  const { userDetails } = useCommonData();
+  useEffect(() => {
+    if (userDetails?.profileStatus === ProfileStatus.PROFILE) {
+      setCurrentStep(1);
     }
-    const gotoPrev = () => {
-          setCurrentStep((prev) => {
-            if (prev === 1) return prev;
-            return prev = prev - 1;
-          });
+    if (userDetails?.profileStatus === ProfileStatus.CONTACT) {
+      setCurrentStep(2);
     }
+    if (userDetails?.profileStatus === ProfileStatus.BANK) {
+      setCurrentStep(3);
+    }
+    if (userDetails?.profileStatus === ProfileStatus.REFEREE) {
+      setCurrentStep(4);
+    }
+    if (userDetails?.profileStatus === ProfileStatus.COMPLETE) {
+      push(PAGE_ROUTES.DASHBOARD_PAGE);
+    }
+  }, [push, userDetails?.profileStatus]);
+  const methods = useForm();
+  const gotoNext = () => {
+    setCurrentStep((prev) => {
+      if (prev === 5) return prev;
+      return (prev = prev + 1);
+    });
+  };
+  const gotoPrev = () => {
+    setCurrentStep((prev) => {
+      if (prev === 1) return prev;
+      return (prev = prev - 1);
+    });
+  };
   return (
     <FormProvider {...methods}>
       <ProfileInfoHeader currentStep={currentStep} />

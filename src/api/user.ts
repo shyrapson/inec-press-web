@@ -140,7 +140,7 @@ export const getBankList = async (): Promise<IResponse | unknown> => {
   return res?.payload?.result?.data?.banks;
 };
 
-export const uploadMediaFile = async ({ file }: { file: File }): Promise<IResponse | unknown> => {
+export const uploadMediaFile = async ({ file }: { file: File }): Promise<IResponse<unknown>> => {
   const formData = new FormData();
   formData.append("file", file);
   const res = await axios.post(UploadMediaEndpoint, formData, {
