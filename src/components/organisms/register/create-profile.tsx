@@ -41,6 +41,7 @@ import { useRouter } from "next/navigation";
 import useStore from "@/hooks/useStore";
 import Footer from "../footer";
 import { loginPageFAQData } from "../login/main";
+import { Eye, EyeOff } from "lucide-react";
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
@@ -116,6 +117,7 @@ export default function CreateProfilePage() {
   const onSubmit = (data: ProfileFormValues) => {
     mutate(data);
   };
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="min-h-screen relative">
@@ -274,13 +276,29 @@ export default function CreateProfilePage() {
                               Password
                             </FormLabel>
                             <FormControl>
-                              <Input
-                                id="password"
-                                type="password"
-                                placeholder=""
-                                className="w-full"
-                                {...field}
-                              />
+                              <div className="relative">
+                                <Input
+                                  id="password"
+                                  type={showPassword ? "text" : "password"}
+                                  placeholder=""
+                                  className="w-full pr-10"
+                                  {...field}
+                                />
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
+                                  onClick={() => setShowPassword(!showPassword)}
+                                  aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                  {showPassword ? (
+                                    <EyeOff className="h-4 w-4 text-[#607087]" />
+                                  ) : (
+                                    <Eye className="h-4 w-4 text-[#607087]" />
+                                  )}
+                                </Button>
+                            </div>
                             </FormControl>
                             <p className="text-xs text-gray-500">
                               Password should be at least 8 characters
