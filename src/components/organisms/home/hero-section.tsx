@@ -12,8 +12,7 @@ const HeroSection = () => {
               <h1 className="">ELECTION STAFF</h1>
             </div>
             <p className="text-sm md:text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
-              This is the registration portal for the 2024 Edo and Ondo State
-              Governorship Election
+              2025 Anambra State Governorship Election
             </p>
           </div>
         </div>

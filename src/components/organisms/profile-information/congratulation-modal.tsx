@@ -20,8 +20,8 @@ const CongratulationModal = ({ onSubmit }: { onSubmit: () => void }) => {
           <p className="text-gray-4">Congratulations!</p>
         </DialogTitle>
         <DialogDescription className="text-xs my-0 text-center font-light">
-          Account created successfully! <br /> You can now proceed to complete your profile
-          information
+          Application successful! <br /> An acknowledgement slip has been sent
+          to your email
         </DialogDescription>
       </DialogHeader>
 

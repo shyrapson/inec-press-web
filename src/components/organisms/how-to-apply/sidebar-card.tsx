@@ -54,8 +54,7 @@ export const HowToApplyCard = () => (
     icon="icon-park-solid:guide-board"
     iconBgColor="text-red-500"
     title="How To Apply"
-    description="CLICK HERE to find out how you can apply."
-    highlightText="CLICK HERE"
+    description="Check out eligibility process and find out how you can apply."
   />
 );
 
@@ -64,8 +63,7 @@ export const NewApplicantCard = () => (
     icon="material-symbols:fiber-new"
     iconBgColor="text-green-500"
     title="New Applicant"
-    description="To register for the 2024 Edo and Ondo State Governorship Election engagement, CLICK HERE to get started."
-    highlightText="CLICK HERE"
+    description="Eligible first time (fresh) applicants for the available election staff position."
   />
 );
 
