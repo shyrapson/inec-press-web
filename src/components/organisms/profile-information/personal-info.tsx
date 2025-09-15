@@ -66,21 +66,23 @@ const PersonalInfo = ({
     register,
     formState: { isValid },
     control,
-    getValues,
+    watch,
     setValue,
     handleSubmit,
   } = useFormContext();
-  const isWorkPlaceOthers = getValues("workplace")?.split("-")?.[0] === OTHERS;
-  const isDesignationForINec = getValues("designation") === INEC_STAFF;
+  const isWorkPlaceOthers = watch("workplace")?.split("-")?.[0] === OTHERS;
+  const isDesignationForINec = watch("designation") === INEC_STAFF;
+  console.log(isDesignationForINec);
+
   const isGradeLevel =
-    getValues("designation") === INEC_STAFF ||
-    getValues("designation") === PUBLIC_CIVIL_SERVANT ||
-    getValues("designation") === STAFF_OF_RAC ||
-    getValues("designation") === STAFF_OFF_MDAs;
+    watch("designation") === INEC_STAFF ||
+    watch("designation") === PUBLIC_CIVIL_SERVANT ||
+    watch("designation") === STAFF_OF_RAC ||
+    watch("designation") === STAFF_OFF_MDAs;
   const userIsNysc = containsNysc(userDetails?.source_name as string);
 
   const onSubmit = async (data: any) => {
-    const [workplace, workplaceId] = getValues("workplace")?.split("-");
+    const [workplace, workplaceId] = watch("workplace")?.split("-") ?? [];
     const { otherName, email, ...rest } = data;
     const payload = {
       ...rest,
