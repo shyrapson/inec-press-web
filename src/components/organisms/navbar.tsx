@@ -54,10 +54,10 @@ const Navbar: FC<NavbarProps> = ({ isSticky = true }) => {
           FAQs
         </Link>
         <Link
-          href="/contact"
+          href="/download"
           className="text-[#181817] hover:text-green-600 font-medium text-sm"
         >
-          Contact Us
+          Download App
         </Link>
       </div>
       <div className="flex items-center space-x-3">
