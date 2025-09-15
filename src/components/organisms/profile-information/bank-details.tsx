@@ -3,10 +3,20 @@ import ProfileFooter from "./profile-footer";
 import { useFormContext } from "react-hook-form";
 import InputF from "./InputF";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createBankInfo, getBankList, verifyBankAccountRequest } from "@/api/user";
+import {
+  createBankInfo,
+  getBankList,
+  verifyBankAccountRequest,
+} from "@/api/user";
 import { QUERY_KEYS } from "@/lib/constants";
 
-const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: () => void }) => {
+const BankDetails = ({
+  gotoNext,
+  gotoPrev,
+}: {
+  gotoNext: () => void;
+  gotoPrev: () => void;
+}) => {
   const {
     register,
     formState: { isValid },
@@ -17,7 +27,11 @@ const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
     handleSubmit,
   } = useFormContext();
 
-  const { mutateAsync: handleCreateBank, isPending } = useMutation<any, unknown, any>({
+  const { mutateAsync: handleCreateBank, isPending } = useMutation<
+    any,
+    unknown,
+    any
+  >({
     mutationFn: (data: any) => createBankInfo({ data }),
   });
 
@@ -32,7 +46,10 @@ const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
     { accountNumber: string; bankCode: string }
   >({
     mutationFn: async ({ accountNumber, bankCode }) => {
-      const response = await verifyBankAccountRequest({ accountNumber, bankCode });
+      const response = await verifyBankAccountRequest({
+        accountNumber,
+        bankCode,
+      });
       return response;
     },
     onSuccess: (data) => {
@@ -61,7 +78,8 @@ const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
       if (
         accountNumber?.length === 10 &&
         bankCode &&
-        (accountNumber !== prevAccountNumber.current || bankCode !== prevBankCode.current)
+        (accountNumber !== prevAccountNumber.current ||
+          bankCode !== prevBankCode.current)
       ) {
         verifyBankAccount({ accountNumber, bankCode });
         prevAccountNumber.current = accountNumber;
@@ -77,7 +95,14 @@ const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
   const onSubmit = async (data: any) => {
     const { accountNumber, accountName, bvn, bvnPhoneNumber } = data;
     const [bankNameStr, bankCode] = bankName?.split("-") ?? [];
-    const payload = { bankName: bankNameStr, bankCode, accountNumber, accountName, bvn, bvnPhoneNumber };
+    const payload = {
+      bankName: bankNameStr,
+      bankCode,
+      accountNumber,
+      accountName,
+      bvn,
+      bvnPhoneNumber,
+    };
     try {
       const res = await handleCreateBank(payload);
       if (res?.status) {
@@ -103,22 +128,27 @@ const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
     }
   };
 
-  const enforceNumericInput = (maxLength: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    // Remove any non-numeric characters
-    const numericValue = value.replace(/[^0-9]/g, "");
-    // Truncate to maxLength
-    e.target.value = numericValue.slice(0, maxLength);
-  };
+  const enforceNumericInput =
+    (maxLength: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      // Remove any non-numeric characters
+      const numericValue = value.replace(/[^0-9]/g, "");
+      // Truncate to maxLength
+      e.target.value = numericValue.slice(0, maxLength);
+    };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="pt-4 pb-8 flex flex-col gap-4">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="pt-4 pb-8 flex flex-col gap-4"
+    >
       <div className="flex gap-5">
         <div className="w-1/2 flex flex-col gap-2">
           <InputF
             name="bankName"
+            isRequired
             register={register}
-            label="Bank Name*"
+            label="Bank Name"
             options={{ required: true }}
             isSelect={true}
             dropdownList={
@@ -135,8 +165,9 @@ const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
         <div className="w-1/2 flex flex-col gap-2">
           <InputF
             name="accountNumber"
+            isRequired
             register={register}
-            label="Account Number*"
+            label="Account Number"
             options={{
               required: true,
               maxLength: 10,
@@ -159,8 +190,9 @@ const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
       <div>
         <InputF
           name="accountName"
+          isRequired
           register={register}
-          label="Account Name*"
+          label="Account Name"
           options={{ required: true }}
           inputProps={{ readOnly: true, disabled: true }}
         />
@@ -171,7 +203,8 @@ const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
           <InputF
             name="bvn"
             register={register}
-            label="Bank Verification Number (BVN)*"
+            isRequired
+            label="Bank Verification Number (BVN)"
             inputProps={{
               type: "text",
               required: true,
@@ -194,6 +227,7 @@ const BankDetails = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
           <InputF
             name="bvnPhoneNumber"
             register={register}
+            isRequired
             label="BVN Phone Number"
             bottomLabel="This is the verified phone number used in registering your BVN"
             inputProps={{

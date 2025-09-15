@@ -27,12 +27,18 @@ const PassportPhotograph = ({
   const [user, setUser] = useState<IUser | null>(null);
   const [open, setOpen] = useState(false);
 
-  const { mutateAsync: handleUploadFile, isPending: isUploadingProfile } = useMutation({
-    mutationFn: (file: File) => uploadMediaFile({ file: file }),
-  });
+  const { mutateAsync: handleUploadFile, isPending: isUploadingProfile } =
+    useMutation({
+      mutationFn: (file: File) => uploadMediaFile({ file: file }),
+    });
   const { handleSubmit } = useFormContext();
-  const { mutateAsync: handleAddProfilePicture, isPending } = useMutation<any, unknown, any>({
-    mutationFn: (profilePicture: string) => addProfilePicture({ profilePicture }),
+  const { mutateAsync: handleAddProfilePicture, isPending } = useMutation<
+    any,
+    unknown,
+    any
+  >({
+    mutationFn: (profilePicture: string) =>
+      addProfilePicture({ profilePicture }),
   });
   const onSubmit = async () => {
     try {
@@ -67,31 +73,41 @@ const PassportPhotograph = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex items-center justify-center py-20">
-          <div className="size-[185px] flex items-center justify-center relative rounded-full bg-gray-3">
-            <input
-              accept="image/*"
-              onChange={handleFileChange}
-              disabled={isUploadingProfile}
-              type="file"
-              className="h-full w-full rounded-full absolute opacity-0"
-            />
-            {isUploadingProfile ? (
-              <Spinner />
-            ) : selectedImage ? (
-              <Image
-                src={selectedImage || ""}
-                alt="Selected preview"
-                className="w-full h-full object-cover rounded-full"
-                width={185}
-                height={185}
-                style={{ borderRadius: "50%" }}
+        <div className="flex flex-col items-center justify-center py-20">
+          <label
+            htmlFor="passport-upload"
+            className="flex flex-col items-center cursor-pointer"
+          >
+            <div className="size-[185px] flex items-center justify-center relative rounded-full bg-gray-3">
+              <input
+                id="passport-upload"
+                accept="image/*"
+                onChange={handleFileChange}
+                disabled={isUploadingProfile}
+                type="file"
+                className="hidden"
               />
-            ) : (
-              <UserIcon />
-            )}
-          </div>
+              {isUploadingProfile ? (
+                <Spinner />
+              ) : selectedImage ? (
+                <Image
+                  src={selectedImage || ""}
+                  alt="Selected preview"
+                  className="w-full h-full object-cover rounded-full"
+                  width={185}
+                  height={185}
+                />
+              ) : (
+                <UserIcon />
+              )}
+            </div>
+
+            <p className="mt-4 text-center text-[#E47D05] text-sm font-medium">
+              Tap to upload passport
+            </p>
+          </label>
         </div>
+
         <div className="my-10">
           <ProfileFooter
             btnText="Submit"

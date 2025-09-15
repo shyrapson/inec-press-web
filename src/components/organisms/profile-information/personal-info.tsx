@@ -108,19 +108,30 @@ const PersonalInfo = ({
       <div className=" flex flex-col gap-5 pb-8 mb-8 border-b border-gray-2">
         <div className="w-full flex gap-5">
           <div className="w-1/2 flex flex-col gap-2">
-            <InputF name="firstName" register={register} label="First Name" />
-          </div>
-          <div className="w-1/2 flex flex-col gap-2">
-            <InputF name="surname" register={register} label="Last Name" />
+            <div className="w-1/2 flex flex-col gap-2">
+              <InputF
+                name="surname"
+                isRequired
+                register={register}
+                label="Surname"
+              />
+            </div>
+            <InputF
+              name="firstName"
+              isRequired
+              register={register}
+              label="First Name"
+            />
           </div>
         </div>
         <div className="w-full flex flex-col gap-2">
-          <InputF label="Other Name" name="otherName" register={register} />
+          <InputF label="Other Names" name="otherName" register={register} />
         </div>
         <div className="w-full flex gap-5">
           <div className="w-1/2 flex flex-col gap-2">
             <InputF
               name="gender"
+              isRequired
               register={register}
               dropdownList={[
                 { value: "MALE", label: "MALE" },
@@ -128,13 +139,14 @@ const PersonalInfo = ({
               ]}
               isSelect={true}
               options={{ required: true }}
-              label="Gender*"
+              label="Gender"
               control={control}
             />
           </div>
           <div className="w-1/2 flex flex-col gap-2">
             <InputF
               name="maritalStatus"
+              isRequired
               options={{ required: true }}
               dropdownList={[
                 { value: "SINGLE", label: "SINGLE" },
@@ -144,7 +156,7 @@ const PersonalInfo = ({
               ]}
               isSelect={true}
               control={control}
-              label="Marital status*"
+              label="Marital status"
               register={register}
             />
           </div>
@@ -153,15 +165,16 @@ const PersonalInfo = ({
           <div className="w-1/2 flex flex-col gap-2">
             <InputF
               name="email"
+              isRequired
               options={{ required: true }}
               register={register}
-              label="Email*"
+              label="Email"
               defaultValue={registeredUser?.email || auth?.currentUser?.email}
               inputProps={{ disabled: true }}
             />
           </div>
           <div className="w-1/2 flex flex-col gap-2">
-            <InputF name="phone" register={register} label="Phone*" />
+            <InputF name="phone" isRequired register={register} label="Phone" />
           </div>
         </div>
       </div>
@@ -171,9 +184,10 @@ const PersonalInfo = ({
           <div className="w-1/2 flex flex-col gap-2">
             <InputF
               name="workplace"
+              isRequired
               options={{ required: true }}
               register={register}
-              label="Workplace/Organisation*"
+              label="Workplace/Organisation"
               inputProps={{
                 disabled: isOrganizationDisabledValue,
               }}
@@ -192,9 +206,10 @@ const PersonalInfo = ({
           <div className="w-1/2 flex flex-col gap-2">
             <InputF
               name="designation"
+              isRequired
               options={{ required: true }}
               register={register}
-              label="Designation*"
+              label="Designation"
               control={control}
               dropdownList={
                 Array.isArray(designationList)
@@ -222,7 +237,8 @@ const PersonalInfo = ({
               )}
             >
               <InputF
-                label="Call-Up Number*"
+                label="Call-Up Number"
+                isRequired
                 options={{ required: true }}
                 name="callUpNumber"
                 register={register}
@@ -237,7 +253,8 @@ const PersonalInfo = ({
               )}
             >
               <InputF
-                label="Other*"
+                label="Other"
+                isRequired
                 options={{ required: true }}
                 name="other"
                 register={register}
@@ -250,6 +267,7 @@ const PersonalInfo = ({
             <div className="w-1/2 flex flex-col gap-2">
               <InputF
                 name="stateOfDeployment"
+                isRequired
                 register={register}
                 dropdownList={
                   Array.isArray(stateList)
@@ -261,13 +279,14 @@ const PersonalInfo = ({
                 }
                 isSelect={true}
                 options={{ required: true }}
-                label="State of Deployment*"
+                label="State of Deployment"
                 control={control}
               />
             </div>
             <div className="w-1/2 flex flex-col gap-2">
               <InputF
                 name="preferredElectionState"
+                isRequired
                 options={{ required: true }}
                 dropdownList={
                   Array.isArray(preferredStateOfElectionList)
@@ -288,7 +307,8 @@ const PersonalInfo = ({
         {isGradeLevel && (
           <div className="w-full flex flex-col gap-2">
             <InputF
-              label="Enter GL*"
+              label="Enter GL"
+              isRequired
               options={{ required: true }}
               name="identificationCategory"
               register={register}
@@ -300,9 +320,10 @@ const PersonalInfo = ({
             <div className="w-1/2 flex flex-col gap-2">
               <InputF
                 name="nyscPassOutDate"
+                isRequired
                 register={register}
                 options={{ required: true }}
-                label="NYSC Pass Out Date*"
+                label="NYSC Pass Out Date"
                 inputProps={{ type: "date" }}
                 bottomLabel="(Month & Year) only pass out applicant are required"
               />
@@ -316,9 +337,10 @@ const PersonalInfo = ({
           >
             <InputF
               name="dateOfBirth"
+              isRequired
               options={{ required: true }}
               register={register}
-              label="Date of Birth*"
+              label="Date of Birth"
               inputProps={{ type: "date" }}
             />
           </div>
@@ -331,8 +353,9 @@ const PersonalInfo = ({
             <InputF
               name="highestQualification"
               register={register}
+              isRequired
               options={{ required: true }}
-              label="Highest Level of Qualification*"
+              label="Highest Level of Qualification"
               dropdownList={
                 Array.isArray(qualificationList)
                   ? qualificationList.map((item: string) => ({
@@ -348,9 +371,10 @@ const PersonalInfo = ({
           <div className="w-1/2 flex flex-col gap-2">
             <InputF
               name="identificationCategory"
+              isRequired
               options={{ required: true }}
               register={register}
-              label="Identification Category*"
+              label="Identification Category"
               dropdownList={[
                 { value: "Voters Card", label: "Voters Card" },
                 {

@@ -104,7 +104,10 @@ export default function CreateProfilePage() {
     retry: false,
   });
 
-  const { isPending, mutate } = useLocalMutation<IRegisteredUser, IRegistrationRequest>({
+  const { isPending, mutate } = useLocalMutation<
+    IRegisteredUser,
+    IRegistrationRequest
+  >({
     mutationFn: ({ electionId, email, password, position_id, source_id }) =>
       registerRequest({ electionId, email, password, position_id, source_id }),
     onSuccess: (res) => {
@@ -132,22 +135,32 @@ export default function CreateProfilePage() {
                     Create Profile
                   </CardTitle>
                   <p className="text-sm text-gray-600 mt-2">
-                    Before starting your registration, please ensure you read the instructions
-                    carefully. Be sure to provide a valid email address during the registration.
+                    Before starting your registration, please ensure you read
+                    the instructions carefully. Be sure to provide a valid email
+                    address during the registration.
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="space-y-6"
+                    >
                       <FormField
                         control={form.control}
                         name="electionId"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-medium text-[#607087]">
+                            <FormLabel
+                              isRequired
+                              className="text-sm font-medium text-[#607087]"
+                            >
                               Name of Election
                             </FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
                               <FormControl>
                                 <SelectTrigger className="w-full">
                                   <SelectValue placeholder="--Select--" />
@@ -171,10 +184,16 @@ export default function CreateProfilePage() {
                         name="position_id"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-medium text-[#607087]">
+                            <FormLabel
+                              isRequired
+                              className="text-sm font-medium text-[#607087]"
+                            >
                               Available Ad-hoc Position
                             </FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
                               <FormControl>
                                 <SelectTrigger className="w-full">
                                   <SelectValue placeholder="--Select--" />
@@ -198,21 +217,32 @@ export default function CreateProfilePage() {
                         name="source_id"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-medium text-[#607087]">
+                            <FormLabel
+                              isRequired
+                              className="text-sm font-medium text-[#607087]"
+                            >
                               I am eligible because I am/an:
                             </FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
                               <FormControl>
                                 <SelectTrigger className="w-full">
                                   <SelectValue placeholder="--Select--" />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                {positionSources?.data?.map(({ id, source_name }) => (
-                                  <SelectItem key={id + source_name} value={id}>
-                                    {source_name}
-                                  </SelectItem>
-                                ))}
+                                {positionSources?.data?.map(
+                                  ({ id, source_name }) => (
+                                    <SelectItem
+                                      key={id + source_name}
+                                      value={id}
+                                    >
+                                      {source_name}
+                                    </SelectItem>
+                                  )
+                                )}
                               </SelectContent>
                             </Select>
                             <FormMessage />
@@ -225,7 +255,10 @@ export default function CreateProfilePage() {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-medium text-[#607087]">
+                            <FormLabel
+                              isRequired
+                              className="text-sm font-medium text-[#607087]"
+                            >
                               Email Address
                             </FormLabel>
                             <FormControl>
@@ -238,7 +271,8 @@ export default function CreateProfilePage() {
                               />
                             </FormControl>
                             <p className="text-xs text-gray-500">
-                              Your valid and accessible email address e.g xyz@gmail.com
+                              Your valid and accessible email address e.g
+                              xyz@gmail.com
                             </p>
                             <FormMessage />
                           </FormItem>
@@ -250,7 +284,10 @@ export default function CreateProfilePage() {
                         name="confirmEmail"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-medium text-[#607087]">
+                            <FormLabel
+                              isRequired
+                              className="text-sm font-medium text-[#607087]"
+                            >
                               Confirm Email Address
                             </FormLabel>
                             <FormControl>
@@ -272,7 +309,10 @@ export default function CreateProfilePage() {
                         name="password"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-sm font-medium text-[#607087]">
+                            <FormLabel
+                              isRequired
+                              className="text-sm font-medium text-[#607087]"
+                            >
                               Password
                             </FormLabel>
                             <FormControl>
@@ -290,7 +330,11 @@ export default function CreateProfilePage() {
                                   size="sm"
                                   className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
                                   onClick={() => setShowPassword(!showPassword)}
-                                  aria-label={showPassword ? "Hide password" : "Show password"}
+                                  aria-label={
+                                    showPassword
+                                      ? "Hide password"
+                                      : "Show password"
+                                  }
                                 >
                                   {showPassword ? (
                                     <EyeOff className="h-4 w-4 text-[#607087]" />
@@ -298,7 +342,7 @@ export default function CreateProfilePage() {
                                     <Eye className="h-4 w-4 text-[#607087]" />
                                   )}
                                 </Button>
-                            </div>
+                              </div>
                             </FormControl>
                             <p className="text-xs text-gray-500">
                               Password should be at least 8 characters

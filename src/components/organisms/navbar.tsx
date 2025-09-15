@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import type { FC } from "react";
 import { useRouter } from "next/navigation";
+import ActiveLink from "@/components/ui/active-link";
 
 interface NavbarProps {
   isSticky?: boolean;
@@ -29,36 +30,36 @@ const Navbar: FC<NavbarProps> = ({ isSticky = true }) => {
         />
       </div>
       <div className="hidden md:flex items-center space-x-8">
-        <Link
+        <ActiveLink
           href="/"
           className="text-[#181817] hover:text-green-600 font-medium text-sm"
         >
           Home
-        </Link>
-        <Link
+        </ActiveLink>
+        <ActiveLink
           href="/how-to-apply"
           className="text-[#181817] hover:text-green-600 font-medium text-sm"
         >
           How to apply
-        </Link>
-        <Link
+        </ActiveLink>
+        <ActiveLink
           href="/eligibility"
           className="text-[#181817] hover:text-green-600 font-medium text-sm"
         >
           Eligibility
-        </Link>
-        <Link
+        </ActiveLink>
+        <ActiveLink
           href="/faqs"
           className="text-[#181817] hover:text-green-600 font-medium text-sm"
         >
           FAQs
-        </Link>
-        <Link
+        </ActiveLink>
+        <ActiveLink
           href="/app"
           className="text-[#181817] hover:text-green-600 font-medium text-sm"
         >
           Download App
-        </Link>
+        </ActiveLink>
       </div>
       <div className="flex items-center space-x-3">
         <Button

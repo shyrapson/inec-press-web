@@ -48,7 +48,7 @@ const ApplicationSections = () => {
             <Image
               src="/svgs/inec-pres-image.svg"
               alt={""}
-              width={700}
+              width={1200}
               height={600}
             />
           </div>
@@ -68,9 +68,8 @@ const ApplicationSections = () => {
             </CardHeader>
             <CardContent className="text-left">
               <p className="text-[#607087] mb-6">
-                All Applicants are to visit the Eligibility Page, where they
-                will review the qualification/criteria necessary for any
-                Election Staff Position of interest.
+                All Applicants are to visit the Eligibility page before
+                commencing the application process.
               </p>
             </CardContent>
           </Card>
@@ -88,11 +87,8 @@ const ApplicationSections = () => {
             </CardHeader>
             <CardContent className="text-left">
               <p className="text-[#607087] mb-6">
-                If you have an existing profile on this portal (from 2019
-                Registration) or you are yet to complete your application for
-                the 2024 Edo and Ondo State Governorship Election Staff
-                Positions, please click on the link below to login and update or
-                complete the Registration process.
+                If you have an existing Registration/Profile from 2019 till date
+                kindly update your preferred Ad-hoc position.
               </p>
             </CardContent>
           </Card>
@@ -110,10 +106,8 @@ const ApplicationSections = () => {
             </CardHeader>
             <CardContent className="text-left">
               <p className="text-[#607087] mb-6">
-                All interested fresh applicant for the available Election Staff
-                Positions for the 2024 Edo and Ondo State Governorship Election
-                are required to Click on the Link below to start the
-                Registration process.
+                Eligible first time (fresh) applicants for the available
+                election staff position.
               </p>
             </CardContent>
           </Card>
