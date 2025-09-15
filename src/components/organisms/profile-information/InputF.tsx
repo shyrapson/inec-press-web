@@ -8,7 +8,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { InputHTMLAttributes, useId } from "react";
-import { Control, Controller, FieldValues, UseFormRegister } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldValues,
+  UseFormRegister,
+} from "react-hook-form";
+import { fa } from "zod/v4/locales";
 
 interface InputFProps {
   name: string;
@@ -70,7 +76,10 @@ const InputF = ({
                 <SelectContent>
                   {dropdownList?.map((item, index) => {
                     return (
-                      <SelectItem value={item.value} key={`${idPrefix}-${item.value}+${index}`}>
+                      <SelectItem
+                        value={item.value}
+                        key={`${idPrefix}-${item.value}+${index}`}
+                      >
                         {item.label}
                       </SelectItem>
                     );
@@ -82,7 +91,9 @@ const InputF = ({
         />
       )}
       {bottomLabel && (
-        <Label className="text-text-1 font-light italic text-[9px]">{bottomLabel}</Label>
+        <Label className="text-text-1 font-light italic text-[9px]">
+          {bottomLabel}
+        </Label>
       )}
     </>
   );

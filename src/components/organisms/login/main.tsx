@@ -99,7 +99,7 @@ export default function LoginPage(): JSX.Element {
     <div className="min-h-screen relative">
       <Navbar isSticky={false} />
       <div className="h-screen w-full absolute -top-4 flex  justify-between z-0">
-        <div className="p-20  flex-1 bg-[#448220] bg-[url('/svgs/group-items.svg')] bg-cover bg-no-repeat flex items-center justify-center p-20">
+        <div className="p-4 md:p-20  flex-1 bg-[#448220] bg-[url('/svgs/group-items.svg')] bg-cover bg-no-repeat flex items-center justify-center p-20">
           <Card className="w-full max-w-[461px] shadow-lg py-10 mt-16 ">
             <CardHeader className="text-center">
               <CardTitle className="text-lg font-semibold text-gray-900">

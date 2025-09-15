@@ -16,7 +16,7 @@ const Navbar: FC<NavbarProps> = ({ isSticky = true }) => {
     <nav
       className={`flex ${
         isSticky ? "sticky top-10 my-0" : ""
-      } shadow-md mx-auto items-center opacity-85 relative top-6 z-10 justify-between py-5  px-3 sm:px-2 lg:px-6 rounded-3xl bg-white w-10/12 max-w-[1200px]`}
+      } shadow-md md:mx-auto mx-4 items-center opacity-85 relative top-6 z-10 justify-between py-5  px-3 sm:px-2 lg:px-6 rounded-3xl bg-white md:w-10/12 max-w-[1200px]`}
     >
       {" "}
       <div className="flex items-center">
