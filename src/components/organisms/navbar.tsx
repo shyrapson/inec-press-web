@@ -54,7 +54,7 @@ const Navbar: FC<NavbarProps> = ({ isSticky = true }) => {
           FAQs
         </Link>
         <Link
-          href="/download"
+          href="/app"
           className="text-[#181817] hover:text-green-600 font-medium text-sm"
         >
           Download App
