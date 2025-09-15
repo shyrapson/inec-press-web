@@ -8,9 +8,9 @@ export function cn(...inputs: ClassValue[]) {
 
 export function isOrganizationDisable(user: IUser) {
   return (
-    user.source_name === "INEC Staff" ||
-    user.source_name === "Staff of School/Institution/Public Building Hosting" ||
-    user.source_name === "NYSC/Former NYSC from 2021"
+    user?.source_name === "INEC Staff" ||
+    user?.source_name === "Staff of School/Institution/Public Building Hosting" ||
+    user?.source_name === "NYSC/Former NYSC from 2021"
   );
 }
 

@@ -22,9 +22,16 @@ export const loginSchema = z.object({
 export enum PAGE_ROUTES {
   DASHBOARD_PAGE = "/dashboard",
   LOGIN_PAGE = "/login",
-  PROFILE_INFO_PAGE = "profile-information",
+  PROFILE_INFO_PAGE = "application",
   REGISTER_PAGE = "/register",
   VERIFY_OTP_PAGE = "/verify-otp",
+}
+export enum ProfileStatus {
+  CONTACT = "contact",
+  PROFILE = "profile",
+  BANK = "bank",
+  REFEREE = "referee",
+  COMPLETE = "complete",
 }
 
 export enum USER_TYPE {

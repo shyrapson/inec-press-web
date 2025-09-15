@@ -48,7 +48,7 @@ export const getStates = async (): Promise<IResponse | unknown> => {
   return res.payload?.result?.data;
 };
 
-export const getLgaOfStates = async ({code}: {code: string}): Promise<IResponse | unknown> => {
+export const getLgaOfStates = async ({ code }: { code: string }): Promise<IResponse | unknown> => {
   const res = await http.get({
     url: "/v1/get-local-governments",
     query: { code },
@@ -95,11 +95,49 @@ export const getQualificationList = async (): Promise<IResponse | unknown> => {
   return res.payload?.result?.data;
 };
 
+export const getNearestLandmark = async ({
+  state_id,
+  abbreviation,
+  ward_id,
+}: {
+  state_id: string;
+  abbreviation: string;
+  ward_id: string;
+}): Promise<IResponse | unknown> => {
+  const res = await http.get({
+    url: "/v1/get-polling-units",
+    query: { state_id, abbreviation, ward_id },
+  });
+  return res.payload?.result?.data;
+};
+
+export const getRegistrationWard = async ({
+  state_id,
+  abbreviation,
+}: {
+  state_id: string;
+  abbreviation: string;
+}): Promise<IResponse | unknown> => {
+  const res = await http.get({
+    url: "/v1/get-wards",
+    query: { state_id, abbreviation },
+  });
+  console.log;
+  return res.payload?.result?.data;
+};
+
 export const getPreferredElectionState = async (): Promise<IResponse | unknown> => {
   const res = await http.get({
     url: "/v1/profile/preferred_election_states",
   });
   return res.payload?.result?.data;
+};
+
+export const getBankList = async (): Promise<IResponse | unknown> => {
+  const res = await http.get({
+    url: "v1/bank/list-of-banks",
+  });
+  return res?.payload?.result?.data?.banks;
 };
 
 export const uploadMediaFile = async ({ file }: { file: File }): Promise<IResponse | unknown> => {
@@ -118,6 +156,41 @@ export const createProfile = async ({ data }: { data: unknown }): Promise<IRespo
     url: "/v1/profile/complete_registration",
     body: data,
   });
-  console.log({ res });
+  return res?.payload?.result;
+};
+
+export const createContact = async ({ data }: { data: unknown }): Promise<IResponse | unknown> => {
+  const res = await http.post({
+    url: "/v1/profile/add_contact",
+    body: data,
+  });
+  return res?.payload?.result;
+};
+
+export const createBankInfo = async ({ data }: { data: unknown }): Promise<IResponse | unknown> => {
+  const res = await http.post({
+    url: "/v1/profile/add_bank",
+    body: data,
+  });
+  return res?.payload?.result;
+};
+
+export const createRefereeInfo = async ({ data }: { data: unknown }): Promise<IResponse | unknown> => {
+  const res = await http.post({
+    url: "/v1/profile/add_referee",
+    body: data,
+  });
+  return res?.payload?.result;
+};
+
+export const addProfilePicture = async ({
+  profilePicture,
+}: {
+  profilePicture: string;
+}): Promise<IResponse | unknown> => {
+  const res = await http.post({
+    url: "/v1/profile/add_profile_picture",
+    body: { profilePicture },
+  });
   return res?.payload?.result;
 };

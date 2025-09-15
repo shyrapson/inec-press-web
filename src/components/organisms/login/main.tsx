@@ -31,7 +31,7 @@ import Footer from "../footer";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-const loginPageFAQData: FAQItem[] = [
+export const loginPageFAQData: FAQItem[] = [
   {
     value: "how-to-apply",
     title: "How to Apply",
@@ -175,7 +175,7 @@ export default function LoginPage(): JSX.Element {
             </CardContent>
           </Card>
         </div>
-        <div className="flex-1 mt-32">
+        <div className="md:flex hidden flex-1 mt-32">
           <HelpSection items={loginPageFAQData} />
         </div>
       </div>

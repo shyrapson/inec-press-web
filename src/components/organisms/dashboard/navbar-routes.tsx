@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { User } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import useStore from "@/hooks/useStore";
+import Image from "next/image";
 
 const NavbarRoutes = () => {
   const [greeting, setGreeting] = useState<string>("");
@@ -26,11 +27,14 @@ const NavbarRoutes = () => {
 
   return (
     <header className="flex justify-between items-center p-4">
-      <div>
+      <div className="flex gap-3 items-center">
+        <div className=" ">
+          <Image src="/images/logo.png" alt="Logo" quality={100} height={40} width={40} />
+        </div>
         <h1 className="text-2xl font-bold">
           {pageTitle.charAt(0).toUpperCase() + pageTitle.slice(1).toLowerCase()}
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 hidden md:flex">
           {greeting} - {formattedDate}
         </p>
       </div>

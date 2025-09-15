@@ -74,7 +74,6 @@ export default function FileUploadPage({
       if (validateFile(file)) {
         setTempFile(file?.name);
         const res: any = await handleUploadFile(file);
-        console.log("File accepted:", { file, res });
         setFile(res?.[0]?.path?.preview);
       }
     }

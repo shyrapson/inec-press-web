@@ -3,8 +3,14 @@ import ProfileFooter from "./profile-footer";
 import InputF from "./InputF";
 import { useForm, useFormContext } from "react-hook-form";
 import useCommonData from "@/hooks/useCommonData";
-import { useQuery } from "@tanstack/react-query";
-import { getLgaOfStates, getStates } from "@/api/user";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  createContact,
+  getLgaOfStates,
+  getNearestLandmark,
+  getRegistrationWard,
+  getStates,
+} from "@/api/user";
 import { QUERY_KEYS } from "@/lib/constants";
 
 const stateOptions = [
@@ -38,28 +44,75 @@ const ContactInfo = ({
     handleSubmit,
   } = useFormContext();
   const stateValue = watch("stateOfResidence");
+  const lgaValue = watch("lgaOfResidence");
+  const registrationOfResidenceValue = watch("registrationOfResidence");
 
   const { data: lgaOfStateList, isLoading: loadingState } = useQuery({
     queryFn: () => getLgaOfStates({ code: stateValue }),
     queryKey: [QUERY_KEYS.LGA_OF_STATE_LIST, stateValue],
     enabled: !!stateValue,
   });
+
+  const { data: registeredWardList, isLoading: loadingRegisteredWardList } = useQuery({
+    queryFn: () => getRegistrationWard({ state_id: stateValue!, abbreviation: lgaValue }),
+    queryKey: [QUERY_KEYS.WARD_OF_STATE_LIST, stateValue, lgaValue],
+    enabled: !!stateValue && !!lgaValue,
+  });
+
+  const { data: nearestLandMark, isLoading: loadingNearestLandMark } = useQuery({
+    queryFn: () =>
+      getNearestLandmark({
+        state_id: stateValue!,
+        abbreviation: lgaValue,
+        ward_id: registrationOfResidenceValue,
+      }),
+    queryKey: [QUERY_KEYS.NEAREST_LANDMARK, stateValue, lgaValue, registrationOfResidenceValue],
+    enabled: !!stateValue && !!lgaValue && !!registrationOfResidenceValue,
+  });
+  const { mutateAsync: handleCreateContact, isPending } = useMutation<any, unknown, any>({
+    mutationFn: (data: any) => createContact({ data }),
+  });
   const {
     stateList,
-    stateUniversityList,
-    federalUniversityList,
-    designationList,
-    qualificationList,
-    preferredStateOfElectionList,
-    isOrganizationDisabledValue,
-    userDetails,
   } = useCommonData();
 
-  console.log({ stateList, lgaOfStateList, stateValue });
+  console.log({
+    stateList,
+    lgaOfStateList,
+    stateValue,
+    lgaValue,
+    registeredWardList,
+    nearestLandMark,
+    registrationOfResidenceValue,
+  });
 
-  const onSubmit = (data: any) => {
-    console.log("Form data:", data);
-    gotoNext();
+  const onSubmit = async (data: any) => {
+    const {
+      addressOfResidence,
+      lgaOfResidence,
+      nearestLandmark,
+      permanentHomeAddress,
+      registrationOfResidence,
+      stateOfOrigin,
+      stateOfResidence,
+    } = data;
+    try {
+      const payload = {
+        addressOfResidence,
+        lgaOfResidence,
+        nearestLandmark,
+        permanentHomeAddress,
+        registrationOfResidence,
+        stateOfOrigin,
+        stateOfResidence,
+      };
+      const res = await handleCreateContact(payload);
+      if (res?.status) {
+        gotoNext();
+      }
+    } catch (error) {
+      console.log({ error });
+    }
   };
 
   return (
@@ -111,6 +164,16 @@ const ContactInfo = ({
           name="registrationOfResidence"
           register={register}
           label="Registration of Residence*"
+          isSelect={true}
+          dropdownList={
+            Array.isArray(registeredWardList)
+              ? registeredWardList.map((state: any) => ({
+                  value: state?.ward_id,
+                  label: state?.name,
+                }))
+              : []
+          }
+          control={control}
           options={{ required: true }}
         />
       </div>
@@ -120,6 +183,13 @@ const ContactInfo = ({
           name="nearestLandmark"
           register={register}
           label="Nearest Landmark*"
+          isSelect={true}
+          dropdownList={
+            Array.isArray(nearestLandMark)
+              ? nearestLandMark.map((state: any) => ({ value: state?.name, label: state?.name }))
+              : []
+          }
+          control={control}
           options={{ required: true }}
         />
       </div>
@@ -149,15 +219,20 @@ const ContactInfo = ({
           register={register}
           label="State of Origin"
           isSelect={true}
-          dropdownList={stateOptions}
+          dropdownList={
+            Array.isArray(stateList)
+              ? stateList.map((state: any) => ({ value: state?.code, label: state?.name }))
+              : []
+          }
           control={control}
         />
       </div>
 
       <ProfileFooter
         gotoNext={gotoNext}
+        isLoading={isPending}
         gotoPrev={gotoPrev}
-        isValid={isValid}
+        isValid={isValid || isPending}
       />
     </form>
   );

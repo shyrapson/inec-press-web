@@ -40,6 +40,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import useStore from "@/hooks/useStore";
 import Footer from "../footer";
+import { loginPageFAQData } from "../login/main";
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
@@ -102,10 +103,7 @@ export default function CreateProfilePage() {
     retry: false,
   });
 
-  const { isPending, mutate } = useLocalMutation<
-    IRegisteredUser,
-    IRegistrationRequest
-  >({
+  const { isPending, mutate } = useLocalMutation<IRegisteredUser, IRegistrationRequest>({
     mutationFn: ({ electionId, email, password, position_id, source_id }) =>
       registerRequest({ electionId, email, password, position_id, source_id }),
     onSuccess: (res) => {
@@ -125,24 +123,20 @@ export default function CreateProfilePage() {
       <div className="">
         <div className="w-full absolute -top-4  z-0">
           <div className="flex justify-between w-full">
-            <div className="flex-1 bg-[#DDDFE4] bg-[url('/svgs/group-items.svg')] bg-cover bg-no-repeat flex items-center justify-center py-10 px-32">
-              <Card className="w-full max-w-[461px] shadow-lg py-10 mt-32">
+            <div className="w-full md:w-1/2 bg-[url('/images/bg-image.png')] bg-cover bg-no-repeat flex items-center justify-center py-10 md:px-32">
+              <Card className="max-w-11/12 w-11/12 md:w-full md:max-w-[461px] shadow-lg py-10 mt-32">
                 <CardHeader className="text-center">
                   <CardTitle className="text-xl font-semibold text-gray-900">
                     Create Profile
                   </CardTitle>
                   <p className="text-sm text-gray-600 mt-2">
-                    Before starting your registration, please ensure you read
-                    the instructions carefully. Be sure to provide a valid email
-                    address during the registration.
+                    Before starting your registration, please ensure you read the instructions
+                    carefully. Be sure to provide a valid email address during the registration.
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <Form {...form}>
-                    <form
-                      onSubmit={form.handleSubmit(onSubmit)}
-                      className="space-y-6"
-                    >
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                       <FormField
                         control={form.control}
                         name="electionId"
@@ -151,10 +145,7 @@ export default function CreateProfilePage() {
                             <FormLabel className="text-sm font-medium text-[#607087]">
                               Name of Election
                             </FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
                                 <SelectTrigger className="w-full">
                                   <SelectValue placeholder="--Select--" />
@@ -181,10 +172,7 @@ export default function CreateProfilePage() {
                             <FormLabel className="text-sm font-medium text-[#607087]">
                               Available Ad-hoc Position
                             </FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
                                 <SelectTrigger className="w-full">
                                   <SelectValue placeholder="--Select--" />
@@ -211,26 +199,18 @@ export default function CreateProfilePage() {
                             <FormLabel className="text-sm font-medium text-[#607087]">
                               I am eligible because I am/an:
                             </FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                               <FormControl>
                                 <SelectTrigger className="w-full">
                                   <SelectValue placeholder="--Select--" />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                {positionSources?.data?.map(
-                                  ({ id, source_name }) => (
-                                    <SelectItem
-                                      key={id + source_name}
-                                      value={id}
-                                    >
-                                      {source_name}
-                                    </SelectItem>
-                                  )
-                                )}
+                                {positionSources?.data?.map(({ id, source_name }) => (
+                                  <SelectItem key={id + source_name} value={id}>
+                                    {source_name}
+                                  </SelectItem>
+                                ))}
                               </SelectContent>
                             </Select>
                             <FormMessage />
@@ -256,8 +236,7 @@ export default function CreateProfilePage() {
                               />
                             </FormControl>
                             <p className="text-xs text-gray-500">
-                              Your valid and accessible email address e.g
-                              xyz@gmail.com
+                              Your valid and accessible email address e.g xyz@gmail.com
                             </p>
                             <FormMessage />
                           </FormItem>
@@ -323,8 +302,8 @@ export default function CreateProfilePage() {
                 </CardContent>
               </Card>
             </div>
-            <div className="flex-1 mt-32">
-              <HelpSection items={profilePageFAQData} />
+            <div className="md:flex hidden md:w-1/2 mt-32">
+              <HelpSection items={loginPageFAQData} title="Need help?" />
             </div>
           </div>
           <Footer />
