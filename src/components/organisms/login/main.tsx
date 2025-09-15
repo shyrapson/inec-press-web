@@ -2,9 +2,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; 
 
 import {
   Form,
@@ -28,6 +26,11 @@ import { useRouter } from "next/navigation";
 import useStore from "@/hooks/useStore";
 import { Spinner } from "@/components/ui/spinner";
 import Footer from "../footer";
+import { useState } from "react";
+import { EyeOff } from "lucide-react";
+import { Eye } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -94,6 +97,7 @@ export default function LoginPage(): JSX.Element {
   });
 
   const onSubmit = (data: LoginFormValues) => mutate(data);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="min-h-screen relative">
@@ -150,13 +154,29 @@ export default function LoginPage(): JSX.Element {
                           Password
                         </FormLabel>
                         <FormControl>
+                        <div className="relative">
                           <Input
                             id="password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             placeholder="••••••••"
-                            className="w-full mb-4"
+                            className="w-full mb-4 pr-10"
                             {...field}
                           />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
+                            onClick={() => setShowPassword(!showPassword)}
+                            aria-label={showPassword ? "Hide password" : "Show password"}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4 text-[#607087]" />
+                            ) : (
+                              <Eye className="h-4 w-4 text-[#607087]" />
+                            )}
+                          </Button>
+                        </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>

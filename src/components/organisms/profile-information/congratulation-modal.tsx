@@ -21,7 +21,7 @@ const CongratulationModal = ({ onSubmit }: { onSubmit: () => void }) => {
         </DialogTitle>
         <DialogDescription className="text-xs my-0 text-center font-light">
           Application successful! <br /> An acknowledgement slip has been sent
-          to your email
+          to your email.
         </DialogDescription>
       </DialogHeader>
 
