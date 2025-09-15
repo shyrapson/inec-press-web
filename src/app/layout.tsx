@@ -9,8 +9,8 @@ import AuthGuard from "@/components/organisms/auth-guard";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Inec Press",
-  description: "Inec Press",
+  title: "INECPRES",
+  description: "INECPRES",
   icons: { icon: "/logo.png" },
 };
 
