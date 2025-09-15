@@ -152,7 +152,7 @@ const DashboardPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <InfoItem label="Bank Name" value="Moniepoint Microfinance Bank" />
+            <InfoItem label="Bank Name" value={bankDetails?.bankName} />
             <InfoItem
               label="Account Number"
               value={bankDetails?.accountNumber}
