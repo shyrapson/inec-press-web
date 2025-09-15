@@ -165,6 +165,14 @@ export const getBankList = async (): Promise<IResponse | unknown> => {
   return res?.payload?.result?.data?.banks;
 };
 
+export const verifyBankAccountRequest = async ({ accountNumber, bankCode }: { accountNumber: string; bankCode: string }): Promise<IResponse | unknown> => {
+  const res = await http.post({
+    url: "/v1/bank/verify",
+    body: { accountNumber, bankCode },
+  });
+  return res?.payload?.result?.data;
+};
+
 export const uploadMediaFile = async ({
   file,
 }: {

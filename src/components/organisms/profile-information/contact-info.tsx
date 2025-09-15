@@ -64,6 +64,7 @@ const ContactInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
         stateOfOrigin,
         stateOfResidence: stateValueName,
       };
+      console.log(payload);
       const res = await handleCreateContact(payload);
       if (res?.status) {
         gotoNext();
@@ -176,7 +177,7 @@ const ContactInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: (
           isSelect={true}
           dropdownList={
             Array.isArray(stateList)
-              ? stateList.map((state: any) => ({ value: state?.code, label: state?.name }))
+              ? stateList.map((state: any) => ({ value: state?.name, label: state?.name }))
               : []
           }
           control={control}
