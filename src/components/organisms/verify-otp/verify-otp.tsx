@@ -1,89 +1,89 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import HelpSection, { FAQItem } from '../faq-help'
-import Navbar from '../navbar'
-import { toast } from 'react-toastify'
-import useLocalMutation from '@/hooks/useLocalMutation'
-import { IAuth, IVerifyOtpRequest, PAGE_ROUTES } from '@/common/types'
-import { verifyOtpRequest } from '@/api/user'
-import { useRouter } from 'next/navigation'
-import useStore from '@/hooks/useStore'
-import { Spinner } from '@/components/ui/spinner'
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import HelpSection, { FAQItem } from "../faq-help";
+import Navbar from "../navbar";
+import { toast } from "react-toastify";
+import useLocalMutation from "@/hooks/useLocalMutation";
+import { IAuth, IVerifyOtpRequest, PAGE_ROUTES } from "@/common/types";
+import { verifyOtpRequest } from "@/api/user";
+import { useRouter } from "next/navigation";
+import useStore from "@/hooks/useStore";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function VerifyOTPPage() {
-  const [timeLeft, setTimeLeft] = useState(332)
-  const [otp, setOtp] = useState('')
+  const [timeLeft, setTimeLeft] = useState(332);
+  const [otp, setOtp] = useState("");
 
-  const navigate = useRouter()
+  const navigate = useRouter();
   const {
     store: { registeredUser },
     updateStore,
-  } = useStore()
+  } = useStore();
 
   useEffect(() => {
     if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-      return () => clearTimeout(timer)
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
     }
-  }, [timeLeft])
+  }, [timeLeft]);
 
   const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60)
-    const remainingSeconds = seconds % 60
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
       .toString()
-      .padStart(2, '0')}`
-  }
+      .padStart(2, "0")}`;
+  };
 
   const { isPending, mutate } = useLocalMutation<IAuth, IVerifyOtpRequest>({
     mutationFn: ({ email, otp }) => verifyOtpRequest({ email, otp }),
-    onSuccess: res => {
+    onSuccess: (res) => {
       if (registeredUser) {
         updateStore({
           registeredUser: { ...registeredUser, isOtpVerified: true },
-        })
+        });
       }
-      navigate.push(PAGE_ROUTES.LOGIN_PAGE)
+      navigate.push(PAGE_ROUTES.LOGIN_PAGE);
     },
-  })
+  });
 
-  console.log({ registeredUser })
+  console.log({ registeredUser });
 
   const handleVerify = () => {
     if (!registeredUser?.email) {
-      navigate.push(PAGE_ROUTES.REGISTER_PAGE)
-      return
+      navigate.push(PAGE_ROUTES.REGISTER_PAGE);
+      return;
     }
-    mutate({ email: registeredUser.email, otp })
-  }
+    mutate({ email: registeredUser.email, otp });
+  };
 
   const otpPageFAQData: FAQItem[] = [
     {
-      value: 'how-to-apply',
-      title: 'How to Apply',
-      content: 'Check out eligibility process and find out how you can apply.',
+      value: "how-to-apply",
+      title: "How to Apply",
+      content: "Check out eligibility process and find out how you can apply.",
       link: {
-        href: '#',
-        text: 'Click here',
-        className: 'text-orange-500 hover:text-orange-600',
+        href: "#",
+        text: "Click here",
+        className: "text-orange-500 hover:text-orange-600",
       },
     },
     {
-      value: 'new-applicant',
-      title: 'New Applicant?',
-      content: '',
+      value: "new-applicant",
+      title: "New Applicant?",
+      content: "",
     },
     {
-      value: 'have-question',
-      title: 'Have a Question',
-      content: '',
+      value: "have-question",
+      title: "Have a Question",
+      content: "",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen">
@@ -96,8 +96,8 @@ export default function VerifyOTPPage() {
                 Verify OTP
               </CardTitle>
               <p className="text-sm text-gray-600 mt-2">
-                Enter the 6 digit code sent to{' '}
-                <span className="text-orange-500">example@gmail.com</span>
+                Enter the 6 digit code sent to{" "}
+                <span className="text-orange-500">{registeredUser?.email}</span>
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -112,7 +112,7 @@ export default function VerifyOTPPage() {
                   id="verification-code"
                   type="text"
                   value={otp}
-                  onChange={e => setOtp(e.target.value)}
+                  onChange={(e) => setOtp(e.target.value)}
                   placeholder=""
                   className="w-full text-center text-lg tracking-widest"
                   maxLength={6}
@@ -121,7 +121,7 @@ export default function VerifyOTPPage() {
 
               <div className="text-center">
                 <button className="text-sm text-gray-600 hover:text-gray-800">
-                  Resend code in{' '}
+                  Resend code in{" "}
                   <span className="text-orange-500 font-medium">
                     {formatTime(timeLeft)}
                   </span>
@@ -133,7 +133,7 @@ export default function VerifyOTPPage() {
                 className="w-full bg-[#448220] hover:bg-green-800 text-white mt-6 h-[40px]"
                 disabled={!otp || isPending}
               >
-                {isPending ? <Spinner /> : 'Proceed'}
+                {isPending ? <Spinner /> : "Proceed"}
               </Button>
             </CardContent>
           </Card>
@@ -142,5 +142,5 @@ export default function VerifyOTPPage() {
         <HelpSection items={otpPageFAQData} />
       </div>
     </div>
-  )
+  );
 }

@@ -11,6 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Inec Press",
   description: "Inec Press",
+  icons: { icon: "/logo.png" },
 };
 
 export default function RootLayout({
@@ -23,9 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Provider>
           <ToastContainer position="top-center" />
-            <AuthGuard>
-              {children}
-            </AuthGuard>
+          <AuthGuard>{children}</AuthGuard>
         </Provider>
       </body>
     </html>
