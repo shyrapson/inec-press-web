@@ -12,7 +12,9 @@ import {
 } from "../common/types";
 import { UploadMediaEndpoint } from "@/lib/constants";
 
-export const loginRequest = async (payload: ILoginRequest): Promise<IResponse<IAuthResponse>> => {
+export const loginRequest = async (
+  payload: ILoginRequest
+): Promise<IResponse<IAuthResponse>> => {
   const res = await http.post<ILoginRequest>({
     url: "/v1/user/login",
     body: payload,
@@ -32,7 +34,9 @@ export const registerRequest = async (
   return res.payload?.result;
 };
 
-export const verifyOtpRequest = async (payload: IVerifyOtpRequest): Promise<IResponse<IAuth>> => {
+export const verifyOtpRequest = async (
+  payload: IVerifyOtpRequest
+): Promise<IResponse<IAuth>> => {
   const res = await http.post<IVerifyOtpRequest>({
     url: "/v1/user/verify_otp",
     body: payload,
@@ -54,8 +58,19 @@ export const getUsersData = async (): Promise<IResponse | unknown> => {
   });
   return res.payload?.result?.data;
 };
+export const getUsersProfile = async (): Promise<IResponse | any> => {
+  const res = await http.get({
+    url: "/v1/profile/get_profile",
+  });
 
-export const getLgaOfStates = async ({ code }: { code: string }): Promise<IResponse | unknown> => {
+  return res.payload?.result?.data;
+};
+
+export const getLgaOfStates = async ({
+  code,
+}: {
+  code: string;
+}): Promise<IResponse | unknown> => {
   const res = await http.get({
     url: "/v1/get-local-governments",
     query: { code },
@@ -69,7 +84,9 @@ export const getStateUniversities = async (): Promise<IResponse | unknown> => {
   });
   return res.payload?.result?.data;
 };
-export const getFederalUniversities = async (): Promise<IResponse | unknown> => {
+export const getFederalUniversities = async (): Promise<
+  IResponse | unknown
+> => {
   const res = await http.get({
     url: "/v1/get-universities?type=federal",
   });
@@ -132,7 +149,9 @@ export const getRegistrationWard = async ({
   return res.payload?.result?.data;
 };
 
-export const getPreferredElectionState = async (): Promise<IResponse | unknown> => {
+export const getPreferredElectionState = async (): Promise<
+  IResponse | unknown
+> => {
   const res = await http.get({
     url: "/v1/profile/preferred_election_states",
   });
@@ -146,7 +165,11 @@ export const getBankList = async (): Promise<IResponse | unknown> => {
   return res?.payload?.result?.data?.banks;
 };
 
-export const uploadMediaFile = async ({ file }: { file: File }): Promise<IResponse<unknown>> => {
+export const uploadMediaFile = async ({
+  file,
+}: {
+  file: File;
+}): Promise<IResponse<unknown>> => {
   const formData = new FormData();
   formData.append("file", file);
   const res = await axios.post(UploadMediaEndpoint, formData, {
@@ -157,7 +180,11 @@ export const uploadMediaFile = async ({ file }: { file: File }): Promise<IRespon
   return res?.data?.payload?.result?.data;
 };
 
-export const createProfile = async ({ data }: { data: unknown }): Promise<IResponse | unknown> => {
+export const createProfile = async ({
+  data,
+}: {
+  data: unknown;
+}): Promise<IResponse | unknown> => {
   const res = await http.post({
     url: "/v1/profile/complete_registration",
     body: data,
@@ -165,7 +192,11 @@ export const createProfile = async ({ data }: { data: unknown }): Promise<IRespo
   return res?.payload?.result;
 };
 
-export const createContact = async ({ data }: { data: unknown }): Promise<IResponse | unknown> => {
+export const createContact = async ({
+  data,
+}: {
+  data: unknown;
+}): Promise<IResponse | unknown> => {
   const res = await http.post({
     url: "/v1/profile/add_contact",
     body: data,
@@ -173,7 +204,11 @@ export const createContact = async ({ data }: { data: unknown }): Promise<IRespo
   return res?.payload?.result;
 };
 
-export const createBankInfo = async ({ data }: { data: unknown }): Promise<IResponse | unknown> => {
+export const createBankInfo = async ({
+  data,
+}: {
+  data: unknown;
+}): Promise<IResponse | unknown> => {
   const res = await http.post({
     url: "/v1/profile/add_bank",
     body: data,
@@ -181,7 +216,11 @@ export const createBankInfo = async ({ data }: { data: unknown }): Promise<IResp
   return res?.payload?.result;
 };
 
-export const createRefereeInfo = async ({ data }: { data: unknown }): Promise<IResponse | unknown> => {
+export const createRefereeInfo = async ({
+  data,
+}: {
+  data: unknown;
+}): Promise<IResponse | unknown> => {
   const res = await http.post({
     url: "/v1/profile/add_referee",
     body: data,
