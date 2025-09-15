@@ -18,9 +18,19 @@ import { IUser, USER_TYPE } from "@/common/types";
 import { cn, containsNysc, dropdownListToShowForWorkplace } from "@/lib/utils";
 import useStore from "@/hooks/useStore";
 
-const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: () => void }) => {
-  const [identificationFile, setIdentificationFile] = useState<string | null>(null);
-  const [highestQualificationFile, setHighestQualificationFile] = useState<string | null>(null);
+const PersonalInfo = ({
+  gotoNext,
+  gotoPrev,
+}: {
+  gotoNext: () => void;
+  gotoPrev: () => void;
+}) => {
+  const [identificationFile, setIdentificationFile] = useState<string | null>(
+    null
+  );
+  const [highestQualificationFile, setHighestQualificationFile] = useState<
+    string | null
+  >(null);
   const {
     stateList,
     stateUniversityList,
@@ -40,11 +50,14 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
   const { mutateAsync: handleCreateProfile, isPending } = useMutation({
     mutationFn: (data) => createProfile({ data }),
   });
-  const workPlaceDropDownList = dropdownListToShowForWorkplace(userDetails as IUser, {
-    mdaList,
-    federalUniversityList,
-    stateUniversityList,
-  });
+  const workPlaceDropDownList = dropdownListToShowForWorkplace(
+    userDetails as IUser,
+    {
+      mdaList,
+      federalUniversityList,
+      stateUniversityList,
+    }
+  );
   const {
     store: { registeredUser, auth },
   } = useStore();
@@ -85,7 +98,8 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
       console.log({ error });
     }
   };
-  const isDisabled = isValid && !!identificationFile && !!highestQualificationFile;
+  const isDisabled =
+    isValid && !!identificationFile && !!highestQualificationFile;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="pt-4 pb-8">
@@ -161,9 +175,15 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
               inputProps={{
                 disabled: isOrganizationDisabledValue,
               }}
-              defaultValue={!isOrganizationDisabledValue ? undefined : userDetails?.source_name}
+              defaultValue={
+                !isOrganizationDisabledValue
+                  ? undefined
+                  : userDetails?.source_name
+              }
               control={control}
-              dropdownList={isOrganizationDisabledValue ? undefined : workPlaceDropDownList}
+              dropdownList={
+                isOrganizationDisabledValue ? undefined : workPlaceDropDownList
+              }
               isSelect={!isOrganizationDisabledValue}
             />
           </div>
@@ -186,9 +206,19 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
             />
           </div>
         </div>
-        <div className={cn("w-full flex gap-2", !isWorkPlaceOthers ? "flex-col" : "flex-row")}>
+        <div
+          className={cn(
+            "w-full flex gap-2",
+            !isWorkPlaceOthers ? "flex-col" : "flex-row"
+          )}
+        >
           {userIsNysc && (
-            <div className={cn("flex flex-col gap-2", isWorkPlaceOthers ? "w-1/2" : "w-full")}>
+            <div
+              className={cn(
+                "flex flex-col gap-2",
+                isWorkPlaceOthers ? "w-1/2" : "w-full"
+              )}
+            >
               <InputF
                 label="Call-Up Number*"
                 options={{ required: true }}
@@ -198,7 +228,12 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
             </div>
           )}
           {isWorkPlaceOthers && (
-            <div className={cn("flex flex-col gap-2", isWorkPlaceOthers ? "w-1/2" : "w-full")}>
+            <div
+              className={cn(
+                "flex flex-col gap-2",
+                isWorkPlaceOthers ? "w-1/2" : "w-full"
+              )}
+            >
               <InputF
                 label="Other*"
                 options={{ required: true }}
@@ -271,7 +306,12 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
               />
             </div>
           )}
-          <div className={cn("flex flex-col gap-2", userIsNysc ? "w-1/2" : "w-full")}>
+          <div
+            className={cn(
+              "flex flex-col gap-2",
+              userIsNysc ? "w-1/2" : "w-full"
+            )}
+          >
             <InputF
               name="dateOfBirth"
               options={{ required: true }}
@@ -324,7 +364,10 @@ const PersonalInfo = ({ gotoNext, gotoPrev }: { gotoNext: () => void; gotoPrev: 
         </div>
         <div className="w-full flex gap-5">
           <div className="w-1/2 flex flex-col gap-2">
-            <FileUploadPage file={identificationFile} setFile={setIdentificationFile} />
+            <FileUploadPage
+              file={identificationFile}
+              setFile={setIdentificationFile}
+            />
           </div>
           <div className="w-1/2 flex flex-col gap-2">
             <FileUploadPage
