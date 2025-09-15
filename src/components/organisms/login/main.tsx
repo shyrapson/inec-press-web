@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import {
   Form,
@@ -110,7 +110,7 @@ export default function LoginPage(): JSX.Element {
                 Login to your account
               </CardTitle>
               <p className="text-[11px] text-[#607087] mt-2">
-                Please fill out the following fields to create your account
+                Please fill out the following fields to login to your account
               </p>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -124,7 +124,10 @@ export default function LoginPage(): JSX.Element {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-medium text-[#607087]">
+                        <FormLabel
+                          isRequired
+                          className="text-sm font-medium text-[#607087]"
+                        >
                           Email Address
                         </FormLabel>
                         <FormControl>
@@ -150,33 +153,38 @@ export default function LoginPage(): JSX.Element {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-medium text-[#607087]">
+                        <FormLabel
+                          isRequired
+                          className="text-sm font-medium text-[#607087]"
+                        >
                           Password
                         </FormLabel>
                         <FormControl>
-                        <div className="relative">
-                          <Input
-                            id="password"
-                            type={showPassword ? "text" : "password"}
-                            placeholder="••••••••"
-                            className="w-full mb-4 pr-10"
-                            {...field}
-                          />
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
-                            onClick={() => setShowPassword(!showPassword)}
-                            aria-label={showPassword ? "Hide password" : "Show password"}
-                          >
-                            {showPassword ? (
-                              <EyeOff className="h-4 w-4 text-[#607087]" />
-                            ) : (
-                              <Eye className="h-4 w-4 text-[#607087]" />
-                            )}
-                          </Button>
-                        </div>
+                          <div className="relative">
+                            <Input
+                              id="password"
+                              type={showPassword ? "text" : "password"}
+                              placeholder="••••••••"
+                              className="w-full mb-4 pr-10"
+                              {...field}
+                            />
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
+                              onClick={() => setShowPassword(!showPassword)}
+                              aria-label={
+                                showPassword ? "Hide password" : "Show password"
+                              }
+                            >
+                              {showPassword ? (
+                                <EyeOff className="h-4 w-4 text-[#607087]" />
+                              ) : (
+                                <Eye className="h-4 w-4 text-[#607087]" />
+                              )}
+                            </Button>
+                          </div>
                         </FormControl>
                         <FormMessage />
                       </FormItem>

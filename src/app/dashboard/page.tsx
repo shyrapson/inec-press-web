@@ -86,7 +86,7 @@ const DashboardPage = () => {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <InfoItem label="First Name" value={profile?.firstName} />
               <InfoItem label="Email" value={user?.email} />
-              <InfoItem label="Last Name" value={profile?.surname} />
+              <InfoItem label="Surname" value={profile?.surname} />
               <InfoItem label="Marital Status" value={profile?.maritalStatus} />
               <InfoItem label="Other Names" value={profile?.other} />
               <InfoItem
@@ -184,7 +184,7 @@ const DashboardPage = () => {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <InfoItem label="First Name" value={referee?.firstName} />
                   <InfoItem label="Mobile" value={referee?.mobileNumber} />
-                  <InfoItem label="Last Name" value={referee?.surname} />
+                  <InfoItem label="Surname" value={referee?.surname} />
                   <InfoItem label="Email" value={referee?.emailAddress} />
                 </div>
               </div>

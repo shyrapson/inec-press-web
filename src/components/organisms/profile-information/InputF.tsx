@@ -14,7 +14,6 @@ import {
   FieldValues,
   UseFormRegister,
 } from "react-hook-form";
-import { fa } from "zod/v4/locales";
 
 interface InputFProps {
   name: string;
@@ -27,6 +26,7 @@ interface InputFProps {
   control?: Control<FieldValues>;
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
   defaultValue?: string;
+  isRequired?: boolean;
 }
 
 const InputF = ({
@@ -40,12 +40,17 @@ const InputF = ({
   inputProps,
   bottomLabel,
   defaultValue,
+  isRequired = false,
 }: InputFProps) => {
   const idPrefix = useId();
 
   return (
     <>
-      <Label className="text-text-1 font-light text-xs">{label}</Label>
+      <Label className="text-text-1 font-light text-xs">
+        {label}
+        {isRequired && <span className="text-red-500 ml-1">*</span>}
+      </Label>
+
       {!isSelect ? (
         <Input
           {...register(name, options)}
@@ -59,37 +64,34 @@ const InputF = ({
           name={name}
           control={control}
           defaultValue={defaultValue}
-          render={({ field }) => {
-            return (
-              <Select
-                value={field.value ?? defaultValue}
-                disabled={!dropdownList?.length}
-                onValueChange={field.onChange}
-                defaultValue={defaultValue}
+          render={({ field }) => (
+            <Select
+              value={field.value ?? defaultValue}
+              disabled={!dropdownList?.length}
+              onValueChange={field.onChange}
+              defaultValue={defaultValue}
+            >
+              <SelectTrigger
+                className="rounded-none border-[0.5px] border-text-1"
+                ref={field.ref}
               >
-                <SelectTrigger
-                  className="rounded-none border-[0.5px] border-text-1"
-                  ref={field.ref}
-                >
-                  <SelectValue placeholder="-:Select:-" />
-                </SelectTrigger>
-                <SelectContent>
-                  {dropdownList?.map((item, index) => {
-                    return (
-                      <SelectItem
-                        value={item.value}
-                        key={`${idPrefix}-${item.value}+${index}`}
-                      >
-                        {item.label}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectContent>
-              </Select>
-            );
-          }}
+                <SelectValue placeholder="-:Select:-" />
+              </SelectTrigger>
+              <SelectContent>
+                {dropdownList?.map((item, index) => (
+                  <SelectItem
+                    value={item.value}
+                    key={`${idPrefix}-${item.value}+${index}`}
+                  >
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         />
       )}
+
       {bottomLabel && (
         <Label className="text-text-1 font-light italic text-[9px]">
           {bottomLabel}

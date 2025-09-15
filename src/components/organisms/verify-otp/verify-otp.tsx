@@ -106,8 +106,9 @@ export default function VerifyOTPPage() {
                   htmlFor="verification-code"
                   className="text-sm font-medium text-[#607087]"
                 >
-                  Verification Code
+                  Verification Code<span className="text-red-500 ml-1">*</span>
                 </Label>
+
                 <Input
                   id="verification-code"
                   type="text"
