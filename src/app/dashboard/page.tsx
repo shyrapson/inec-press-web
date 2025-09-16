@@ -84,22 +84,31 @@ const DashboardPage = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <InfoItem label="First Name" value={profile?.firstName} />
-              <InfoItem label="Email" value={user?.email} />
               <InfoItem label="Surname" value={profile?.surname} />
-              <InfoItem label="Marital Status" value={profile?.maritalStatus} />
+              <InfoItem label="First Name" value={profile?.firstName} />
               <InfoItem label="Other Names" value={profile?.other} />
+              <InfoItem label="Email" value={user?.email} />
+              <InfoItem label="Phone Number" value={profile?.phone} />
+              <InfoItem label="Gender" value={profile?.gender} />
+              <InfoItem label="Marital Status" value={profile?.maritalStatus} />
               <InfoItem
                 label="Work Place/Organization"
                 value={profile?.workplace}
               />
-              <InfoItem label="Gender" value={profile?.gender} />
+
               <InfoItem
                 label="Staff ID No/Student ID No"
                 value={profile?.callUpNumber}
               />
-              <InfoItem label="Phone Number" value={profile?.phone} />
               <InfoItem label="Designation" value={profile?.designation} />
+              <InfoItem
+                label="Highest Qualification"
+                value={profile?.highestQualification}
+              />
+              <InfoItem
+                label="ID Category"
+                value={profile?.identificationCategory}
+              />
             </div>
           </CardContent>
         </Card>
@@ -189,6 +198,53 @@ const DashboardPage = () => {
                 </div>
               </div>
             ))}
+          </CardContent>
+        </Card>
+
+        <Card
+          className="cursor-pointer"
+          onClick={() =>
+            window.open(profile?.highestQualificationFile || "#", "_blank")
+          }
+        >
+          <CardHeader>
+            <CardTitle className="text-[18px] font-extrabold text-[#111216]">
+              Highest Level of Qualification
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            {profile?.highestQualificationFile ? (
+              <div className="relative w-full h-64 rounded-lg overflow-hidden">
+                <img
+                  src={profile.highestQualificationFile}
+                  alt="Qualification Preview"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center text-white font-medium rounded-lg">
+                  Click to preview
+                </div>
+              </div>
+            ) : (
+              <p className="text-gray-400 text-sm">No document available</p>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card
+          className="cursor-pointer"
+          onClick={() =>
+            window.open(profile?.identificationFile || "#", "_blank")
+          }
+        >
+          <CardHeader>
+            <CardTitle className="text-[18px] font-extrabold text-[#111216]">
+              Identification Document
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <div className="relative w-full h-64 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+              <p className="text-gray-600 font-medium">Click to open PDF</p>
+            </div>
           </CardContent>
         </Card>
       </div>

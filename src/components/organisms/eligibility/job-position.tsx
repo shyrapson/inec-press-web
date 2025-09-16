@@ -16,7 +16,7 @@ const JobPosition = ({ title, requirements }: JobPositionProps) => {
     router.push(PAGE_ROUTES.REGISTER_PAGE);
   };
   return (
-    <div className="relative  bg-green-50 p-4 mb-6">
+    <div className="relative  p-4 mb-6">
       <div className="absolute h-20 left-0 top-4 bottom-4 w-1 bg-green-600 rounded-r"></div>
       <div className="flex justify-between items-start mb-3">
         <h3 className="font-[700] text-sm text-gray-900">{title}</h3>

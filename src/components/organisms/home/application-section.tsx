@@ -46,7 +46,7 @@ const ApplicationSections = () => {
 
           <div>
             <Image
-              src="/svgs/inec-pres-image.svg"
+              src="/svgs/inec-pres-image-update.svg"
               alt={""}
               width={1200}
               height={600}
