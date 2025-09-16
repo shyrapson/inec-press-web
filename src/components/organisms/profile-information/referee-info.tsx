@@ -160,7 +160,6 @@ const RefereeInfo = ({
             <InputF
               name="refereeTwo.mobileNumber"
               isRequired
-              options={{ required: true }}
               register={register}
               label="Mobile Number"
               inputProps={{
