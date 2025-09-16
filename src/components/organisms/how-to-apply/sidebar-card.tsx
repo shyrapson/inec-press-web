@@ -1,0 +1,91 @@
+import Icon from "@/components/atoms/icons";
+import { ReactNode } from "react";
+interface SidebarCardProps {
+  icon: string;
+  iconBgColor?: string;
+  iconColor?: string;
+  title: string;
+  description: string;
+  highlightText?: string;
+}
+
+const SidebarCard = ({
+  icon,
+  iconBgColor,
+  iconColor,
+  title,
+  description,
+  highlightText,
+}: SidebarCardProps) => {
+  const renderDescription = () => {
+    if (!highlightText) {
+      return <span className="text-sm">{description}</span>;
+    }
+
+    const parts = description.split(highlightText);
+    return parts.map((part, index) => (
+      <span key={index}>
+        {part}
+        {index < parts.length - 1 && (
+          <span className="text-sm font-bold text-[#448220]">
+            {highlightText}
+          </span>
+        )}
+      </span>
+    ));
+  };
+
+  return (
+    <div className="w-full border rounded-lg border-election-border rounded-election-card bg-white p-6">
+      <div className="flex flex-col gap-6">
+        <div
+          className="w-12 h-12 flex items-center justify-center rounded-full"
+          style={{ backgroundColor: iconBgColor || "#FFF4F3" }}
+        >
+          <div className="w-full h-full flex items-center justify-center">
+            <Icon icon={icon} color={iconColor} />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-5">
+          <h3 className="text-2xl font-bold text-[#181817] leading-10">
+            {title}
+          </h3>
+          <div className="text-sm leading-6">{renderDescription()}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const HowToApplyCard = () => (
+  <SidebarCard
+    icon="icon-park-solid:guide-board"
+    iconBgColor="#FFF4F3"
+    iconColor="#F65151"
+    title="How To Apply"
+    description="Check out eligibility process and find out how you can apply."
+  />
+);
+
+export const NewApplicantCard = () => (
+  <SidebarCard
+    icon="material-symbols:fiber-new"
+    iconColor="#448220"
+    iconBgColor="#E9FFEE"
+    title="New Applicant"
+    description="Eligible first time (fresh) applicants for the available election staff position."
+  />
+);
+
+export const HaveQuestionCard = () => (
+  <SidebarCard
+    icon="ix:question-filled"
+    iconBgColor="#FFF8EF"
+    iconColor="#E47D05"
+    title="Have a Question?"
+    description="If you are facing any challenge or have a question then click here to contact us."
+  />
+);
+
+export default SidebarCard;
