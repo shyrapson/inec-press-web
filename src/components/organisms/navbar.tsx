@@ -55,6 +55,12 @@ const Navbar: FC<NavbarProps> = ({ isSticky = true }) => {
           FAQs
         </ActiveLink>
         <ActiveLink
+          href="/contact-us"
+          className="text-[#181817] hover:text-green-600 font-medium text-sm"
+        >
+          Contact Us
+        </ActiveLink>
+        <ActiveLink
           href="/app"
           className="text-[#181817] hover:text-green-600 font-medium text-sm"
         >
