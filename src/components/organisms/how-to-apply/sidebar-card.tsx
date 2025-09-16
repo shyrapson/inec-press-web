@@ -1,9 +1,9 @@
 import Icon from "@/components/atoms/icons";
 import { ReactNode } from "react";
-
 interface SidebarCardProps {
   icon: string;
-  iconBgColor: string;
+  iconBgColor?: string;
+  iconColor?: string;
   title: string;
   description: string;
   highlightText?: string;
@@ -12,6 +12,7 @@ interface SidebarCardProps {
 const SidebarCard = ({
   icon,
   iconBgColor,
+  iconColor,
   title,
   description,
   highlightText,
@@ -37,7 +38,15 @@ const SidebarCard = ({
   return (
     <div className="w-full border rounded-lg border-election-border rounded-election-card bg-white p-6">
       <div className="flex flex-col gap-6">
-        <Icon icon={icon} className={`${iconBgColor}`} />
+        <div
+          className="w-12 h-12 flex items-center justify-center rounded-full"
+          style={{ backgroundColor: iconBgColor || "#FFF4F3" }}
+        >
+          <div className="w-full h-full flex items-center justify-center">
+            <Icon icon={icon} color={iconColor} />
+          </div>
+        </div>
+
         <div className="flex flex-col gap-5">
           <h3 className="text-2xl font-bold text-[#181817] leading-10">
             {title}
@@ -52,7 +61,8 @@ const SidebarCard = ({
 export const HowToApplyCard = () => (
   <SidebarCard
     icon="icon-park-solid:guide-board"
-    iconBgColor="text-red-500"
+    iconBgColor="#FFF4F3"
+    iconColor="#F65151"
     title="How To Apply"
     description="Check out eligibility process and find out how you can apply."
   />
@@ -61,7 +71,8 @@ export const HowToApplyCard = () => (
 export const NewApplicantCard = () => (
   <SidebarCard
     icon="material-symbols:fiber-new"
-    iconBgColor="text-green-500"
+    iconColor="#448220"
+    iconBgColor="#E9FFEE"
     title="New Applicant"
     description="Eligible first time (fresh) applicants for the available election staff position."
   />
@@ -70,7 +81,8 @@ export const NewApplicantCard = () => (
 export const HaveQuestionCard = () => (
   <SidebarCard
     icon="ix:question-filled"
-    iconBgColor="text-yellow-500"
+    iconBgColor="#FFF8EF"
+    iconColor="#E47D05"
     title="Have a Question?"
     description="If you are facing any challenge or have a question then click here to contact us."
   />
