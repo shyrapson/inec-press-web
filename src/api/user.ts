@@ -3,14 +3,18 @@ import http from "../common/http";
 import {
   IAuth,
   IAuthResponse,
+  IForgotPasswordRequest,
   ILoginRequest,
   IRegisteredUser,
   IRegistrationRequest,
+  IResendOtpRequest,
+  IResetPasswordRequest,
   IResponse,
   IUser,
   IVerifyOtpRequest,
 } from "../common/types";
 import { UploadMediaEndpoint } from "@/lib/constants";
+import { toast } from "react-toastify";
 
 export const loginRequest = async (
   payload: ILoginRequest
@@ -21,6 +25,29 @@ export const loginRequest = async (
   });
 
   return res.payload?.result;
+};
+export const downloadSlip = async () => {
+  const res = await http.get({
+    url: "v1/profile/download_slip",
+    responseType: "blob",
+  });
+
+  console.log({ res });
+
+  if (res.type === "application/pdf") {
+    const blob = new Blob([res], { type: "application/pdf" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "acknowledgment_slip.pdf";
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+    toast.success("Slip downloaded successfully!");
+  } else {
+    toast.error("Response received: " + JSON.stringify(res.data));
+  }
 };
 
 export const registerRequest = async (
@@ -39,6 +66,38 @@ export const verifyOtpRequest = async (
 ): Promise<IResponse<IAuth>> => {
   const res = await http.post<IVerifyOtpRequest>({
     url: "/v1/user/verify_otp",
+    body: payload,
+  });
+
+  return res.payload?.result;
+};
+export const resendOtpRequest = async (
+  payload: IResendOtpRequest
+): Promise<IResponse<IAuth>> => {
+  const res = await http.post<IResendOtpRequest>({
+    url: "/v1/user/resend_otp",
+    body: payload,
+  });
+
+  return res.payload?.result;
+};
+
+export const forgotPasswordRequest = async (
+  payload: IForgotPasswordRequest
+): Promise<IResponse<IAuth>> => {
+  const res = await http.post<IForgotPasswordRequest>({
+    url: "/v1/user/forgot_password",
+    body: payload,
+  });
+
+  return res.payload?.result;
+};
+
+export const resetPasswordRequest = async (
+  payload: IResetPasswordRequest
+): Promise<IResponse<IAuth>> => {
+  const res = await http.post<IResetPasswordRequest>({
+    url: "/v1/user/reset_password",
     body: payload,
   });
 
@@ -165,7 +224,13 @@ export const getBankList = async (): Promise<IResponse | unknown> => {
   return res?.payload?.result?.data?.banks;
 };
 
-export const verifyBankAccountRequest = async ({ accountNumber, bankCode }: { accountNumber: string; bankCode: string }): Promise<IResponse | unknown> => {
+export const verifyBankAccountRequest = async ({
+  accountNumber,
+  bankCode,
+}: {
+  accountNumber: string;
+  bankCode: string;
+}): Promise<IResponse | unknown> => {
   const res = await http.post({
     url: "/v1/bank/verify",
     body: { accountNumber, bankCode },

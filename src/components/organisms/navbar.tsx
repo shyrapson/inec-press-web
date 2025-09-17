@@ -6,12 +6,28 @@ import { Button } from "@/components/ui/button";
 import type { FC } from "react";
 import { useRouter } from "next/navigation";
 import ActiveLink from "@/components/ui/active-link";
+import { mixpanel } from "@/lib/mixpanel";
 
 interface NavbarProps {
   isSticky?: boolean;
 }
 
 const Navbar: FC<NavbarProps> = ({ isSticky = true }) => {
+  const handleLogin = () => {
+    mixpanel.track("Navbar Login Clicked", {
+      source: "navbar",
+      timestamp: new Date().toISOString(),
+    });
+    router.push("/login");
+  };
+  const handleRegister = () => {
+    mixpanel.track("Navbar Login Clicked", {
+      source: "navbar",
+      timestamp: new Date().toISOString(),
+    });
+    router.push("/register");
+  };
+
   const router = useRouter();
   return (
     <nav
@@ -71,13 +87,13 @@ const Navbar: FC<NavbarProps> = ({ isSticky = true }) => {
         <Button
           variant="outline"
           className="border-green-600 text-[#448220] hover:bg-green-50 bg-transparent h-[41px]"
-          onClick={() => router.push("/register")}
+          onClick={handleRegister}
         >
           Register
         </Button>
         <Button
           className="bg-[#448220] hover:bg-[#448220] text-white h-[41px]"
-          onClick={() => router.push("/login")}
+          onClick={handleLogin}
         >
           Login
         </Button>

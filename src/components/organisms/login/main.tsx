@@ -17,20 +17,26 @@ import HelpSection, { FAQItem } from "../faq-help";
 import {
   IAuthResponse,
   ILoginRequest,
+  IResetPasswordRequest,
   loginSchema,
   PAGE_ROUTES,
 } from "@/common/types";
 import useLocalMutation from "@/hooks/useLocalMutation";
-import { loginRequest } from "@/api/user";
+import { loginRequest, resetPasswordRequest } from "@/api/user";
 import { useRouter } from "next/navigation";
 import useStore from "@/hooks/useStore";
 import { Spinner } from "@/components/ui/spinner";
-import Footer from "../footer";
 import { useState } from "react";
-import { EyeOff } from "lucide-react";
-import { Eye } from "lucide-react";
+import { EyeOff, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  trackPageView,
+  trackLoginAttempt,
+  trackLoginSuccess,
+  trackLoginError,
+  identifyUser,
+} from "@/lib/mixpanel";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -87,24 +93,41 @@ export default function LoginPage(): JSX.Element {
         updateStore({
           auth: { token: res.data?.token, currentUser: res.data?.user },
         });
+        console.log(res.data);
+        trackLoginSuccess(res?.data?.user?.name);
+        identifyUser(res?.data?.user?.name, {
+          email: res.data?.user?.email,
+        });
       }
+
       navigate.push(
         res.data?.user?.isReturningApplicant
           ? PAGE_ROUTES.DASHBOARD_PAGE
           : PAGE_ROUTES.PROFILE_INFO_PAGE
       );
     },
+    onError: (err) => {
+      trackLoginError((err as Error).message);
+    },
   });
 
-  const onSubmit = (data: LoginFormValues) => mutate(data);
+  const handleResetPassword = () => {
+    navigate.push("/reset-password");
+  };
+
+  const onSubmit = (data: LoginFormValues) => {
+    trackLoginAttempt(data.email);
+    mutate(data);
+  };
+
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="min-h-screen relative">
       <Navbar isSticky={false} />
-      <div className="h-screen w-full absolute -top-4 flex  justify-between z-0">
-        <div className="p-4 md:p-20  flex-1 bg-[#448220] bg-[url('/svgs/group-items.svg')] bg-cover bg-no-repeat flex items-center justify-center p-20">
-          <Card className="w-full max-w-[461px] shadow-lg py-10 mt-16 ">
+      <div className="h-screen w-full absolute -top-4 flex justify-between z-0">
+        <div className="p-4 md:p-20 flex-1 bg-[#448220] bg-[url('/svgs/group-items.svg')] bg-cover bg-no-repeat flex items-center justify-center p-20">
+          <Card className="w-full max-w-[461px] shadow-lg py-10 mt-16">
             <CardHeader className="text-center">
               <CardTitle className="text-lg font-semibold text-gray-900">
                 Login to your account
@@ -139,10 +162,6 @@ export default function LoginPage(): JSX.Element {
                             {...field}
                           />
                         </FormControl>
-                        {/* <p className="text-xs text-gray-500">
-                          Enter the email address your registered with on this
-                          platform.
-                        </p> */}
                         <FormMessage />
                       </FormItem>
                     )}
@@ -173,7 +192,9 @@ export default function LoginPage(): JSX.Element {
                               variant="ghost"
                               size="sm"
                               className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
-                              onClick={() => setShowPassword(!showPassword)}
+                              onClick={() => {
+                                setShowPassword(!showPassword);
+                              }}
                               aria-label={
                                 showPassword ? "Hide password" : "Show password"
                               }
@@ -190,6 +211,15 @@ export default function LoginPage(): JSX.Element {
                       </FormItem>
                     )}
                   />
+                  <div className="w-full text-xs text-right">
+                    Forgot Password?{" "}
+                    <span
+                      className="hover:underline text-[#448220] cursor-pointer"
+                      onClick={handleResetPassword}
+                    >
+                      Reset It
+                    </span>
+                  </div>
 
                   <Button
                     type="submit"

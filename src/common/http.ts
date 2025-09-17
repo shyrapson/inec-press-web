@@ -51,10 +51,12 @@ const httpConfig = () => {
       return response.data;
     },
 
-    get: async <T>({ url, query }: IGet<T>) => {
+    get: async <T>({ url, query, responseType }: IGet<T>) => {
       const queryString = `?${QueryString.stringify(query ?? {})}`;
-      const Url = QueryString.stringify(query ?? {}) ? `${url + queryString}` : `${url}`;
-      const response = await http.get(Url);
+      const Url = QueryString.stringify(query ?? {})
+        ? `${url + queryString}`
+        : `${url}`;
+      const response = await http.get(Url, { responseType });
       return response.data;
     },
 

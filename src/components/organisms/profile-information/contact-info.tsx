@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import ProfileFooter from "./profile-footer";
 import InputF from "./InputF";
@@ -11,6 +12,7 @@ import {
   getRegistrationWard,
 } from "@/api/user";
 import { QUERY_KEYS } from "@/lib/constants";
+import { trackPageView } from "@/lib/mixpanel";
 
 const ContactInfo = ({
   gotoNext,
@@ -26,6 +28,11 @@ const ContactInfo = ({
     watch,
     handleSubmit,
   } = useFormContext();
+
+  useEffect(() => {
+    trackPageView("Contact Info Page Viewed");
+  }, []);
+
   const [stateValue, stateValueName] =
     watch("stateOfResidence")?.split("-") ?? [];
   const [lgaValue, lgaValueName] = watch("lgaOfResidence")?.split("-") ?? [];
