@@ -97,8 +97,9 @@ export default function LoginPage(): JSX.Element {
           auth: { token: res.data?.token, currentUser: res.data?.user },
         });
 
-        trackLoginSuccess(res?.data?.user?._id);
-        identifyUser(res?.data?.user?._id, {
+        console.log(res.data, "login success");
+        trackLoginSuccess(res?.data?.user?.name);
+        identifyUser(res?.data?.user?.name, {
           email: res.data?.user?.email,
         });
       }

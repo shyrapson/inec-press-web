@@ -31,11 +31,11 @@ export const trackPageView = (
 };
 
 export const identifyUser = (
-  userId: string,
+  userName: string,
   properties?: Record<string, any>
 ) => {
   if (MIXPANEL_TOKEN) {
-    mixpanel.identify(userId);
+    mixpanel.identify(userName);
     if (properties) {
       mixpanel.people.set(properties);
     }
@@ -52,9 +52,9 @@ export const trackLoginAttempt = (email: string) => {
   trackEvent("Login Attempt", { email });
 };
 
-export const trackLoginSuccess = (userId: string) => {
+export const trackLoginSuccess = (userName: string) => {
   trackEvent("Login Success", {
-    user_id: userId,
+    user_name: userName,
   });
 };
 
@@ -76,8 +76,8 @@ export const trackRegistrationAttempt = (data: {
   });
 };
 
-export const trackRegistrationSuccess = (userId: string) => {
-  trackEvent("Registration Success", { user_id: userId });
+export const trackRegistrationSuccess = (userName: string) => {
+  trackEvent("Registration Success", { user_id: userName });
 };
 
 export const trackRegistrationError = (error: string) => {

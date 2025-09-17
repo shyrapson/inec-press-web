@@ -10,13 +10,13 @@ import Navbar from "../navbar";
 import { toast } from "react-toastify";
 import useLocalMutation from "@/hooks/useLocalMutation";
 import { IAuth, IVerifyOtpRequest, PAGE_ROUTES } from "@/common/types";
-import { verifyOtpRequest } from "@/api/user";
+import { resendOtpRequest, verifyOtpRequest } from "@/api/user";
 import { useRouter } from "next/navigation";
 import useStore from "@/hooks/useStore";
 import { Spinner } from "@/components/ui/spinner";
 
 export default function VerifyOTPPage() {
-  const [timeLeft, setTimeLeft] = useState(332);
+  const [timeLeft, setTimeLeft] = useState(100);
   const [otp, setOtp] = useState("");
 
   const navigate = useRouter();
@@ -27,7 +27,7 @@ export default function VerifyOTPPage() {
 
   useEffect(() => {
     if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      const timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
       return () => clearTimeout(timer);
     }
   }, [timeLeft]);
@@ -40,9 +40,12 @@ export default function VerifyOTPPage() {
       .padStart(2, "0")}`;
   };
 
-  const { isPending, mutate } = useLocalMutation<IAuth, IVerifyOtpRequest>({
+  const { isPending: isVerifying, mutate: verifyOtp } = useLocalMutation<
+    IAuth,
+    IVerifyOtpRequest
+  >({
     mutationFn: ({ email, otp }) => verifyOtpRequest({ email, otp }),
-    onSuccess: (res) => {
+    onSuccess: () => {
       if (registeredUser) {
         updateStore({
           registeredUser: { ...registeredUser, isOtpVerified: true },
@@ -52,14 +55,31 @@ export default function VerifyOTPPage() {
     },
   });
 
-  console.log({ registeredUser });
+  const { isPending: isResending, mutate: resendOtp } = useLocalMutation<
+    IAuth,
+    IVerifyOtpRequest
+  >({
+    mutationFn: ({ email }) => resendOtpRequest({ email }),
+    onSuccess: () => {
+      toast.success("OTP resent successfully!");
+      setTimeLeft(100);
+    },
+  });
 
   const handleVerify = () => {
     if (!registeredUser?.email) {
       navigate.push(PAGE_ROUTES.REGISTER_PAGE);
       return;
     }
-    mutate({ email: registeredUser.email, otp });
+    verifyOtp({ email: registeredUser.email, otp });
+  };
+
+  const handleResend = () => {
+    if (!registeredUser?.email) {
+      navigate.push(PAGE_ROUTES.REGISTER_PAGE);
+      return;
+    }
+    resendOtp({ email: registeredUser.email, otp: "" });
   };
 
   const otpPageFAQData: FAQItem[] = [
@@ -89,7 +109,7 @@ export default function VerifyOTPPage() {
     <div className="min-h-screen">
       <Navbar />
       <div className="flex justify-between">
-        <div className="flex-1 flex items-start h-screen bg-[#DDDFE4] bg-[url('/svgs/group-items.svg')] bg-cover bg-no-repeat  justify-center px-32 py-10">
+        <div className="flex-1 flex items-start h-screen bg-[#DDDFE4] bg-[url('/svgs/group-items.svg')] bg-cover bg-no-repeat justify-center px-32 py-10">
           <Card className="w-full max-w-3xl shadow-lg py-10">
             <CardHeader className="text-center">
               <CardTitle className="text-xl font-semibold text-gray-900">
@@ -114,27 +134,36 @@ export default function VerifyOTPPage() {
                   type="text"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
-                  placeholder=""
                   className="w-full text-center text-lg tracking-widest"
                   maxLength={6}
                 />
               </div>
 
               <div className="text-center">
-                <button className="text-sm text-gray-600 hover:text-gray-800">
-                  Resend code in{" "}
-                  <span className="text-orange-500 font-medium">
-                    {formatTime(timeLeft)}
+                {timeLeft > 0 ? (
+                  <span className="text-sm text-gray-600">
+                    Resend code in{" "}
+                    <span className="text-orange-500 font-medium">
+                      {formatTime(timeLeft)}
+                    </span>
                   </span>
-                </button>
+                ) : (
+                  <button
+                    onClick={handleResend}
+                    className="text-sm text-orange-500 hover:text-orange-600 disabled:opacity-50"
+                    disabled={isResending}
+                  >
+                    {isResending ? "Resending..." : "Resend Code"}
+                  </button>
+                )}
               </div>
 
               <Button
                 onClick={handleVerify}
                 className="w-full bg-[#448220] hover:bg-green-800 text-white mt-6 h-[40px]"
-                disabled={!otp || isPending}
+                disabled={!otp || isVerifying}
               >
-                {isPending ? <Spinner /> : "Proceed"}
+                {isVerifying ? <Spinner /> : "Proceed"}
               </Button>
             </CardContent>
           </Card>
