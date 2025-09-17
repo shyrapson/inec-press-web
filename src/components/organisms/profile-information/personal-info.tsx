@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import ProfileFooter from "./profile-footer";
 import { useFormContext } from "react-hook-form";
@@ -131,7 +131,7 @@ const PersonalInfo = ({
           </div>
         </div>
         <div className="w-full flex flex-col gap-2">
-          <InputF label="Other Names" name="otherName" register={register} />
+          <InputF label="Other Names" name="others" register={register} />
         </div>
         <div className="w-full flex gap-5">
           <div className="w-1/2 flex flex-col gap-2">
@@ -262,7 +262,7 @@ const PersonalInfo = ({
                 label="Other"
                 isRequired
                 options={{ required: true }}
-                name="other"
+                name="workplace"
                 register={register}
               />
             </div>
