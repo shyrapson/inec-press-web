@@ -1,3 +1,4 @@
+import { AxiosHeaders, AxiosRequestConfig, CreateAxiosDefaults } from "axios";
 import * as z from "zod";
 export const profileSchema = z
   .object({
@@ -17,6 +18,11 @@ export const loginSchema = z.object({
     .string()
     .email("Enter the email address your registered with on this platform."),
   password: z.string().min(8, "Password must be at least 8 characters"),
+});
+export const resetPasswordSchema = z.object({
+  email: z
+    .string()
+    .email("Enter the email address your registered with on this platform."),
 });
 
 export enum PAGE_ROUTES {
@@ -54,6 +60,7 @@ export type IPut<T = Record<string, unknown>> = IPost<T>;
 
 export interface IGet<T = Record<string, unknown>> extends IDelete {
   query?: T;
+  responseType?: AxiosRequestConfig["responseType"];
 }
 export interface IResponse<D = any> {
   user: any;
@@ -156,6 +163,17 @@ export interface IVerifyOtpRequest {
   otp: string;
 }
 export interface IResendOtpRequest {
+  email: string;
+}
+export interface IResendOtpRequest {
+  email: string;
+}
+export interface IResetPasswordRequest {
+  email: string;
+  password: string;
+  otp: string;
+}
+export interface IForgotPasswordRequest {
   email: string;
 }
 

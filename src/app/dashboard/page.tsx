@@ -2,12 +2,15 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { DownloadIcon, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useStore from "@/hooks/useStore";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { getUsersData, getUsersProfile } from "@/api/user";
+import { downloadSlip, getUsersData, getUsersProfile } from "@/api/user";
+import useLocalMutation from "@/hooks/useLocalMutation";
+import { useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
 
 const DashboardPage = () => {
   const router = useRouter();
@@ -34,6 +37,13 @@ const DashboardPage = () => {
   const bankDetails = user?.bankDetails;
   const referees = user?.refereeInformation;
   const election = user?.lastApplication?.election;
+  const [loading, setLoading] = useState(false);
+
+  const download = async () => {
+    setLoading(true);
+    await downloadSlip();
+    setLoading(false);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-10">
@@ -51,14 +61,34 @@ const DashboardPage = () => {
               <p className="text-gray-300">Welcome Back</p>
             </div>
           </div>
-          <Button
-            onClick={() => handleLogOut()}
-            variant="outline"
-            className="bg-white text-[#F65151] hover:bg-gray-100"
-          >
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </Button>
+          <div className="flex items-center gap-10">
+            <Button
+              variant="outline"
+              className="w-[267px] bg-white text-green-600 hover:bg-white hover:text-green-800"
+              onClick={download}
+            >
+              {loading ? (
+                <div className="flex items-center gap-6">
+                  {" "}
+                  <Spinner />
+                  Downloading....
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <DownloadIcon className="mr-2 h-4 w-4" />
+                  Download acknowledgement slip
+                </div>
+              )}
+            </Button>
+            <Button
+              onClick={() => handleLogOut()}
+              variant="outline"
+              className="bg-white text-[#F65151] hover:bg-gray-100"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </Button>
+          </div>
         </div>
       </header>
 

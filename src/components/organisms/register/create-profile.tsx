@@ -51,6 +51,7 @@ import {
   trackPasswordVisibilityToggle,
   trackEvent,
 } from "@/lib/mixpanel";
+import { toast } from "react-toastify";
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
@@ -128,7 +129,10 @@ export default function CreateProfilePage() {
 
       trackRegistrationSuccess(res?.data?.email || "unknown");
       updateStore({ registeredUser: res.data });
-      navigate.push(PAGE_ROUTES.VERIFY_OTP_PAGE);
+      // navigate.push(PAGE_ROUTES.VERIFY_OTP_PAGE);
+      toast.success("Verification successful, proceed to login");
+
+      navigate.push(PAGE_ROUTES.LOGIN_PAGE);
     },
     onError: (error) => {
       trackRegistrationError(error.message || "Unknown registration error");
