@@ -15,9 +15,9 @@ export const SideBar = () => {
           />
         </div>
         <div className="flex flex-col">
-          <span className="text-black md:text-base font-bold ">INEC PRESS</span>
+          <span className="text-black md:text-base font-bold ">INECPRES</span>
           <span className="text-[4px] md:text-[6px]">
-            Portal for the engagement of election staff
+            INEC Portal for Engagement of Election Staff
           </span>
         </div>
       </div>
