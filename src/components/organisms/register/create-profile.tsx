@@ -125,7 +125,8 @@ export default function CreateProfilePage() {
       registerRequest({ electionId, email, password, position_id, source_id }),
     onSuccess: (res) => {
       console.log({ res, registeredUser: res.data });
-      trackRegistrationSuccess(res?.data?._id || "unknown");
+
+      trackRegistrationSuccess(res?.data?.email || "unknown");
       updateStore({ registeredUser: res.data });
       navigate.push(PAGE_ROUTES.VERIFY_OTP_PAGE);
     },

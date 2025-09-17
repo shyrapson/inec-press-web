@@ -155,6 +155,9 @@ export interface IVerifyOtpRequest {
   email: string;
   otp: string;
 }
+export interface IResendOtpRequest {
+  email: string;
+}
 
 export interface IPosition {
   _id: string;

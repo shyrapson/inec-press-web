@@ -6,6 +6,7 @@ import {
   ILoginRequest,
   IRegisteredUser,
   IRegistrationRequest,
+  IResendOtpRequest,
   IResponse,
   IUser,
   IVerifyOtpRequest,
@@ -39,6 +40,16 @@ export const verifyOtpRequest = async (
 ): Promise<IResponse<IAuth>> => {
   const res = await http.post<IVerifyOtpRequest>({
     url: "/v1/user/verify_otp",
+    body: payload,
+  });
+
+  return res.payload?.result;
+};
+export const resendOtpRequest = async (
+  payload: IResendOtpRequest
+): Promise<IResponse<IAuth>> => {
+  const res = await http.post<IResendOtpRequest>({
+    url: "/v1/user/resend_otp",
     body: payload,
   });
 
@@ -165,7 +176,13 @@ export const getBankList = async (): Promise<IResponse | unknown> => {
   return res?.payload?.result?.data?.banks;
 };
 
-export const verifyBankAccountRequest = async ({ accountNumber, bankCode }: { accountNumber: string; bankCode: string }): Promise<IResponse | unknown> => {
+export const verifyBankAccountRequest = async ({
+  accountNumber,
+  bankCode,
+}: {
+  accountNumber: string;
+  bankCode: string;
+}): Promise<IResponse | unknown> => {
   const res = await http.post({
     url: "/v1/bank/verify",
     body: { accountNumber, bankCode },
