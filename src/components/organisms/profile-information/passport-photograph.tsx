@@ -1,5 +1,5 @@
-"use-client";
-import React, { ChangeEvent, useState } from "react";
+"use client";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import ProfileFooter from "./profile-footer";
 import { UserIcon } from "lucide-react";
 import Image from "next/image";
@@ -12,6 +12,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { IToken, IUser, PAGE_ROUTES } from "@/common/types";
 import { useRouter } from "next/navigation";
 import useStore from "@/hooks/useStore";
+import { trackPageView } from "@/lib/mixpanel";
 
 const PassportPhotograph = ({
   gotoNext,
@@ -26,6 +27,10 @@ const PassportPhotograph = ({
   const [tempData, setTempData] = useState<any | null>(null);
   const [user, setUser] = useState<IUser | null>(null);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    trackPageView("Passport Info Page Viewed");
+  }, []);
 
   const { mutateAsync: handleUploadFile, isPending: isUploadingProfile } =
     useMutation({
