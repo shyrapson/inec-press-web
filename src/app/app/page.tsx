@@ -31,7 +31,7 @@ const DownloadPage = () => {
           <div className="flex flex-col">
             <span className="text-black md:text-xl font-bold">INECPRES</span>
             <span className="text-[8px] md:text-xs">
-              PORTAL FOR THE ENGAGEMENT OF ELECTORAL STAFF
+              PORTAL FOR THE RECRUITMENT OF ELECTORAL STAFF
             </span>
           </div>
         </div>
@@ -59,12 +59,9 @@ const DownloadPage = () => {
       <section className=" md:mx-[10%] ">
         <div className="flex items-center justify-center flex-col w-full px-3 md:pb-20">
           <div className="text-center my-8 flex items-center justify-center flex-col w-full">
-            <h1 className="font-bold text-[28px] md:text-[40px] md:w-[70%]">
-              Centralized App For INEC Election Staff Engagement
-            </h1>
             <p className="md:text-[18px] my-2 md:mx-[200px] md:w-[60%]">
               Download the mobile application for the Independent National
-              Electoral Commission’s Portal for Engagement of Election Staff
+              Electoral Commission’s Portal for recruitment of Election Staff
               (INECPRES).
             </p>
             <div className="flex items-center justify-center gap-6 md:mb-10 mb-5 md:mt-4">
