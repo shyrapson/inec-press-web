@@ -36,12 +36,21 @@ import { Spinner } from "@/components/ui/spinner";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { getElectionsRequest } from "@/api/elections";
 import { getPositionSourceRequest } from "@/api/adhoc-positions";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import useStore from "@/hooks/useStore";
 import Footer from "../footer";
 import { loginPageFAQData } from "../login/main";
 import { Eye, EyeOff } from "lucide-react";
+import {
+  trackPageView,
+  trackRegistrationAttempt,
+  trackRegistrationSuccess,
+  trackRegistrationError,
+  trackFormFieldInteraction,
+  trackPasswordVisibilityToggle,
+  trackEvent,
+} from "@/lib/mixpanel";
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
@@ -71,6 +80,10 @@ const profilePageFAQData: FAQItem[] = [
 export default function CreateProfilePage() {
   const navigate = useRouter();
   const { updateStore } = useStore();
+
+  useEffect(() => {
+    trackPageView("Create Profile Page");
+  }, []);
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -112,12 +125,22 @@ export default function CreateProfilePage() {
       registerRequest({ electionId, email, password, position_id, source_id }),
     onSuccess: (res) => {
       console.log({ res, registeredUser: res.data });
+      trackRegistrationSuccess(res?.data?._id || "unknown");
       updateStore({ registeredUser: res.data });
       navigate.push(PAGE_ROUTES.VERIFY_OTP_PAGE);
+    },
+    onError: (error) => {
+      trackRegistrationError(error.message || "Unknown registration error");
     },
   });
 
   const onSubmit = (data: ProfileFormValues) => {
+    trackRegistrationAttempt({
+      electionId: data.electionId,
+      positionId: data.position_id,
+      sourceId: data.source_id,
+      email: data.email,
+    });
     mutate(data);
   };
   const [showPassword, setShowPassword] = useState(false);

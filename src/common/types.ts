@@ -56,6 +56,7 @@ export interface IGet<T = Record<string, unknown>> extends IDelete {
   query?: T;
 }
 export interface IResponse<D = any> {
+  user: any;
   data?: D;
   status?: number;
   message?: string;
@@ -122,7 +123,7 @@ export interface IAuth {
 }
 
 export interface IAuthResponse {
-  user: IUser | null;
+  user: IUser | any;
   token: IToken | null;
 }
 

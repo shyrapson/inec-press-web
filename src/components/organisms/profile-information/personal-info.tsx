@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import ProfileFooter from "./profile-footer";
 import { useFormContext } from "react-hook-form";
@@ -17,6 +18,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { IUser, USER_TYPE } from "@/common/types";
 import { cn, containsNysc, dropdownListToShowForWorkplace } from "@/lib/utils";
 import useStore from "@/hooks/useStore";
+import { trackPageView } from "@/lib/mixpanel";
 
 const PersonalInfo = ({
   gotoNext,
@@ -73,6 +75,10 @@ const PersonalInfo = ({
   const isWorkPlaceOthers = watch("workplace")?.split("-")?.[0] === OTHERS;
   const isDesignationForINec = watch("designation") === INEC_STAFF;
   console.log(isDesignationForINec);
+
+  useEffect(() => {
+    trackPageView("Personal Info Page Viewed");
+  }, []);
 
   const isGradeLevel =
     watch("designation") === INEC_STAFF ||

@@ -1,9 +1,11 @@
-import React from "react";
+'use client'
+import React, { useEffect } from "react";
 import ProfileFooter from "./profile-footer";
 import InputF from "./InputF";
 import { useForm, useFormContext } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { createRefereeInfo } from "@/api/user";
+import { trackPageView } from "@/lib/mixpanel";
 
 const RefereeInfo = ({
   gotoNext,
@@ -17,6 +19,11 @@ const RefereeInfo = ({
     formState: { isValid },
     handleSubmit,
   } = useFormContext();
+
+  useEffect(() => {
+    trackPageView("Personal Info Page Viewed");
+  }, []);
+
   const { mutateAsync: handleCreateReferee, isPending } = useMutation<
     any,
     unknown,

@@ -31,6 +31,15 @@ import { EyeOff } from "lucide-react";
 import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  trackPageView,
+  trackLoginAttempt,
+  trackLoginSuccess,
+  trackLoginError,
+  trackFormFieldInteraction,
+  trackPasswordVisibilityToggle,
+  identifyUser,
+} from "@/lib/mixpanel";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -87,7 +96,13 @@ export default function LoginPage(): JSX.Element {
         updateStore({
           auth: { token: res.data?.token, currentUser: res.data?.user },
         });
+
+        trackLoginSuccess(res?.data?.user?._id);
+        identifyUser(res?.data?.user?._id, {
+          email: res.data?.user?.email,
+        });
       }
+
       navigate.push(
         res.data?.user?.isReturningApplicant
           ? PAGE_ROUTES.DASHBOARD_PAGE
@@ -96,7 +111,10 @@ export default function LoginPage(): JSX.Element {
     },
   });
 
-  const onSubmit = (data: LoginFormValues) => mutate(data);
+  const onSubmit = (data: LoginFormValues) => {
+    trackLoginAttempt(data.email);
+    mutate(data);
+  };
   const [showPassword, setShowPassword] = useState(false);
 
   return (
