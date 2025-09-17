@@ -262,7 +262,7 @@ const PersonalInfo = ({
                 label="Other"
                 isRequired
                 options={{ required: true }}
-                name="other"
+                name="others"
                 register={register}
               />
             </div>
