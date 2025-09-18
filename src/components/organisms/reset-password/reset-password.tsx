@@ -35,7 +35,7 @@ const forgotPasswordSchema = z.object({
 const resetPasswordFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-  otp: z.string().min(4, "OTP must be at least 4 digits"),
+  otp: z.string().min(6, "OTP must be at least 6 digits"),
 });
 
 export const loginPageFAQData: FAQItem[] = [
