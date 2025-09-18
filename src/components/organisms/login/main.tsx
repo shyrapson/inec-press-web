@@ -96,6 +96,7 @@ export default function LoginPage(): JSX.Element {
         console.log(res.data);
         trackLoginSuccess(res?.data?.user?.name);
         identifyUser(res?.data?.user?.name, {
+          name: res?.data?.user?.name,
           email: res.data?.user?.email,
         });
       }

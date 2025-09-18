@@ -135,6 +135,19 @@ export default function CreateProfilePage() {
       navigate.push(PAGE_ROUTES.LOGIN_PAGE);
     },
     onError: (error) => {
+      if (
+        "response" in error &&
+        error.response &&
+        typeof error.response === "object" &&
+        "data" in error.response &&
+        (error.response as { data?: { message?: string } }).data?.message
+      ) {
+        toast.error(
+          (error.response as { data?: { message?: string } }).data?.message
+        );
+      } else {
+        toast.error(error.message);
+      }
       trackRegistrationError(error.message || "Unknown registration error");
     },
   });

@@ -7,10 +7,10 @@ const ApplicationSections = () => {
   return (
     <section className="py-16 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between gap-10 mb-10">
+        <div className="flex justify-between md:flex-row flex-col gap-10 mb-10">
           <div>
             <div>
-              <h1 className="font-bold text-2xl py-2">
+              <h1 className="font-bold text-2xl py-2 text-center md:text-left">
                 INEC Portal for Engagement of Election Staff
               </h1>
               <p>
