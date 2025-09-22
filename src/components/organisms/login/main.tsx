@@ -37,6 +37,7 @@ import {
   trackLoginError,
   identifyUser,
 } from "@/lib/mixpanel";
+import { toast } from "react-toastify";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -100,7 +101,6 @@ export default function LoginPage(): JSX.Element {
           email: res.data?.user?.email,
         });
       }
-
       navigate.push(
         res.data?.user?.isReturningApplicant
           ? PAGE_ROUTES.DASHBOARD_PAGE
@@ -108,7 +108,16 @@ export default function LoginPage(): JSX.Element {
       );
     },
     onError: (err) => {
-      trackLoginError((err as Error).message);
+      const errorMessage =
+        (typeof err === "object" &&
+          err !== null &&
+          "response" in err &&
+          (err as any).response?.data?.message) ||
+        (err as Error).message ||
+        "An error occurred during login.";
+      toast.error(errorMessage);
+
+      trackLoginError(errorMessage);
     },
   });
 
