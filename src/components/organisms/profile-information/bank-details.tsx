@@ -26,6 +26,7 @@ const BankDetails = ({
     watch,
     handleSubmit,
   } = useFormContext();
+  console.log(isValid);
 
   const { mutateAsync: handleCreateBank, isPending } = useMutation<
     any,

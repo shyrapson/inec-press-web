@@ -214,7 +214,7 @@ export default function ResetPasswordPage(): JSX.Element {
                               type="text"
                               placeholder="Enter 4-digit OTP"
                               className="w-full"
-                              maxLength={4}
+                              minLength={6}
                               {...field}
                             />
                           </FormControl>
