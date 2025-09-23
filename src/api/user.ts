@@ -71,6 +71,15 @@ export const verifyOtpRequest = async (
 
   return res.payload?.result;
 };
+
+export const refreshToken = async (payload: any): Promise<IResponse<IAuth>> => {
+  const res = await http.post<any>({
+    url: "/v1/user/refresh_token",
+    body: payload,
+  });
+
+  return res.payload?.result;
+};
 export const resendOtpRequest = async (
   payload: IResendOtpRequest
 ): Promise<IResponse<IAuth>> => {
