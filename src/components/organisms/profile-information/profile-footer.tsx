@@ -7,9 +7,9 @@ import React from "react";
 const ProfileFooter = ({
   gotoNext,
   gotoPrev,
-  isValid,
+  isValid = true,
   end,
-  isLoading,
+  isLoading = false,
   btnText = "Next",
 }: {
   gotoNext?: () => void;
@@ -33,7 +33,9 @@ const ProfileFooter = ({
     push("/login");
   };
   return (
-    <footer className={cn("flex gap-5", !end ? "justify-end" : "justify-center")}>
+    <footer
+      className={cn("flex gap-5", !end ? "justify-end" : "justify-center")}
+    >
       <Button
         onClick={handleLogOut}
         className="w-[150px] text-sm border border-text-2"
@@ -42,7 +44,11 @@ const ProfileFooter = ({
       >
         Cancel
       </Button>
-      <Button disabled={!isValid || isLoading} type="submit" className="w-[150px] text-sm">
+      <Button
+        disabled={!isValid || isLoading}
+        type="submit"
+        className="w-[150px] text-sm disabled:!cursor-not-allowed disabled:opacity-50 disabled:!pointer-events-auto"
+      >
         {isLoading ? "Loading..." : btnText}
       </Button>
     </footer>

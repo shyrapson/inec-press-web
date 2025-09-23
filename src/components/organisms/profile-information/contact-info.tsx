@@ -111,8 +111,8 @@ const ContactInfo = ({
       onSubmit={handleSubmit(onSubmit)}
       className="pt-4 pb-8 flex flex-col gap-4"
     >
-      <div className="flex gap-5">
-        <div className="w-1/2 flex flex-col gap-2">
+      <div className="flex md:flex-row flex-col  gap-5">
+        <div className="md:w-1/2 flex flex-col gap-2">
           <InputF
             name="stateOfResidence"
             register={register}
@@ -131,7 +131,7 @@ const ContactInfo = ({
             options={{ required: true }}
           />
         </div>
-        <div className="w-1/2 flex flex-col gap-2">
+        <div className="md:w-1/2 flex flex-col gap-2">
           <InputF
             name="lgaOfResidence"
             register={register}

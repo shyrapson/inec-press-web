@@ -19,14 +19,15 @@ interface InputFProps {
   name: string;
   label: string;
   bottomLabel?: string;
-  register: UseFormRegister<FieldValues>;
+  register: UseFormRegister<FieldValues | any>;
   options?: Partial<UseFormRegister<FieldValues>>;
   isSelect?: boolean;
   dropdownList?: Array<{ value: string; label: string; selected?: boolean }>;
-  control?: Control<FieldValues>;
+  control?: Control<FieldValues | any>;
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
   defaultValue?: string;
   isRequired?: boolean;
+  error?: string;
 }
 
 const InputF = ({
@@ -41,6 +42,7 @@ const InputF = ({
   bottomLabel,
   defaultValue,
   isRequired = false,
+  error,
 }: InputFProps) => {
   const idPrefix = useId();
 
@@ -91,6 +93,7 @@ const InputF = ({
           )}
         />
       )}
+      {error && <span className="text-red-500 text-xs italic">{error}</span>}
 
       {bottomLabel && (
         <Label className="text-text-1 font-light italic text-[9px]">

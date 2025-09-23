@@ -15,10 +15,13 @@ import {
   STAFF_OFF_MDAs,
 } from "@/lib/constants";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { IUser, USER_TYPE } from "@/common/types";
+import { IUser, personalInfoSchema, USER_TYPE } from "@/common/types";
 import { cn, containsNysc, dropdownListToShowForWorkplace } from "@/lib/utils";
 import useStore from "@/hooks/useStore";
 import { trackPageView } from "@/lib/mixpanel";
+import z from "zod";
+
+type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 
 const PersonalInfo = ({
   gotoNext,
@@ -66,12 +69,12 @@ const PersonalInfo = ({
 
   const {
     register,
-    formState: { isValid },
+    formState: { isValid, errors },
     control,
     watch,
     setValue,
     handleSubmit,
-  } = useFormContext();
+  } = useFormContext<PersonalInfoFormData>();
   const isWorkPlaceOthers = watch("workplace")?.split("-")?.[0] === OTHERS;
   const isDesignationForINec = watch("designation") === INEC_STAFF;
   console.log(isDesignationForINec);
@@ -113,23 +116,25 @@ const PersonalInfo = ({
     <form onSubmit={handleSubmit(onSubmit)} className="pt-4 pb-8">
       <div className=" flex flex-col gap-5 pb-8 mb-8 border-b border-gray-2">
         <div className="w-full flex gap-5">
-          <div className="w-full flex flex-row gap-5">
-            <div className="flex-1 w-1/2">
+          <div className="w-full flex flex-col md:flex-row gap-5">
+            <div className="flex-1 md:w-1/2">
               <InputF
                 name="surname"
                 isRequired
                 register={register}
                 label="Surname"
+                error={errors.surname?.message}
               />
             </div>
 
-            <div className="flex-1 w-1/2">
+            <div className="flex-1 md:w-1/2">
               {" "}
               <InputF
                 name="firstName"
                 isRequired
                 register={register}
                 label="First Name"
+                error={errors.firstName?.message}
               />
             </div>
           </div>
@@ -151,6 +156,7 @@ const PersonalInfo = ({
               options={{ required: true }}
               label="Gender"
               control={control}
+              error={errors?.gender?.message}
             />
           </div>
           <div className="w-1/2 flex flex-col gap-2">
@@ -168,11 +174,12 @@ const PersonalInfo = ({
               control={control}
               label="Marital status"
               register={register}
+              error={errors?.maritalStatus?.message}
             />
           </div>
         </div>
-        <div className="w-full flex gap-5">
-          <div className="w-1/2 flex flex-col gap-2">
+        <div className="w-full flex md:flex-row flex-col gap-5">
+          <div className="md:w-1/2 flex flex-col gap-2">
             <InputF
               name="email"
               isRequired
@@ -181,17 +188,24 @@ const PersonalInfo = ({
               label="Email"
               defaultValue={registeredUser?.email || auth?.currentUser?.email}
               inputProps={{ disabled: true }}
+              error={errors?.email?.message}
             />
           </div>
-          <div className="w-1/2 flex flex-col gap-2">
-            <InputF name="phone" isRequired register={register} label="Phone" />
+          <div className="md:w-1/2 flex flex-col gap-2">
+            <InputF
+              name="phone"
+              isRequired
+              register={register}
+              label="Phone"
+              error={errors?.phone?.message}
+            />
           </div>
         </div>
       </div>
 
       <div className=" flex flex-col gap-5 pb-8 mb-8 border-b border-gray-2">
-        <div className="w-full flex gap-5">
-          <div className="w-1/2 flex flex-col gap-2">
+        <div className="w-full flex md:flex-row flex-col gap-5">
+          <div className="md:w-1/2 flex flex-col gap-2">
             <InputF
               name="workplace"
               isRequired
@@ -211,9 +225,10 @@ const PersonalInfo = ({
                 isOrganizationDisabledValue ? undefined : workPlaceDropDownList
               }
               isSelect={!isOrganizationDisabledValue}
+              error={errors?.workplace?.message}
             />
           </div>
-          <div className="w-1/2 flex flex-col gap-2">
+          <div className="md:w-1/2 flex flex-col gap-2">
             <InputF
               name="designation"
               isRequired
@@ -230,6 +245,7 @@ const PersonalInfo = ({
                   : []
               }
               isSelect
+              error={errors?.designation?.message}
             />
           </div>
         </div>
@@ -239,7 +255,7 @@ const PersonalInfo = ({
             !isWorkPlaceOthers ? "flex-col" : "flex-row"
           )}
         >
-          {userIsNysc && (
+          {userIsNysc ? (
             <div
               className={cn(
                 "flex flex-col gap-2",
@@ -252,6 +268,23 @@ const PersonalInfo = ({
                 options={{ required: true }}
                 name="callUpNumber"
                 register={register}
+                error={errors?.callUpNumber?.message}
+              />
+            </div>
+          ) : (
+            <div
+              className={cn(
+                "flex flex-col gap-2",
+                isWorkPlaceOthers ? "w-1/2" : "w-full"
+              )}
+            >
+              <InputF
+                label="Staff ID No/Student ID No"
+                isRequired
+                options={{ required: true }}
+                name="callUpNumber"
+                register={register}
+                error={errors?.callUpNumber?.message}
               />
             </div>
           )}
@@ -268,6 +301,7 @@ const PersonalInfo = ({
                 options={{ required: true }}
                 name="workplace"
                 register={register}
+                error={errors?.others?.message}
               />
             </div>
           )}
@@ -291,6 +325,7 @@ const PersonalInfo = ({
                 options={{ required: true }}
                 label="State of Deployment"
                 control={control}
+                error={errors?.stateOfDeployment?.message}
               />
             </div>
             <div className="w-1/2 flex flex-col gap-2">
@@ -310,6 +345,7 @@ const PersonalInfo = ({
                 control={control}
                 label="Preferred Election State"
                 register={register}
+                error={errors?.preferredElectionState?.message}
               />
             </div>
           </div>
@@ -322,6 +358,7 @@ const PersonalInfo = ({
               options={{ required: true }}
               name="identificationCategory"
               register={register}
+              error={errors?.identificationCategory?.message}
             />
           </div>
         )}
@@ -336,6 +373,7 @@ const PersonalInfo = ({
                 label="NYSC Pass Out Date"
                 inputProps={{ type: "date" }}
                 bottomLabel="(Month & Year) only pass out applicant are required"
+                error={errors?.nyscPassOutDate?.message}
               />
             </div>
           )}
@@ -352,14 +390,15 @@ const PersonalInfo = ({
               register={register}
               label="Date of Birth"
               inputProps={{ type: "date" }}
+              error={errors?.dateOfBirth?.message}
             />
           </div>
         </div>
       </div>
 
       <div className=" flex flex-col gap-5 pb-8 mb-8">
-        <div className="w-full flex gap-5">
-          <div className="w-1/2 flex flex-col gap-2">
+        <div className="w-full flex md:flex-row flex-col gap-5">
+          <div className="md:w-1/2 flex flex-col gap-2">
             <InputF
               name="highestQualification"
               register={register}
@@ -376,9 +415,10 @@ const PersonalInfo = ({
               }
               isSelect={true}
               control={control}
+              error={errors?.highestQualification?.message}
             />
           </div>
-          <div className="w-1/2 flex flex-col gap-2">
+          <div className="md:w-1/2 flex flex-col gap-2">
             <InputF
               name="identificationCategory"
               isRequired
@@ -395,6 +435,7 @@ const PersonalInfo = ({
               ]}
               isSelect={true}
               control={control}
+              error={errors?.identificationCategory?.message}
             />
           </div>
         </div>
