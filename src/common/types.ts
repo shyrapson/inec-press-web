@@ -25,6 +25,70 @@ export const resetPasswordSchema = z.object({
     .email("Enter the email address your registered with on this platform."),
 });
 
+export const personalInfoSchema = z.object({
+  surname: z.string().min(1, "Surname is required"),
+  firstName: z.string().min(1, "First Name is required"),
+  others: z.string().optional(),
+
+  gender: z.enum(["MALE", "FEMALE"]),
+  maritalStatus: z.enum(["SINGLE", "MARRIED", "DIVORCED", "WIDOWED"]),
+
+  email: z.string().email("Invalid email address").min(1, "Email is required"),
+
+  phone: z
+    .string()
+    .min(10, "Phone number must be at least 10 digits")
+    .regex(/^\+?\d+$/, "Phone number must contain only digits"),
+
+  workplace: z.string().min(1, "Workplace/Organisation is required"),
+  designation: z.string().min(1, "Designation is required"),
+
+  callUpNumber: z
+    .string()
+    .min(1, "Call-Up Number or Staff/Student ID is required"),
+
+  stateOfDeployment: z
+    .string()
+    .optional()
+    .refine((val) => val !== undefined, "State of Deployment is required"),
+
+  preferredElectionState: z
+    .string()
+    .optional()
+    .refine((val) => val !== undefined, "Preferred Election State is required"),
+
+  identificationCategory: z
+    .string()
+    .min(1, "Identification Category is required"),
+
+  highestQualification: z.string().min(1, "Highest Qualification is required"),
+
+  dateOfBirth: z
+    .string()
+    .min(1, "Date of Birth is required")
+    .refine(
+      (date) => {
+        const dob = new Date(date);
+        const today = new Date();
+        const age = today.getFullYear() - dob.getFullYear();
+        return age >= 18;
+      },
+      { message: "You must be at least 18 years old" }
+    ),
+
+  nyscPassOutDate: z
+    .string()
+    .optional()
+    .refine(
+      (date) => {
+        if (!date) return true;
+        const passOutDate = new Date(date);
+        return passOutDate <= new Date();
+      },
+      { message: "NYSC Pass Out Date must be in the past" }
+    ),
+});
+
 export enum PAGE_ROUTES {
   DASHBOARD_PAGE = "/dashboard",
   LOGIN_PAGE = "/login",
