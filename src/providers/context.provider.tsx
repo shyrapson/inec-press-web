@@ -10,6 +10,7 @@ import {
   useState,
 } from "react";
 import { IAuth, IRegisteredUser, IStore, IStoreContext } from "../common/types";
+import { useRouter } from "next/navigation";
 
 export const initialState: IStore = {
   auth: null,
@@ -21,6 +22,7 @@ export const StoreContext = createContext<IStoreContext | null>(null);
 
 const Context: FC<{ children: ReactNode }> = ({ children }) => {
   const [store, setStore] = useState<IStore>(initialState);
+  const router = useRouter();
 
   const updateStore = useCallback((payload: Partial<IStore>) => {
     setStore((prev) => ({ ...prev, ...payload }));
@@ -31,9 +33,21 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
     });
   }, []);
 
+  const handleLogOut = () => {
+    updateStore({
+      auth: null,
+      registeredUser: null,
+      isLocalStorageLoaded: false,
+    });
+    localStorage.removeItem("auth");
+    localStorage.removeItem("registeredUser");
+    router.push("/login");
+  };
+
   useEffect(() => {
     // TODO: abstract as a generic function
     const authData = localStorage.getItem("auth");
+    console.log({ authData: JSON.parse(authData!) });
     const auth = authData ? (JSON.parse(authData) as IAuth) : null;
     const registeredUserData = localStorage.getItem("registeredUser");
     const registeredUser = registeredUserData
@@ -54,6 +68,7 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
     () => ({
       store,
       updateStore,
+      handleLogOut,
     }),
     [store, updateStore]
   );

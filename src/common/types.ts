@@ -207,6 +207,7 @@ export interface IStore {
 export interface IStoreContext {
   store: IStore;
   updateStore: (payload: Partial<IStore>) => void;
+  handleLogOut: () => void;
 }
 
 export interface ILoginRequest {
