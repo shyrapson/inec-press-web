@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileFooter from "./profile-footer";
 import { useFormContext } from "react-hook-form";
 import InputF from "./InputF";
@@ -15,11 +15,11 @@ import {
   STAFF_OFF_MDAs,
 } from "@/lib/constants";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { IUser, personalInfoSchema, USER_TYPE } from "@/common/types";
+import type { IUser, personalInfoSchema } from "@/common/types";
 import { cn, containsNysc, dropdownListToShowForWorkplace } from "@/lib/utils";
 import useStore from "@/hooks/useStore";
 import { trackPageView } from "@/lib/mixpanel";
-import z from "zod";
+import type z from "zod";
 
 type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 
@@ -36,6 +36,7 @@ const PersonalInfo = ({
   const [highestQualificationFile, setHighestQualificationFile] = useState<
     string | null
   >(null);
+
   const {
     stateList,
     stateUniversityList,
@@ -48,13 +49,16 @@ const PersonalInfo = ({
   } = useCommonData();
 
   console.log(designationList, "designation list");
+
   const { data: mdaList } = useQuery({
     queryFn: getMdas,
     queryKey: [QUERY_KEYS.MDA_LIST],
   });
+
   const { mutateAsync: handleCreateProfile, isPending } = useMutation({
     mutationFn: (data) => createProfile({ data }),
   });
+
   const workPlaceDropDownList = dropdownListToShowForWorkplace(
     userDetails as IUser,
     {
@@ -63,6 +67,7 @@ const PersonalInfo = ({
       stateUniversityList,
     }
   );
+
   const {
     store: { registeredUser, auth },
   } = useStore();
@@ -75,9 +80,10 @@ const PersonalInfo = ({
     setValue,
     handleSubmit,
   } = useFormContext<PersonalInfoFormData>();
+
   const isWorkPlaceOthers = watch("workplace")?.split("-")?.[0] === OTHERS;
   const isDesignationForINec = watch("designation") === INEC_STAFF;
-  console.log(isDesignationForINec);
+  const othersWorkplaceValue = watch("othersWorkplace");
 
   useEffect(() => {
     trackPageView("Personal Info Page Viewed");
@@ -88,18 +94,21 @@ const PersonalInfo = ({
     watch("designation") === PUBLIC_CIVIL_SERVANT ||
     watch("designation") === STAFF_OF_RAC ||
     watch("designation") === STAFF_OFF_MDAs;
+
   const userIsNysc = containsNysc(userDetails?.source_name as string);
 
   const onSubmit = async (data: any) => {
     const [workplace, workplaceId] = watch("workplace")?.split("-") ?? [];
-    const { otherName, email, ...rest } = data;
+    const { otherName, email, othersWorkplace, ...rest } = data;
+
     const payload = {
       ...rest,
       identificationFile,
       highestQualificationFile,
-      workplace,
+      workplace: isWorkPlaceOthers ? othersWorkplaceValue : workplace,
       workplaceId,
     };
+
     try {
       const res: any = await handleCreateProfile(payload);
       if (res?.status) {
@@ -109,6 +118,7 @@ const PersonalInfo = ({
       console.log({ error });
     }
   };
+
   const isDisabled =
     isValid && !!identificationFile && !!highestQualificationFile;
 
@@ -126,7 +136,6 @@ const PersonalInfo = ({
                 error={errors.surname?.message}
               />
             </div>
-
             <div className="flex-1 md:w-1/2">
               {" "}
               <InputF
@@ -299,9 +308,9 @@ const PersonalInfo = ({
                 label="Other"
                 isRequired
                 options={{ required: true }}
-                name="workplace"
+                name="othersWorkplace"
                 register={register}
-                error={errors?.others?.message}
+                error={errors?.othersWorkplace?.message}
               />
             </div>
           )}
