@@ -42,6 +42,7 @@ export const personalInfoSchema = z.object({
 
   workplace: z.string().min(1, "Workplace/Organisation is required"),
   designation: z.string().min(1, "Designation is required"),
+  othersWorkplace: z.string().optional(),
 
   callUpNumber: z
     .string()
