@@ -57,6 +57,11 @@ export const personalInfoSchema = z.object({
     .string()
     .optional()
     .refine((val) => val !== undefined, "Preferred Election State is required"),
+  preferredElectionLga: z
+    .string()
+    .optional()
+    .refine((val) => val !== undefined, "Preferred Election State is required"),
+  gradeLevel: z.string().optional,
 
   identificationCategory: z
     .string()
