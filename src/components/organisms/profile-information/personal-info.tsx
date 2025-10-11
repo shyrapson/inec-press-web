@@ -5,7 +5,7 @@ import { useFormContext } from "react-hook-form";
 import InputF from "./InputF";
 import FileUploadPage from "./file-uploader";
 import useCommonData from "@/hooks/useCommonData";
-import { createProfile, getMdas } from "@/api/user";
+import { createProfile, getLgaOfStates, getMdas } from "@/api/user";
 import {
   INEC_STAFF,
   OTHERS,
@@ -47,6 +47,7 @@ const PersonalInfo = ({
     isOrganizationDisabledValue,
     userDetails,
   } = useCommonData();
+  console.log(preferredStateOfElectionList, "wahakl");
 
   console.log(designationList, "designation list");
 
@@ -54,19 +55,6 @@ const PersonalInfo = ({
     queryFn: getMdas,
     queryKey: [QUERY_KEYS.MDA_LIST],
   });
-
-  const { mutateAsync: handleCreateProfile, isPending } = useMutation({
-    mutationFn: (data) => createProfile({ data }),
-  });
-
-  const workPlaceDropDownList = dropdownListToShowForWorkplace(
-    userDetails as IUser,
-    {
-      mdaList,
-      federalUniversityList,
-      stateUniversityList,
-    }
-  );
 
   const {
     store: { registeredUser, auth },
@@ -80,6 +68,29 @@ const PersonalInfo = ({
     setValue,
     handleSubmit,
   } = useFormContext<PersonalInfoFormData>();
+
+  const [stateCode, stateValue, stateValueName] =
+    watch("preferredElectionState")?.split("-") ?? [];
+
+  const { data: lgaOfStateList, isLoading: loadingState } = useQuery({
+    queryFn: () => getLgaOfStates({ code: stateCode }),
+    queryKey: [QUERY_KEYS.LGA_OF_STATE_LIST, stateCode],
+    enabled: !!stateCode,
+  });
+  console.log(lgaOfStateList, "lgaOfStateList");
+
+  const { mutateAsync: handleCreateProfile, isPending } = useMutation({
+    mutationFn: (data) => createProfile({ data }),
+  });
+
+  const workPlaceDropDownList = dropdownListToShowForWorkplace(
+    userDetails as IUser,
+    {
+      mdaList,
+      federalUniversityList,
+      stateUniversityList,
+    }
+  );
 
   const isWorkPlaceOthers = watch("workplace")?.split("-")?.[0] === OTHERS;
   const isDesignationForINec = watch("designation") === INEC_STAFF;
@@ -103,6 +114,7 @@ const PersonalInfo = ({
 
     const payload = {
       ...rest,
+      preferredElectionState: stateValue,
       identificationFile,
       highestQualificationFile,
       workplace: isWorkPlaceOthers ? othersWorkplaceValue : workplace,
@@ -317,7 +329,7 @@ const PersonalInfo = ({
         </div>
         {isDesignationForINec && (
           <div className="w-full flex gap-5">
-            <div className="w-1/2 flex flex-col gap-2">
+            <div className="w-full flex flex-col gap-2">
               <InputF
                 name="stateOfDeployment"
                 isRequired
@@ -337,37 +349,60 @@ const PersonalInfo = ({
                 error={errors?.stateOfDeployment?.message}
               />
             </div>
-            <div className="w-1/2 flex flex-col gap-2">
-              <InputF
-                name="preferredElectionState"
-                isRequired
-                options={{ required: true }}
-                dropdownList={
-                  Array.isArray(preferredStateOfElectionList)
-                    ? preferredStateOfElectionList.map((state: any) => ({
-                        value: state?.state,
-                        label: state?.state,
-                      }))
-                    : []
-                }
-                isSelect={true}
-                control={control}
-                label="Preferred Election State"
-                register={register}
-                error={errors?.preferredElectionState?.message}
-              />
-            </div>
           </div>
         )}
+        <div className="w-full flex gap-5">
+          <div className="w-1/2 flex flex-col gap-2">
+            <InputF
+              name="preferredElectionState"
+              isRequired
+              options={{ required: true }}
+              dropdownList={
+                Array.isArray(preferredStateOfElectionList)
+                  ? preferredStateOfElectionList.map((state: any) => ({
+                      value: `${state?.code}-${state?.state}`,
+                      label: state?.state,
+                    }))
+                  : []
+              }
+              isSelect={true}
+              control={control}
+              label="Preferred Election State"
+              register={register}
+              error={errors?.preferredElectionState?.message}
+            />
+          </div>{" "}
+          <div className="w-1/2 flex flex-col gap-2">
+            <InputF
+              name="preferredElectionLga"
+              isRequired
+              options={{ required: true }}
+              dropdownList={
+                Array.isArray(lgaOfStateList)
+                  ? lgaOfStateList.map((lga: any) => ({
+                      value: lga?.name,
+                      label: lga?.name,
+                    }))
+                  : []
+              }
+              isSelect={true}
+              control={control}
+              label="Preferred LGA of Deployment"
+              register={register}
+              error={errors?.preferredElectionLga?.message}
+            />
+          </div>
+        </div>
+
         {isGradeLevel && (
           <div className="w-full flex flex-col gap-2">
             <InputF
               label="Enter GL"
               isRequired
               options={{ required: true }}
-              name="identificationCategory"
+              name="gradeLevel"
               register={register}
-              error={errors?.identificationCategory?.message}
+              error={errors?.gradeLevel?.message}
             />
           </div>
         )}
