@@ -147,6 +147,15 @@ const DashboardPage = () => {
                 label="Preferred LGA of Deployment"
                 value={profile?.preferredElectionLga}
               />
+
+              <InfoItem
+                label="Registration Area / Ward"
+                value={contactInfo?.registrationOfResidence}
+              />
+              <InfoItem
+                label="Nearest Landmark"
+                value={contactInfo?.nearestLandmark}
+              />
             </div>
           </CardContent>
         </Card>
@@ -167,10 +176,7 @@ const DashboardPage = () => {
                 label="State Of Origin"
                 value={contactInfo?.stateOfOrigin}
               />
-              <InfoItem
-                label="Registration Of Residence"
-                value={contactInfo?.registrationOfResidence}
-              />
+
               <InfoItem
                 label="Address Of Residence"
                 value={contactInfo?.addressOfResidence}
@@ -183,11 +189,7 @@ const DashboardPage = () => {
                 label="LGA Of Residence"
                 value={contactInfo?.lgaOfResidence}
               />
-              <InfoItem label="Zone" value={contactInfo?.zone} />
-              <InfoItem
-                label="Nearest Landmark"
-                value={contactInfo?.nearestLandmark}
-              />
+              {/* <InfoItem label="Zone" value={contactInfo?.zone} /> */}
             </div>
           </CardContent>
         </Card>
