@@ -155,6 +155,8 @@ const PersonalInfo = ({
     const payload = {
       ...rest,
       preferredElectionState: stateValue,
+      registrationOfResidence: registrationOfResidenceValueName,
+      preferredElectionLga: lgaValue,
       identificationFile,
       highestQualificationFile,
       workplace: isWorkPlaceOthers ? othersWorkplaceValue : workplace,
@@ -440,7 +442,7 @@ const PersonalInfo = ({
               name="registrationOfResidence"
               register={register}
               isRequired
-              label="Registration of Residence"
+              label="Registration Area/Ward"
               isSelect={true}
               dropdownList={
                 Array.isArray(registeredWardList)
