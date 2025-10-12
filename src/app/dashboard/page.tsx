@@ -139,6 +139,14 @@ const DashboardPage = () => {
                 label="ID Category"
                 value={profile?.identificationCategory}
               />
+              <InfoItem
+                label="Preferred State of Deployment"
+                value={profile?.preferredElectionState}
+              />
+              <InfoItem
+                label="Preferred LGA of Deployment"
+                value={profile?.preferredElectionLga}
+              />
             </div>
           </CardContent>
         </Card>
