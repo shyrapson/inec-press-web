@@ -45,31 +45,31 @@ const ContactInfo = ({
     enabled: !!stateValue,
   });
 
-  const { data: registeredWardList, isLoading: loadingRegisteredWardList } =
-    useQuery({
-      queryFn: () =>
-        getRegistrationWard({ state_id: stateValue!, abbreviation: lgaValue }),
-      queryKey: [QUERY_KEYS.WARD_OF_STATE_LIST, stateValue, lgaValue],
-      enabled: !!stateValue && !!lgaValue,
-    });
+  // const { data: registeredWardList, isLoading: loadingRegisteredWardList } =
+  //   useQuery({
+  //     queryFn: () =>
+  //       getRegistrationWard({ state_id: stateValue!, abbreviation: lgaValue }),
+  //     queryKey: [QUERY_KEYS.WARD_OF_STATE_LIST, stateValue, lgaValue],
+  //     enabled: !!stateValue && !!lgaValue,
+  //   });
 
-  const { data: nearestLandMark, isLoading: loadingNearestLandMark } = useQuery(
-    {
-      queryFn: () =>
-        getNearestLandmark({
-          state_id: stateValue!,
-          abbreviation: lgaValue,
-          ward_id: registrationOfResidenceValue,
-        }),
-      queryKey: [
-        QUERY_KEYS.NEAREST_LANDMARK,
-        stateValue,
-        lgaValue,
-        registrationOfResidenceValue,
-      ],
-      enabled: !!stateValue && !!lgaValue && !!registrationOfResidenceValue,
-    }
-  );
+  // const { data: nearestLandMark, isLoading: loadingNearestLandMark } = useQuery(
+  //   {
+  //     queryFn: () =>
+  //       getNearestLandmark({
+  //         state_id: stateValue!,
+  //         abbreviation: lgaValue,
+  //         ward_id: registrationOfResidenceValue,
+  //       }),
+  //     queryKey: [
+  //       QUERY_KEYS.NEAREST_LANDMARK,
+  //       stateValue,
+  //       lgaValue,
+  //       registrationOfResidenceValue,
+  //     ],
+  //     enabled: !!stateValue && !!lgaValue && !!registrationOfResidenceValue,
+  //   }
+  // );
   const { mutateAsync: handleCreateContact, isPending } = useMutation<
     any,
     unknown,
@@ -90,9 +90,9 @@ const ContactInfo = ({
       const payload = {
         addressOfResidence,
         lgaOfResidence: lgaValueName,
-        nearestLandmark,
+        // nearestLandmark,
         permanentHomeAddress,
-        registrationOfResidence: registrationOfResidenceValueName,
+        // registrationOfResidence: registrationOfResidenceValueName,
         stateOfOrigin,
         stateOfResidence: stateValueName,
       };
@@ -152,7 +152,7 @@ const ContactInfo = ({
         </div>
       </div>
 
-      <div>
+      {/* <div>
         <InputF
           name="registrationOfResidence"
           register={register}
@@ -190,7 +190,7 @@ const ContactInfo = ({
           control={control}
           options={{ required: true }}
         />
-      </div>
+      </div> */}
 
       <div>
         <InputF
