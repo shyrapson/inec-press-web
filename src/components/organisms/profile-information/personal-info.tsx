@@ -226,7 +226,12 @@ const PersonalInfo = ({
 
       <div className=" flex flex-col gap-5 pb-8 mb-8 border-b border-gray-2">
         <div className="w-full flex md:flex-row flex-col gap-5">
-          <div className="md:w-1/2 flex flex-col gap-2">
+          <div
+            className={cn(
+              " flex flex-col gap-2",
+              isWorkPlaceOthers ? "md:w-1/2" : "w-full"
+            )}
+          >
             <InputF
               name="workplace"
               isRequired
@@ -249,31 +254,28 @@ const PersonalInfo = ({
               error={errors?.workplace?.message}
             />
           </div>
-          <div className="md:w-1/2 flex flex-col gap-2">
-            <InputF
-              name="designation"
-              isRequired
-              options={{ required: true }}
-              register={register}
-              label="Designation"
-              control={control}
-              dropdownList={
-                Array.isArray(designationList)
-                  ? designationList.map((item) => ({
-                      label: item?.name,
-                      value: item?.name,
-                    }))
-                  : []
-              }
-              isSelect
-              error={errors?.designation?.message}
-            />
-          </div>
+          {isWorkPlaceOthers && (
+            <div
+              className={cn(
+                "flex flex-col gap-2",
+                isWorkPlaceOthers ? "w-1/2" : "w-full"
+              )}
+            >
+              <InputF
+                label="Other"
+                isRequired
+                options={{ required: true }}
+                name="othersWorkplace"
+                register={register}
+                error={errors?.othersWorkplace?.message}
+              />
+            </div>
+          )}
         </div>
         <div
           className={cn(
             "w-full flex gap-2",
-            !isWorkPlaceOthers ? "flex-col" : "flex-row"
+            !isWorkPlaceOthers ? "flex-row" : "flex-row"
           )}
         >
           {userIsNysc ? (
@@ -293,12 +295,7 @@ const PersonalInfo = ({
               />
             </div>
           ) : (
-            <div
-              className={cn(
-                "flex flex-col gap-2",
-                isWorkPlaceOthers ? "w-1/2" : "w-full"
-              )}
-            >
+            <div className={cn("flex flex-col gap-2  w-1/2")}>
               <InputF
                 label="Staff ID No/Student ID No"
                 isRequired
@@ -309,23 +306,26 @@ const PersonalInfo = ({
               />
             </div>
           )}
-          {isWorkPlaceOthers && (
-            <div
-              className={cn(
-                "flex flex-col gap-2",
-                isWorkPlaceOthers ? "w-1/2" : "w-full"
-              )}
-            >
-              <InputF
-                label="Other"
-                isRequired
-                options={{ required: true }}
-                name="othersWorkplace"
-                register={register}
-                error={errors?.othersWorkplace?.message}
-              />
-            </div>
-          )}
+          <div className={cn("md:w-1/2 flex flex-col gap-2")}>
+            <InputF
+              name="designation"
+              isRequired
+              options={{ required: true }}
+              register={register}
+              label="Designation"
+              control={control}
+              dropdownList={
+                Array.isArray(designationList)
+                  ? designationList.map((item) => ({
+                      label: item?.name,
+                      value: item?.name,
+                    }))
+                  : []
+              }
+              isSelect
+              error={errors?.designation?.message}
+            />
+          </div>
         </div>
         {isDesignationForINec && (
           <div className="w-full flex gap-5">
