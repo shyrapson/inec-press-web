@@ -39,6 +39,7 @@ export const personalInfoSchema = z.object({
     .string()
     .min(10, "Phone number must be at least 10 digits")
     .regex(/^\+?\d+$/, "Phone number must contain only digits"),
+  registrationOfResidence: z.string(),
 
   workplace: z.string().min(1, "Workplace/Organisation is required"),
   designation: z.string().min(1, "Designation is required"),

@@ -5,7 +5,13 @@ import { useFormContext } from "react-hook-form";
 import InputF from "./InputF";
 import FileUploadPage from "./file-uploader";
 import useCommonData from "@/hooks/useCommonData";
-import { createProfile, getLgaOfStates, getMdas } from "@/api/user";
+import {
+  createProfile,
+  getLgaOfStates,
+  getMdas,
+  getNearestLandmark,
+  getRegistrationWard,
+} from "@/api/user";
 import {
   INEC_STAFF,
   OTHERS,
@@ -72,12 +78,46 @@ const PersonalInfo = ({
   const [stateCode, stateValue, stateValueName] =
     watch("preferredElectionState")?.split("-") ?? [];
 
+  const [lgaCode, lgaValue, lgaValueName] =
+    watch("preferredElectionLga")?.split("-") ?? [];
+
+  console.log(lgaValue, lgaValueName, lgaCode, "hello");
+
+  const [registrationOfResidenceValue, registrationOfResidenceValueName] =
+    watch("registrationOfResidence")?.split("-") ?? [];
+
   const { data: lgaOfStateList, isLoading: loadingState } = useQuery({
     queryFn: () => getLgaOfStates({ code: stateCode }),
     queryKey: [QUERY_KEYS.LGA_OF_STATE_LIST, stateCode],
     enabled: !!stateCode,
   });
-  console.log(lgaOfStateList, "lgaOfStateList");
+
+  const { data: registeredWardList, isLoading: loadingRegisteredWardList } =
+    useQuery({
+      queryFn: () =>
+        getRegistrationWard({ state_id: stateCode!, abbreviation: lgaCode }),
+      queryKey: [QUERY_KEYS.WARD_OF_STATE_LIST, stateValue, lgaCode],
+      enabled: !!stateValue && !!lgaCode,
+    });
+  console.log(registeredWardList, "registeredWardList");
+
+  const { data: nearestLandMark, isLoading: loadingNearestLandMark } = useQuery(
+    {
+      queryFn: () =>
+        getNearestLandmark({
+          state_id: stateCode!,
+          abbreviation: lgaCode,
+          ward_id: registrationOfResidenceValue,
+        }),
+      queryKey: [
+        QUERY_KEYS.NEAREST_LANDMARK,
+        stateValue,
+        lgaCode,
+        registrationOfResidenceValue,
+      ],
+      enabled: !!stateValue && !!lgaCode && !!registrationOfResidenceValue,
+    }
+  );
 
   const { mutateAsync: handleCreateProfile, isPending } = useMutation({
     mutationFn: (data) => createProfile({ data }),
@@ -274,7 +314,7 @@ const PersonalInfo = ({
         </div>
         <div
           className={cn(
-            "w-full flex gap-2",
+            "w-full flex gap-5",
             !isWorkPlaceOthers ? "flex-row" : "flex-row"
           )}
         >
@@ -380,7 +420,7 @@ const PersonalInfo = ({
               dropdownList={
                 Array.isArray(lgaOfStateList)
                   ? lgaOfStateList.map((lga: any) => ({
-                      value: lga?.name,
+                      value: `${lga?.abbreviation}-${lga?.name}`,
                       label: lga?.name,
                     }))
                   : []
@@ -390,6 +430,48 @@ const PersonalInfo = ({
               label="Preferred LGA of Deployment"
               register={register}
               error={errors?.preferredElectionLga?.message}
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-5">
+          <div className="w-1/2 flex flex-col gap-2">
+            <InputF
+              name="registrationOfResidence"
+              register={register}
+              isRequired
+              label="Registration of Residence"
+              isSelect={true}
+              dropdownList={
+                Array.isArray(registeredWardList)
+                  ? registeredWardList.map((state: any) => ({
+                      value: `${state?.ward_id}-${state?.name}`,
+                      label: state?.name,
+                    }))
+                  : []
+              }
+              control={control}
+              options={{ required: true }}
+            />
+          </div>
+
+          <div className="w-1/2 flex flex-col gap-2">
+            <InputF
+              name="nearestLandmark"
+              register={register}
+              isRequired
+              label="Nearest Landmark"
+              isSelect={true}
+              dropdownList={
+                Array.isArray(nearestLandMark)
+                  ? nearestLandMark.map((state: any) => ({
+                      value: state?.name,
+                      label: state?.name,
+                    }))
+                  : []
+              }
+              control={control}
+              options={{ required: true }}
             />
           </div>
         </div>
