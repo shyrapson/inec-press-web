@@ -357,7 +357,7 @@ export default function CreateProfilePage() {
           <div className="flex justify-between w-full">
             <div className="w-full md:w-1/2 bg-[url('/images/bg-image.png')] bg-cover bg-no-repeat flex items-center justify-center py-10 md:px-32">
               <Card className="max-w-11/12 w-11/12 md:w-full md:max-w-[461px] shadow-lg py-10 mt-32">
-                <CardHeader className="text-center">
+                {/* <CardHeader className="text-center">
                   <CardTitle className="text-xl font-semibold text-gray-900">
                     Create Profile
                   </CardTitle>
@@ -366,8 +366,8 @@ export default function CreateProfilePage() {
                     the instructions carefully. Be sure to provide a valid email
                     address during the registration.
                   </p>
-                </CardHeader>
-                <CardContent className="space-y-6">
+                </CardHeader> */}
+                {/* <CardContent className="space-y-6">
                   <Form {...form}>
                     <form
                       onSubmit={form.handleSubmit(onSubmit)}
@@ -588,18 +588,18 @@ export default function CreateProfilePage() {
                       </Button>
                     </form>
                   </Form>
-                </CardContent>
+                </CardContent> */}
 
-                {/* <div className="flex flex-col items-center justify-center py-16 px-6">
-                   <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-8 rounded-lg shadow text-center">
-                     <h2 className="text-2xl font-bold mb-2">
-                       Application Closed
-                     </h2>
-                     <p className="text-base">
-                       We are sorry, but application is currently closed.
-                     </p>
-                   </div>
-                 </div> */}
+                <div className="flex flex-col items-center justify-center py-16 px-6">
+                  <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-8 rounded-lg shadow text-center">
+                    <h2 className="text-2xl font-bold mb-2">
+                      Application Closed
+                    </h2>
+                    <p className="text-base">
+                      We are sorry, but application is currently closed.
+                    </p>
+                  </div>
+                </div>
               </Card>
             </div>
             <div className="md:flex hidden md:w-1/2 mt-32">
