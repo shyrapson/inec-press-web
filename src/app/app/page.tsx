@@ -5,8 +5,7 @@ import Image from "next/image";
 
 const DownloadPage = () => {
   const downloadAndroid = () => {
-    const url =
-      "https://inec-croms-bucket.nyc3.digitaloceanspaces.com/apk-file/INECPRES.apk";
+    const url = "/INECPRES.apk";
     window.location.href = url;
   };
 
